@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NeUrokAdmin.Infrastructure.Persistance;
+using NeUrokAdmin.WPF.Views.ModalWindows;
+using NeUrokAdmin.WPF.Views.ModalWindows.ViewModals;
 
 namespace NeUrokAdmin.WPF
 {
@@ -39,14 +41,21 @@ namespace NeUrokAdmin.WPF
                 ServerVersion.Parse("8.0.36-mysql")));
 
             services.AddTransient<MainWindow>();
+
+            services.AddTransient<LoginViewModal>();
+            services.AddTransient<LoginWindow>();
         }
 
         protected override async void OnStartup(StartupEventArgs e)
         {
             await _host.StartAsync();
 
-            var mainWindow = _host.Services.GetRequiredService<MainWindow>();
-            mainWindow.Show();
+            var loginWindow = _host.Services.GetRequiredService<LoginWindow>();
+            var viewModel = _host.Services.GetRequiredService<LoginViewModal>();
+
+            loginWindow.DataContext = viewModel;
+            loginWindow.Show();
+
 
             base.OnStartup(e);
         }

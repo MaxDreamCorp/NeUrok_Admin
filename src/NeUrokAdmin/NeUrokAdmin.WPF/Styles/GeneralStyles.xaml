@@ -1,0 +1,133 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="MainBg" Color="#f2f2f2"/>
+    <SolidColorBrush x:Key="DarkPinkBg" Color="#a83787"/>
+    <SolidColorBrush x:Key="LightPinkBg" Color="#ff65c3"/>
+    <SolidColorBrush x:Key="PalePink" Color="#FFFFDDF2"/>
+    <SolidColorBrush x:Key="LightYellow" Color="#ffff19"/>
+    <SolidColorBrush x:Key="InpBg" Color="#FFF1F1F1"/>
+
+    <Style x:Key="ControlText" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Constantia" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="16" />
+    </Style>
+
+    <Style x:Key="PrimaryBtn" TargetType="Button">
+        <Setter Property="Height" Value="32" />
+        <Setter Property="Padding" Value="5,12" />
+        <Setter Property="Height" Value="Auto" />
+        <Setter Property="Background" Value="{StaticResource DarkPinkBg}" />
+        <Setter Property="FontFamily" Value="Constantia" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="16" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#FF862C6C" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="SecondaryBtn" TargetType="Button">
+        <Setter Property="Height" Value="32" />
+        <Setter Property="Padding" Value="5, 6" />
+        <Setter Property="Height" Value="Auto" />
+        <Setter Property="Foreground" Value="{StaticResource DarkPinkBg}" />
+        <Setter Property="BorderBrush" Value="{StaticResource DarkPinkBg}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="FontFamily" Value="Constantia" />
+        <Setter Property="Background" Value="White" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="16" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource InpBg}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="Tbox" TargetType="TextBox">
+        <Setter Property="Background" Value="{StaticResource InpBg}" />
+        <Setter Property="BorderBrush" Value="{StaticResource DarkPinkBg}" />
+        <Setter Property="BorderThickness" Value="1.5" />
+        <Setter Property="FontSize" Value="14" />
+    </Style>
+    <Style x:Key="DatePicker" TargetType="DatePicker">
+        <Setter Property="Background" Value="{StaticResource InpBg}" />
+        <Setter Property="BorderBrush" Value="{StaticResource DarkPinkBg}" />
+        <Setter Property="BorderThickness" Value="1.5" />
+        <Setter Property="FontSize" Value="14" />
+    </Style>
+    <Style x:Key="ComboBox" TargetType="ComboBox">
+        <Setter Property="Background" Value="{StaticResource InpBg}" />
+        <Setter Property="BorderBrush" Value="{StaticResource DarkPinkBg}" />
+        <Setter Property="BorderThickness" Value="1.5" />
+        <Setter Property="FontSize" Value="14" />
+    </Style>
+
+
+    <!-- Стиль для TextBox с плейсхолдером -->
+    <Style x:Key="PlaceholderTextBoxStyle" TargetType="TextBox">
+        <Setter Property="Background" Value="#d9d9d9"/>
+        <Setter Property="BorderBrush" Value="{StaticResource DarkPinkBg}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Margin" Value="0,15"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Grid>
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <Grid Margin="4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock x:Name="placeholder"
+                                           Margin="3 0"
+                                           Grid.Column="0"
+                                           Text="Логин"
+                                           Foreground="Gray"
+                                           FontStyle="Italic"
+                                           Visibility="Collapsed"
+                                           VerticalAlignment="Center"/>
+
+                                <ScrollViewer x:Name="PART_ContentHost"
+                                              Grid.Column="0"
+                                              VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Text" Value="">
+                            <Setter TargetName="placeholder" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Стиль для PasswordBox с плейсхолдером -->
+    <Style x:Key="PlaceholderPasswordBoxStyle" TargetType="PasswordBox">
+        <Setter Property="Background" Value="#d9d9d9"/>
+        <Setter Property="BorderBrush" Value="{StaticResource DarkPinkBg}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Padding" Value="3"/>
+        <Setter Property="Margin" Value="0,15"/>
+    </Style>
+
+    <!-- Шаблон для Grid с PasswordBox и плейсхолдером (если нужно как повторяющийся элемент) -->
+    <Style x:Key="PasswordWithPlaceholderStyle" TargetType="Grid">
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+</ResourceDictionary>
