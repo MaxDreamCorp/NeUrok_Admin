@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeUrokAdmin.Domain", "NeUrokAdmin.Domain\NeUrokAdmin.Domain.csproj", "{DF9D493A-B6E4-4B3C-8C04-6D0D189BDC2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeUrokAdmin.Domain", "NeUrokAdmin.Domain\NeUrokAdmin.Domain.csproj", "{DF9D493A-B6E4-4B3C-8C04-6D0D189BDC2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeUrokAdmin.Application", "NeUrokAdmin.Application\NeUrokAdmin.Application.csproj", "{E25EA7A3-5A76-4917-8296-5C9D6382A90E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeUrokAdmin.Application", "NeUrokAdmin.Application\NeUrokAdmin.Application.csproj", "{E25EA7A3-5A76-4917-8296-5C9D6382A90E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeUrokAdmin.Infrastructure", "NeUrokAdmin.Infrastructure\NeUrokAdmin.Infrastructure.csproj", "{D2E5E6DB-4B48-4120-AACF-C139E8266FDA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeUrokAdmin.Infrastructure", "NeUrokAdmin.Infrastructure\NeUrokAdmin.Infrastructure.csproj", "{D2E5E6DB-4B48-4120-AACF-C139E8266FDA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeUrokAdmin.WPF", "NeUrokAdmin.WPF\NeUrokAdmin.WPF.csproj", "{431DBBD7-D003-4634-BA57-D89388509297}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeUrokAdmin.WPF", "NeUrokAdmin.WPF\NeUrokAdmin.WPF.csproj", "{8AF3BAB9-CBD4-4C18-AD5F-59345CD9A12D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{D2E5E6DB-4B48-4120-AACF-C139E8266FDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2E5E6DB-4B48-4120-AACF-C139E8266FDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2E5E6DB-4B48-4120-AACF-C139E8266FDA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{431DBBD7-D003-4634-BA57-D89388509297}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{431DBBD7-D003-4634-BA57-D89388509297}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{431DBBD7-D003-4634-BA57-D89388509297}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{431DBBD7-D003-4634-BA57-D89388509297}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AF3BAB9-CBD4-4C18-AD5F-59345CD9A12D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AF3BAB9-CBD4-4C18-AD5F-59345CD9A12D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AF3BAB9-CBD4-4C18-AD5F-59345CD9A12D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AF3BAB9-CBD4-4C18-AD5F-59345CD9A12D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
