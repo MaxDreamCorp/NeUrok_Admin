@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using NeUrokAdmin.WPF.Services;
 using NeUrokAdmin.WPF.Views.Elements.ViewModels;
+using NeUrokAdmin.WPF.Views.UserControls.ViewModels;
 
 namespace NeUrokAdmin.WPF.Views.Windows.ViewModels
 {
@@ -26,7 +27,6 @@ namespace NeUrokAdmin.WPF.Views.Windows.ViewModels
             SideMenuItems.Add(new SideMenuItemViewModel { Title = "Абонементы", Type = Enums.TabType.Subscriptions, IconPath = "/Resources/Icons/TicketIcon.png" });
             _navigationService = navigationService;
 
-
         }
 
         [RelayCommand]
@@ -35,6 +35,21 @@ namespace NeUrokAdmin.WPF.Views.Windows.ViewModels
             foreach (var item in SideMenuItems)
                 item.IsSelected = false;
             selectedTab.IsSelected = true;
+
+            switch (selectedTab.Type)
+            {
+                case Enums.TabType.Clients:
+                    CurrentPage = _navigationService.GetViewModel<ClientViewViewModel>();
+                    break;
+                case Enums.TabType.Students:
+                    break;
+                case Enums.TabType.Groups:
+                    break;
+                case Enums.TabType.Subscriptions:
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

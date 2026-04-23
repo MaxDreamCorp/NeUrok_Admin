@@ -12,7 +12,6 @@ using NeUrokAdmin.Infrastructure.Persistance.Repositories;
 using NeUrokAdmin.Infrastructure.Services.Security;
 using NeUrokAdmin.WPF.Interfaces;
 using NeUrokAdmin.WPF.Services;
-using NeUrokAdmin.WPF.Views.Elements.ViewModels;
 using NeUrokAdmin.WPF.Views.ModalWindows;
 using NeUrokAdmin.WPF.Views.ModalWindows.ViewModels;
 using NeUrokAdmin.WPF.Views.UserControls;
@@ -65,7 +64,6 @@ namespace NeUrokAdmin.WPF
             services.AddTransient<RegistrationViewModel>();
             services.AddTransient<RegistrationWindow>();
 
-            services.AddTransient<BaseDataViewModel>();
             services.AddTransient<ClientViewViewModel>();
             services.AddTransient<ClientsView>();
 
