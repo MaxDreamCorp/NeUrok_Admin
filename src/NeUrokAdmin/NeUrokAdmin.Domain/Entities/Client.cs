@@ -25,9 +25,9 @@ public partial class Client
 
     public string? Notes { get; set; }
 
-    public virtual ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();
-
     public virtual ClientStatus Status { get; set; } = null!;
+
+    public virtual ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();
 
     public virtual ICollection<Student> Students { get; set; } = new List<Student>();
 

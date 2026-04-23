@@ -4,42 +4,33 @@ using CommunityToolkit.Mvvm.Input;
 using MediatR;
 using NeUrokAdmin.Application.Features.Authorization.Commands;
 using NeUrokAdmin.WPF.Interfaces;
+using NeUrokAdmin.WPF.Services;
 
-namespace NeUrokAdmin.WPF.Views.ModalWindows.ViewModals
+namespace NeUrokAdmin.WPF.Views.ModalWindows.ViewModels
 {
-    public partial class RegistrationViewModel : ObservableObject
+    public partial class LoginViewModel : ObservableObject
     {
         [ObservableProperty]
         private string? _login;
-
-        [ObservableProperty]
-        private string? _password;
-
-        [ObservableProperty]
-        private string? _confirmPassword;
 
         [ObservableProperty]
         private string? _statusMessage;
 
         public event Action? Closing;
 
+        private readonly NavigationService _navigationService;
         private readonly IDialogService _dialogService;
         private readonly IMediator _mediator;
 
-        public RegistrationViewModel(IDialogService dialogService, IMediator mediator)
+        public LoginViewModel(NavigationService navigationService, IDialogService dialogService, IMediator mediator)
         {
+            _navigationService = navigationService;
             _dialogService = dialogService;
             _mediator = mediator;
         }
 
         [RelayCommand]
-        private void LogIn()
-        {
-            Closing?.Invoke();
-        }
-
-        [RelayCommand]
-        private async Task Registration(object parameter)
+        private async Task LogIn(object parameter)
         {
             if (parameter is PasswordBox passwordBox)
             {
@@ -51,21 +42,26 @@ namespace NeUrokAdmin.WPF.Views.ModalWindows.ViewModals
                     return;
                 }
 
-                if (!_dialogService.AskQuetion($"Вы уверены, что хотите зарегистрировать пользователя системы \"{Login}\"?"))
-                    return;
-
                 try
                 {
-                    var cmd = new RegistrateCommand(Login, password);
+                    var cmd = new LoginCommand(Login, password);
                     await _mediator.Send(cmd);
-                    _dialogService.ShowMessage("Регистрация прошла успешно", "Успех");
+                    var mainWindow = _navigationService.GetWindow<MainWindow>();
+                    mainWindow.Show();
                     Closing?.Invoke();
                 }
                 catch (Exception ex)
                 {
-                    _dialogService.ShowError(ex.Message, "Ошибка регистрации");
+                    _dialogService.ShowError(ex.Message, "Ошибка входа");
                 }
             }
+        }
+
+        [RelayCommand]
+        private void Registration()
+        {
+            var window = _navigationService.GetWindow<RegistrationWindow>();
+            window.ShowDialog();
         }
     }
 }

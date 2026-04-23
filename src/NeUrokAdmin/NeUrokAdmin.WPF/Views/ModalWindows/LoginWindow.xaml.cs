@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using NeUrokAdmin.WPF.Services;
-using NeUrokAdmin.WPF.Views.ModalWindows.ViewModals;
+using NeUrokAdmin.WPF.Views.ModalWindows.ViewModels;
 
 namespace NeUrokAdmin.WPF.Views.ModalWindows
 {
@@ -20,6 +20,11 @@ namespace NeUrokAdmin.WPF.Views.ModalWindows
             var vm = _navigationService.GetViewModel<LoginViewModel>();
             vm.Closing += Close;
             DataContext = vm;
+
+#if DEBUG
+            vm.Login = "admin";
+            PassInp.Password = "123";
+#endif
         }
 
         private void PassInp_PasswordChanged(object sender, RoutedEventArgs e)

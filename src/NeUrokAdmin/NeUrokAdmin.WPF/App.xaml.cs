@@ -12,8 +12,12 @@ using NeUrokAdmin.Infrastructure.Persistance.Repositories;
 using NeUrokAdmin.Infrastructure.Services.Security;
 using NeUrokAdmin.WPF.Interfaces;
 using NeUrokAdmin.WPF.Services;
+using NeUrokAdmin.WPF.Views.Elements.ViewModels;
 using NeUrokAdmin.WPF.Views.ModalWindows;
-using NeUrokAdmin.WPF.Views.ModalWindows.ViewModals;
+using NeUrokAdmin.WPF.Views.ModalWindows.ViewModels;
+using NeUrokAdmin.WPF.Views.UserControls;
+using NeUrokAdmin.WPF.Views.UserControls.ViewModels;
+using NeUrokAdmin.WPF.Views.Windows.ViewModels;
 
 namespace NeUrokAdmin.WPF
 {
@@ -53,12 +57,17 @@ namespace NeUrokAdmin.WPF
             services.AddSingleton(provider => new NavigationService(provider));
             services.AddSingleton<IDialogService, WindowsDialogService>();
 
+            services.AddTransient<MainWindowViewModel>();
             services.AddTransient<MainWindow>();
 
             services.AddTransient<LoginViewModel>();
             services.AddTransient<LoginWindow>();
             services.AddTransient<RegistrationViewModel>();
             services.AddTransient<RegistrationWindow>();
+
+            services.AddTransient<BaseDataViewModel>();
+            services.AddTransient<ClientViewViewModel>();
+            services.AddTransient<ClientsView>();
 
             services.AddTransient<IUserRepository, UserRepository>();
 
