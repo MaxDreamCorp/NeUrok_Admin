@@ -1,15 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NeUrokAdmin.Domain.Entities;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
-namespace NeUrokAdmin.Infrastructure.Persistance;
+namespace NeUrokAdmin.Infrastructure.Models;
 
-public partial class ApplicationDbContext : DbContext
+public partial class NeUrokAdminDbContext : DbContext
 {
-    public ApplicationDbContext()
+    public NeUrokAdminDbContext()
     {
     }
 
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+    public NeUrokAdminDbContext(DbContextOptions<NeUrokAdminDbContext> options)
         : base(options)
     {
     }
@@ -45,6 +47,10 @@ public partial class ApplicationDbContext : DbContext
     public virtual DbSet<Teacher> Teachers { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseMySql("server=localhost;user=root;password=0122;database=ne_urok_admin_db", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.36-mysql"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -471,7 +477,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(100)
                 .HasColumnName("login");
             entity.Property(e => e.PasswordHash)
-                .HasMaxLength(255)
+                .HasMaxLength(256)
                 .HasColumnName("password_hash");
             entity.Property(e => e.PasswordSalt)
                 .HasMaxLength(32)

@@ -1,4 +1,7 @@
-﻿namespace NeUrokAdmin.Domain.Entities;
+﻿using System;
+using System.Collections.Generic;
+
+namespace NeUrokAdmin.Infrastructure.Models;
 
 public partial class Group
 {
