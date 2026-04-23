@@ -1,6 +1,9 @@
 ﻿using System.Windows.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MediatR;
+using NeUrokAdmin.Application.Features.Authorization.Commands;
+using NeUrokAdmin.WPF.Interfaces;
 using NeUrokAdmin.WPF.Services;
 
 namespace NeUrokAdmin.WPF.Views.ModalWindows.ViewModals
@@ -11,25 +14,46 @@ namespace NeUrokAdmin.WPF.Views.ModalWindows.ViewModals
         private string? _login;
 
         [ObservableProperty]
-        private string? _password;
-
-        [ObservableProperty]
         private string? _statusMessage;
 
-        private readonly NavigationService _navigationService;
+        public event Action? Closing;
 
-        public LoginViewModel(NavigationService navigationService)
+        private readonly NavigationService _navigationService;
+        private readonly IDialogService _dialogService;
+        private readonly IMediator _mediator;
+
+        public LoginViewModel(NavigationService navigationService, IDialogService dialogService, IMediator mediator)
         {
             _navigationService = navigationService;
+            _dialogService = dialogService;
+            _mediator = mediator;
         }
 
         [RelayCommand]
-        private void LogIn(object parameter)
+        private async Task LogIn(object parameter)
         {
             if (parameter is PasswordBox passwordBox)
             {
                 string password = passwordBox.Password;
-                StatusMessage = $"{Login}: {password}";
+
+                if (string.IsNullOrEmpty(Login) || string.IsNullOrEmpty(password))
+                {
+                    _dialogService.ShowWarning("Не все поля заполнены");
+                    return;
+                }
+
+                try
+                {
+                    var cmd = new LoginCommand(Login, password);
+                    await _mediator.Send(cmd);
+                    var mainWindow = _navigationService.GetWindow<MainWindow>();
+                    mainWindow.Show();
+                    Closing?.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    _dialogService.ShowError(ex.Message, "Ошибка входа");
+                }
             }
         }
 

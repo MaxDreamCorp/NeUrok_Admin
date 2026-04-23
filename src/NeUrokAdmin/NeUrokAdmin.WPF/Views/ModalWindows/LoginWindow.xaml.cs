@@ -18,6 +18,7 @@ namespace NeUrokAdmin.WPF.Views.ModalWindows
             _navigationService = navigationService;
 
             var vm = _navigationService.GetViewModel<LoginViewModel>();
+            vm.Closing += Close;
             DataContext = vm;
         }
 
