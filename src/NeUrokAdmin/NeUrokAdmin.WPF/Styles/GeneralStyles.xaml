@@ -74,7 +74,7 @@
         <Setter Property="BorderBrush" Value="{StaticResource DarkPinkBg}"/>
         <Setter Property="BorderThickness" Value="1.5"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Margin" Value="0,15"/>
+        <Setter Property="Margin" Value="0,7"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
@@ -122,7 +122,6 @@
         <Setter Property="BorderThickness" Value="1.5"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Padding" Value="3"/>
-        <Setter Property="Margin" Value="0,15"/>
     </Style>
 
     <!-- Шаблон для Grid с PasswordBox и плейсхолдером (если нужно как повторяющийся элемент) -->

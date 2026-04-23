@@ -4,7 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NeUrokAdmin.Application.Features.Authorization.Commands;
+using NeUrokAdmin.Domain.Interfaces;
+using NeUrokAdmin.Domain.Interfaces.Repositories;
 using NeUrokAdmin.Infrastructure.Persistance;
+using NeUrokAdmin.Infrastructure.Persistance.Repositories;
+using NeUrokAdmin.Infrastructure.Services.Security;
+using NeUrokAdmin.WPF.Interfaces;
+using NeUrokAdmin.WPF.Services;
 using NeUrokAdmin.WPF.Views.ModalWindows;
 using NeUrokAdmin.WPF.Views.ModalWindows.ViewModals;
 
@@ -13,7 +20,7 @@ namespace NeUrokAdmin.WPF
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App : System.Windows.Application
     {
         private readonly IHost _host;
         private readonly IConfiguration _configuration;
@@ -40,10 +47,21 @@ namespace NeUrokAdmin.WPF
                 options.UseMySql(_configuration.GetConnectionString("Main"),
                 ServerVersion.Parse("8.0.36-mysql")));
 
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(RegistrateCommand).Assembly));
+
+            services.AddSingleton<IHasher, SHA512Hasher>();
+            services.AddSingleton(provider => new NavigationService(provider));
+            services.AddSingleton<IDialogService, WindowsDialogService>();
+
             services.AddTransient<MainWindow>();
 
-            services.AddTransient<LoginViewModal>();
+            services.AddTransient<LoginViewModel>();
             services.AddTransient<LoginWindow>();
+            services.AddTransient<RegistrationViewModel>();
+            services.AddTransient<RegistrationWindow>();
+
+            services.AddTransient<IUserRepository, UserRepository>();
+
         }
 
         protected override async void OnStartup(StartupEventArgs e)
@@ -51,9 +69,6 @@ namespace NeUrokAdmin.WPF
             await _host.StartAsync();
 
             var loginWindow = _host.Services.GetRequiredService<LoginWindow>();
-            var viewModel = _host.Services.GetRequiredService<LoginViewModal>();
-
-            loginWindow.DataContext = viewModel;
             loginWindow.Show();
 
 

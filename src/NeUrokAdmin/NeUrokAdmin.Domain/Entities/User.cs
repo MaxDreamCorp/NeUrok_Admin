@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace NeUrokAdmin.Domain.Entities;
+﻿namespace NeUrokAdmin.Domain.Entities;
 
 public partial class User
 {
@@ -12,4 +9,18 @@ public partial class User
     public byte[] PasswordHash { get; set; } = null!;
 
     public byte[] PasswordSalt { get; set; } = null!;
+
+    private User() { }
+
+    public static User Create(int id,
+                              string login,
+                              byte[] passwordHash,
+                              byte[] passwordSalt) =>
+        new User()
+        {
+            Id = id,
+            Login = login,
+            PasswordHash = passwordHash,
+            PasswordSalt = passwordSalt
+        };
 }

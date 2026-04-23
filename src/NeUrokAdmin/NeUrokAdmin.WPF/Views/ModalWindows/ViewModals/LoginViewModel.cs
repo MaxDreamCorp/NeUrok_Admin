@@ -1,10 +1,11 @@
 ﻿using System.Windows.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using NeUrokAdmin.WPF.Services;
 
 namespace NeUrokAdmin.WPF.Views.ModalWindows.ViewModals
 {
-    public partial class LoginViewModal : ObservableObject
+    public partial class LoginViewModel : ObservableObject
     {
         [ObservableProperty]
         private string? _login;
@@ -14,6 +15,13 @@ namespace NeUrokAdmin.WPF.Views.ModalWindows.ViewModals
 
         [ObservableProperty]
         private string? _statusMessage;
+
+        private readonly NavigationService _navigationService;
+
+        public LoginViewModel(NavigationService navigationService)
+        {
+            _navigationService = navigationService;
+        }
 
         [RelayCommand]
         private void LogIn(object parameter)
@@ -28,7 +36,8 @@ namespace NeUrokAdmin.WPF.Views.ModalWindows.ViewModals
         [RelayCommand]
         private void Registration()
         {
-
+            var window = _navigationService.GetWindow<RegistrationWindow>();
+            window.ShowDialog();
         }
     }
 }

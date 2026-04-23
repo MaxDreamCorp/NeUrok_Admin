@@ -19,30 +19,30 @@
                 FontSize="26"
                 HorizontalAlignment="Center"
                 Margin="0,20,0,10"/>
-            <StackPanel>
+            <StackPanel Margin="0,0,0,20">
                 <TextBox Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}" 
                          Style="{StaticResource PlaceholderTextBoxStyle}"/>
 
-                <Grid Style="{StaticResource PasswordWithPlaceholderStyle}">
-                    <PasswordBox x:Name="PassInp" 
-                     Style="{StaticResource PlaceholderPasswordBoxStyle}"/>
+                <Grid Style="{StaticResource PasswordWithPlaceholderStyle}" Margin="0 15">
+                    <PasswordBox x:Name="PassInp" PasswordChanged="PassInp_PasswordChanged"
+                     Style="{StaticResource PlaceholderPasswordBoxStyle}" Height="30"/>
                     <TextBlock x:Name="placeholderText" 
                        Text="Пароль"
                        FontSize="14"
                        Foreground="Gray"
-                       Margin="7 15"
+                       Margin="7 0"
                        FontStyle="Italic"       
                        IsHitTestVisible="False" 
                        VerticalAlignment="Center"/>
                 </Grid>
                 <Grid Style="{StaticResource PasswordWithPlaceholderStyle}">
-                    <PasswordBox x:Name="ConfirmPassInp" 
-                     Style="{StaticResource PlaceholderPasswordBoxStyle}"/>
+                    <PasswordBox x:Name="ConfirmPassInp" PasswordChanged="ConfirmPassInp_PasswordChanged"
+                     Style="{StaticResource PlaceholderPasswordBoxStyle}" Height="30"/>
                     <TextBlock x:Name="cplaceholderText" 
                        Text="Подтвердите пароль"
                        FontSize="14"
                        Foreground="Gray"
-                       Margin="7 15"
+                       Margin="7 0"
                        FontStyle="Italic"       
                        IsHitTestVisible="False" 
                        VerticalAlignment="Center"/>
@@ -51,6 +51,7 @@
 
             <StackPanel>
                 <Button Style="{StaticResource PrimaryBtn}" 
+                        x:Name="RegistrateBtn"
                         Content="Зарегистрироваться"
                         Command="{Binding RegistrationCommand}"
                         CommandParameter="{Binding ElementName=PassInp}"/>

@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using NeUrokAdmin.WPF.Services;
+using NeUrokAdmin.WPF.Views.ModalWindows.ViewModals;
 
 namespace NeUrokAdmin.WPF.Views.ModalWindows
 {
@@ -19,9 +10,54 @@ namespace NeUrokAdmin.WPF.Views.ModalWindows
     /// </summary>
     public partial class RegistrationWindow : Window
     {
-        public RegistrationWindow()
+        private readonly NavigationService _navigationService;
+
+        public RegistrationWindow(NavigationService navigationService)
         {
             InitializeComponent();
+            _navigationService = navigationService;
+
+            var vm = _navigationService.GetViewModel<RegistrationViewModel>();
+            vm.Closing += Close;
+            DataContext = vm;
+        }
+
+        private void PassInp_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (sender is PasswordBox pb)
+            {
+                placeholderText.Visibility = string.IsNullOrEmpty(pb.Password) ? Visibility.Visible : Visibility.Collapsed;
+
+                if (pb.Password != ConfirmPassInp.Password)
+                {
+                    RegistrateBtn.Opacity = 0.5;
+                    RegistrateBtn.IsEnabled = false;
+                }
+                else
+                {
+                    RegistrateBtn.Opacity = 1;
+                    RegistrateBtn.IsEnabled = true;
+                }
+            }
+        }
+
+        private void ConfirmPassInp_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (sender is PasswordBox pb)
+            {
+                cplaceholderText.Visibility = string.IsNullOrEmpty(pb.Password) ? Visibility.Visible : Visibility.Collapsed;
+
+                if (pb.Password != PassInp.Password)
+                {
+                    RegistrateBtn.Opacity = 0.5;
+                    RegistrateBtn.IsEnabled = false;
+                }
+                else
+                {
+                    RegistrateBtn.Opacity = 1;
+                    RegistrateBtn.IsEnabled = true;
+                }
+            }
         }
     }
 }
