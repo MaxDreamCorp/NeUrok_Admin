@@ -6,17 +6,52 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\Icons\LogoIco.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Icons\ClientIcon.png" />
+    <None Remove="Resources\Icons\CrossIcon.png" />
+    <None Remove="Resources\Icons\FilterIcon.png" />
+    <None Remove="Resources\Icons\GroupIcon.png" />
+    <None Remove="Resources\Icons\LogoIco.ico" />
+    <None Remove="Resources\Icons\LogoIcon.png" />
+    <None Remove="Resources\Icons\StudyIcon.png" />
+    <None Remove="Resources\Icons\TicketIcon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\Icons\LogoIco.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.7" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.7" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.142" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\NeUrokAdmin.Application\NeUrokAdmin.Application.csproj" />
     <ProjectReference Include="..\NeUrokAdmin.Domain\NeUrokAdmin.Domain.csproj" />
     <ProjectReference Include="..\NeUrokAdmin.Infrastructure\NeUrokAdmin.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Icons\ClientIcon.png" />
+    <Resource Include="Resources\Icons\CrossIcon.png" />
+    <Resource Include="Resources\Icons\FilterIcon.png" />
+    <Resource Include="Resources\Icons\GroupIcon.png" />
+    <Resource Include="Resources\Icons\LogoIco.ico" />
+    <Resource Include="Resources\Icons\LogoIcon.png" />
+    <Resource Include="Resources\Icons\StudyIcon.png" />
+    <Resource Include="Resources\Icons\TicketIcon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

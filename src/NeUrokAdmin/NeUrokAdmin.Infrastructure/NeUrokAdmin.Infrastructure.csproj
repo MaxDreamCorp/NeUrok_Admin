@@ -25,8 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Persistance\Repositories\" />
-    <Folder Include="Services\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

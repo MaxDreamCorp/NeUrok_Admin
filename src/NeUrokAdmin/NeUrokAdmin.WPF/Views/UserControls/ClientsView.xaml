@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="NeUrokAdmin.WPF.Views.UserControls.ClientsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NeUrokAdmin.WPF.Views.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Clients}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True">
+            <DataGrid.Resources>
+                <Style TargetType="TextBlock" x:Key="WrapStyle">
+                    <Setter Property="TextWrapping" Value="Wrap"/>
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="Auto"/>
+                <DataGridTextColumn Header="ФИО Ребенка" Binding="{Binding ChildFullname}" ElementStyle="{StaticResource WrapStyle}" Width="2*"/>
+                <DataGridTextColumn Header="Дата рождения" Binding="{Binding BirthDate, StringFormat=\{0:dd.MM.yyyy\}}" Width="*"/>
+                <DataGridTextColumn Header="Класс" Binding="{Binding Grade}" Width="60"/>
+
+                <DataGridTextColumn Header="Статус" Binding="{Binding Status.Status}" Width="*"/>
+
+                <DataGridTextColumn Header="Родитель" Binding="{Binding ParentName}" ElementStyle="{StaticResource WrapStyle}" Width="1.5*"/>
+                <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}" ElementStyle="{StaticResource WrapStyle}" Width="*"/>
+                <DataGridTextColumn Header="Желаемые курсы" Binding="{Binding WishedCourses}" ElementStyle="{StaticResource WrapStyle}" Width="*"/>
+
+                <DataGridTextColumn Header="Дата регистрации" Binding="{Binding RegistrationDate, StringFormat=\{0:dd.MM.yyyy\}}" Width="*"/>
+                <DataGridTextColumn Header="Заметки" Binding="{Binding Notes}" ElementStyle="{StaticResource WrapStyle}" Width="2*"/>
+                <DataGridTextColumn Header="Доп. телефоны" Binding="{Binding AdditionalPhones}" ElementStyle="{StaticResource WrapStyle}" Width="2*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,74 @@
+﻿<Window x:Class="NeUrokAdmin.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NeUrokAdmin.WPF" xmlns:v="clr-namespace:NeUrokAdmin.WPF.Views.UserControls" xmlns:vm="clr-namespace:NeUrokAdmin.WPF.Views.UserControls.ViewModels"
+        mc:Ignorable="d"
+        Title="Главная" MinHeight="450" MinWidth="1000">
+
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:ClientViewViewModel}">
+            <v:ClientsView />
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Background="{StaticResource DarkPinkBg}">
+            <TextBlock Text="НЕурОК: Админ панель" FontSize="20" Foreground="White" FontFamily="Calibri" Margin="30 20" FontWeight="Bold" />
+
+            <ItemsControl ItemsSource="{Binding SideMenuItems}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Height="42" Cursor="Hand" Background="{StaticResource DarkPinkBg}">
+                            <Border.InputBindings>
+                                <MouseBinding MouseAction="LeftClick" 
+                                      Command="{Binding DataContext.SelectTabCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
+                                      CommandParameter="{Binding}" />
+                            </Border.InputBindings>
+
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="BorderThickness" Value="8,0,0,0"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                            <Setter Property="BorderBrush" Value="{StaticResource LightYellow}"/>
+                                            <Setter Property="Background" Value="{StaticResource VeryDarkPinkBg}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+
+                            <StackPanel Orientation="Horizontal" Margin="20,10">
+                                <Image Source="{Binding IconPath}" Width="25"/>
+                                <TextBlock Text="{Binding Title}" Foreground="White" Margin="20,0,0,0"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <DockPanel Grid.Row="0" Margin="20">
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Добавить" Style="{StaticResource PrimaryBtn}" Command="{Binding GlobalAddCommand}" />
+                <TextBox Width="250" Text="{Binding GlobalSearchText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource Tbox}" VerticalAlignment="Center" Margin="10 0"/>
+                <Button Style="{StaticResource PrimaryBtn}" Content="Фильтр"/>
+                </StackPanel>
+                <Button Content="Очистить" Command="{Binding }" Style="{StaticResource SecondaryBtn}" HorizontalAlignment="Right"/>
+            </DockPanel>
+
+            <ContentControl Grid.Row="1" Content="{Binding CurrentPage}" />
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,65 @@
+﻿<Window x:Class="NeUrokAdmin.WPF.Views.ModalWindows.RegistrationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NeUrokAdmin.WPF.Views.ModalWindows"
+        mc:Ignorable="d"
+        Title="Регистрация"
+        MinWidth="350"
+        SizeToContent="WidthAndHeight">
+    <Grid Margin="10">
+        <StackPanel Margin="30 15">
+            <Image Source="/Resources/Icons/LogoIcon.png"
+            Width="87"
+            RenderOptions.BitmapScalingMode="HighQuality"/>
+            <TextBlock Text="Регистрация"
+                FontFamily="Calibri"
+                FontWeight="Bold"
+                FontSize="26"
+                HorizontalAlignment="Center"
+                Margin="0,20,0,10"/>
+            <StackPanel Margin="0,0,0,20">
+                <TextBox Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}" 
+                         Style="{StaticResource PlaceholderTextBoxStyle}"/>
+
+                <Grid Style="{StaticResource PasswordWithPlaceholderStyle}" Margin="0 15">
+                    <PasswordBox x:Name="PassInp" PasswordChanged="PassInp_PasswordChanged"
+                     Style="{StaticResource PlaceholderPasswordBoxStyle}" Height="30"/>
+                    <TextBlock x:Name="placeholderText" 
+                       Text="Пароль"
+                       FontSize="14"
+                       Foreground="Gray"
+                       Margin="7 0"
+                       FontStyle="Italic"       
+                       IsHitTestVisible="False" 
+                       VerticalAlignment="Center"/>
+                </Grid>
+                <Grid Style="{StaticResource PasswordWithPlaceholderStyle}">
+                    <PasswordBox x:Name="ConfirmPassInp" PasswordChanged="ConfirmPassInp_PasswordChanged"
+                     Style="{StaticResource PlaceholderPasswordBoxStyle}" Height="30"/>
+                    <TextBlock x:Name="cplaceholderText" 
+                       Text="Подтвердите пароль"
+                       FontSize="14"
+                       Foreground="Gray"
+                       Margin="7 0"
+                       FontStyle="Italic"       
+                       IsHitTestVisible="False" 
+                       VerticalAlignment="Center"/>
+                </Grid>
+            </StackPanel>
+
+            <StackPanel>
+                <Button Style="{StaticResource PrimaryBtn}" 
+                        x:Name="RegistrateBtn"
+                        Content="Зарегистрироваться"
+                        Command="{Binding RegistrationCommand}"
+                        CommandParameter="{Binding ElementName=PassInp}"/>
+                <Button Style="{StaticResource SecondaryBtn}" 
+                        Content="Войти" 
+                        Margin="0 10"
+                        Command="{Binding LogInCommand}"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
