@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <DataGrid Grid.Row="1" ItemsSource="{Binding Clients}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True">
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Clients}" Style="{StaticResource MainDataGridStyle}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True">
             <DataGrid.Resources>
                 <Style TargetType="TextBlock" x:Key="WrapStyle">
                     <Setter Property="TextWrapping" Value="Wrap"/>

@@ -16,7 +16,6 @@
     </Style>
 
     <Style x:Key="PrimaryBtn" TargetType="Button">
-        <Setter Property="Height" Value="32" />
         <Setter Property="Padding" Value="5,6" />
         <Setter Property="Height" Value="Auto" />
         <Setter Property="Background" Value="{StaticResource DarkPinkBg}" />
@@ -26,7 +25,7 @@
         <Setter Property="FontSize" Value="16" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#FF862C6C" />
+                <Setter Property="Background" Value="{StaticResource VeryDarkPinkBg}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -129,5 +128,55 @@
     <Style x:Key="PasswordWithPlaceholderStyle" TargetType="Grid">
         <Setter Property="Margin" Value="0"/>
         <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <Style x:Key="CustomColumnHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
+        <Setter Property="Background" Value="{StaticResource PalePink}"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="BorderBrush" Value="{StaticResource DarkPinkBg}"/>
+        <Setter Property="BorderThickness" Value="0,0,1,1"/>
+        <Setter Property="Padding" Value="6,2"/>
+    </Style>
+
+    <Style x:Key="CustomRowStyle" TargetType="{x:Type DataGridRow}">
+        <Setter Property="BorderBrush" Value="{StaticResource LightPinkBg}"/>
+        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="#FFC39AD0"/>
+                <Setter Property="Foreground" Value="Black"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="MainDataGridStyle" TargetType="DataGrid">
+        <Setter Property="MinRowHeight" Value="24"/>
+        <Setter Property="EnableRowVirtualization" Value="False"/>
+        <Setter Property="HeadersVisibility" Value="Column"/>
+        <Setter Property="CanUserAddRows" Value="False"/>
+        <Setter Property="CanUserDeleteRows" Value="False"/>
+        <Setter Property="CanUserReorderColumns" Value="False"/>
+        <Setter Property="SelectionMode" Value="Extended"/>
+        <Setter Property="SelectionUnit" Value="FullRow"/>
+        <Setter Property="GridLinesVisibility" Value="All"/>
+        <Setter Property="BorderBrush" Value="{StaticResource DarkPinkBg}"/>
+        <Setter Property="BorderThickness" Value="3"/>
+        <Setter Property="ColumnWidth" Value="Auto"/>
+        <Setter Property="MaxColumnWidth" Value="200"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontFamily" Value="Segoe UI"/>
+        <Setter Property="AlternatingRowBackground" Value="#FFF9F9F9"/>
+        <Setter Property="Background" Value="White"/>
+        
+        <Setter Property="ColumnHeaderStyle" Value="{StaticResource CustomColumnHeaderStyle}"/>
+        <Setter Property="RowStyle" Value="{StaticResource CustomRowStyle}"/>
     </Style>
 </ResourceDictionary>
