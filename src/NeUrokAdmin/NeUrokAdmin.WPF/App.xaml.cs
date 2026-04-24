@@ -68,6 +68,7 @@ namespace NeUrokAdmin.WPF
             services.AddTransient<ClientsView>();
 
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IClientRepository, ClientRepository>();
 
         }
 

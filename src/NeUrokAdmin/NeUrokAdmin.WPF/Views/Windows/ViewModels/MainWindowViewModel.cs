@@ -17,7 +17,7 @@ namespace NeUrokAdmin.WPF.Views.Windows.ViewModels
         private BaseDataViewModel _currentPage;
 
         [ObservableProperty]
-        private string _globalQuickSearchText;
+        private string _globalQuickSearchText = null!;
 
         public MainWindowViewModel(NavigationService navigationService)
         {
@@ -27,6 +27,8 @@ namespace NeUrokAdmin.WPF.Views.Windows.ViewModels
             SideMenuItems.Add(new SideMenuItemViewModel { Title = "Абонементы", Type = Enums.TabType.Subscriptions, IconPath = "/Resources/Icons/TicketIcon.png" });
             _navigationService = navigationService;
 
+            _currentPage = _navigationService.GetViewModel<ClientViewViewModel>();
+            _currentPage.PrintAll();
         }
 
         [RelayCommand]
@@ -40,6 +42,7 @@ namespace NeUrokAdmin.WPF.Views.Windows.ViewModels
             {
                 case Enums.TabType.Clients:
                     CurrentPage = _navigationService.GetViewModel<ClientViewViewModel>();
+                    CurrentPage.PrintAll();
                     break;
                 case Enums.TabType.Students:
                     break;

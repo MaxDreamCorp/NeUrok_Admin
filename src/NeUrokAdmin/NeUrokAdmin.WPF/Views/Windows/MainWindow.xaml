@@ -68,7 +68,7 @@
                 <Button Content="Очистить" Command="{Binding }" Style="{StaticResource SecondaryBtn}" HorizontalAlignment="Right"/>
             </DockPanel>
 
-            <ContentControl Grid.Row="1" Content="{Binding CurrentPage}" />
+            <ContentControl Grid.Row="1" Margin="20 0 20 20" Content="{Binding CurrentPage}" />
         </Grid>
     </Grid>
 </Window>
