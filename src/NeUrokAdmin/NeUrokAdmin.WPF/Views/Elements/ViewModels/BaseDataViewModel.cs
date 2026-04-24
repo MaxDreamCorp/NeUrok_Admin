@@ -22,5 +22,8 @@ namespace NeUrokAdmin.WPF.Views.Elements.ViewModels
 
         [RelayCommand]
         public abstract Task ClearSearchings();
+
+        [RelayCommand]
+        public abstract Task PrintAll();
     }
 }

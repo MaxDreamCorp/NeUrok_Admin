@@ -28,6 +28,7 @@ namespace NeUrokAdmin.WPF.Views.Windows.ViewModels
             _navigationService = navigationService;
 
             _currentPage = _navigationService.GetViewModel<ClientViewViewModel>();
+            _currentPage.PrintAll();
         }
 
         [RelayCommand]
@@ -41,6 +42,7 @@ namespace NeUrokAdmin.WPF.Views.Windows.ViewModels
             {
                 case Enums.TabType.Clients:
                     CurrentPage = _navigationService.GetViewModel<ClientViewViewModel>();
+                    CurrentPage.PrintAll();
                     break;
                 case Enums.TabType.Students:
                     break;
