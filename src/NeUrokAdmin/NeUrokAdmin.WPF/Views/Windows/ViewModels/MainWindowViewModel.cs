@@ -54,5 +54,11 @@ namespace NeUrokAdmin.WPF.Views.Windows.ViewModels
                     break;
             }
         }
+
+        [RelayCommand]
+        private async Task GlobalAdd()
+        {
+            await CurrentPage.Create();
+        }
     }
 }

@@ -15,13 +15,14 @@ namespace NeUrokAdmin.WPF.Views.CardWindows.ViewModels
             {
                 SetProperty(ref _operationType, value);
                 IsDeletable = value == OperationType.Edit;
+                IsEditable = value != OperationType.Read;
             }
         }
 
         private OperationType _operationType;
 
         [ObservableProperty]
-        private BaseCardViewModel? _currentCard;
+        private BaseCardViewModel _currentCard;
 
         [ObservableProperty]
         private bool _isDeletable;

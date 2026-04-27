@@ -3,6 +3,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using MediatR;
 using NeUrokAdmin.Application.Features.ClientOperations.Queries;
 using NeUrokAdmin.Domain.DTOs;
+using NeUrokAdmin.WPF.Services;
+using NeUrokAdmin.WPF.Views.CardWindows.ViewModels;
 using NeUrokAdmin.WPF.Views.Elements.ViewModels;
 
 namespace NeUrokAdmin.WPF.Views.UserControls.ViewModels
@@ -10,10 +12,12 @@ namespace NeUrokAdmin.WPF.Views.UserControls.ViewModels
     public partial class ClientViewViewModel : BaseDataViewModel
     {
         private readonly IMediator _mediator;
+        private readonly NavigationService _navigationService;
 
-        public ClientViewViewModel(IMediator mediator)
+        public ClientViewViewModel(IMediator mediator, NavigationService navigationService)
         {
             _mediator = mediator;
+            _navigationService = navigationService;
         }
 
         [ObservableProperty]
@@ -25,9 +29,12 @@ namespace NeUrokAdmin.WPF.Views.UserControls.ViewModels
             throw new NotImplementedException();
         }
 
-        public override Task Create()
+        public override async Task Create()
         {
-            throw new NotImplementedException();
+            var clientVM = _navigationService.GetViewModel<ClientCardViewModel>();
+            clientVM.IsEditable = true;
+
+            await _navigationService.ShowCard(clientVM, this, Enums.OperationType.Read, "Создать клиента");
         }
 
         public override Task Filter()

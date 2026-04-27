@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
+using NeUrokAdmin.Application.Interfaces;
 using NeUrokAdmin.WPF.Enums;
 using NeUrokAdmin.WPF.Views.CardWindows;
 using NeUrokAdmin.WPF.Views.CardWindows.ViewModels;
@@ -20,8 +21,11 @@ namespace NeUrokAdmin.WPF.Services
 
         public T GetViewModel<T>() where T : ObservableObject => _serviceProvider.GetRequiredService<T>();
 
-        public void ShowCard<TViewModel>(TViewModel contentViewModel, Window owner, OperationType operationType, string title) where TViewModel : BaseCardViewModel
+        public async Task ShowCard<TViewModel>(TViewModel contentViewModel, object owner, OperationType operationType, string title) where TViewModel : BaseCardViewModel
         {
+            if (contentViewModel is IAsyncInitializer initializer)
+                await initializer.InitializeAsync();
+
             var wrapper = GetViewModel<StandartCardViewModel>();
 
             wrapper.CurrentCard = contentViewModel;
@@ -31,8 +35,11 @@ namespace NeUrokAdmin.WPF.Services
 
             var window = new StandartCard
             {
-                DataContext = contentViewModel,
-                Owner = owner
+                DataContext = wrapper,
+                Owner = System.Windows.Application.Current.Windows
+                .OfType<Window>()
+                .FirstOrDefault(w => w.DataContext == owner)
+                ?? System.Windows.Application.Current.MainWindow
             };
 
             wrapper.Closed += window.Close;

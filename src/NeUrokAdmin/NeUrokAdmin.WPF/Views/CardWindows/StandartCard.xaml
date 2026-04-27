@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NeUrokAdmin.WPF.Views.CardWindows"
         mc:Ignorable="d"
-        Title="{Binding Title}" MinWidth="500">
+        Title="{Binding Title}" 
+        SizeToContent="WidthAndHeight"
+        MinWidth="500">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

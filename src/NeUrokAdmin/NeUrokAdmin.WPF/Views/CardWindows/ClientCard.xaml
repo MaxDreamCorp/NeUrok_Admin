@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="NeUrokAdmin.WPF.Views.CardWindows.ClientCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NeUrokAdmin.WPF.Views.CardWindows"
+             mc:Ignorable="d"  Background="White"
+             MinWidth="480">
+    <StackPanel>
+
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="ФИО:" Grid.Row="0" Margin="0,5,10,5" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                <TextBox Text="{Binding Client.ChildFullname, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
+                         Grid.Row="0" Grid.Column="1" Margin="0,5" Style="{StaticResource Tbox}"
+                         IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Text="Дата рожд.:" Grid.Row="1" Margin="0,5,10,5" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                <DatePicker SelectedDate="{Binding Client.BirthDate, TargetNullValue={x:Null}}" 
+                            Grid.Row="1" Grid.Column="1" Margin="0,5" Style="{StaticResource DatePicker}"
+                            IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Text="Класс:" Grid.Row="2" Margin="0,5,10,5" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                <TextBox Text="{Binding Client.Grade, TargetNullValue=''}" 
+                         Grid.Row="2" Grid.Column="1" Margin="0,5"  Style="{StaticResource Tbox}"
+                         IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Text="Статус:" Grid.Row="3" Margin="0,5,10,5" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                <ComboBox Text="{Binding Client.Status.Name, Mode=OneWay, TargetNullValue='Не указан'}"  Style="{StaticResource ModernComboBox}"
+                         Grid.Row="3" Grid.Column="1" Margin="0,5" IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Text="Родитель:" Grid.Row="4" Margin="0,5,10,5" FontWeight="SemiBold"/>
+                <TextBox Text="{Binding Client.ParentName, TargetNullValue=''}" 
+                         Grid.Row="4" Grid.Column="1" Margin="0,5" Style="{StaticResource Tbox}"
+                         IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Text="Телефон:" Grid.Row="5" Margin="0,5,10,5" FontWeight="SemiBold"/>
+                <TextBox Text="{Binding Client.Phone, TargetNullValue=''}" 
+                         Grid.Row="5" Grid.Column="1" Margin="0,5" Style="{StaticResource Tbox}"
+                         IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Text="Доп. связь:" Grid.Row="6" Margin="0,5,10,5" FontWeight="SemiBold"/>
+                <TextBox Text="{Binding Client.AdditionalPhones, TargetNullValue=''}" 
+                         Grid.Row="6" Grid.Column="1" Margin="0,5" TextWrapping="Wrap" AcceptsReturn="True"  Style="{StaticResource Tbox}"
+                         IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+
+        <StackPanel>
+            <TextBlock Text="Желаемые курсы:" FontWeight="Bold" Margin="0,5,0,2"/>
+            <TextBlock Text="{Binding Client.WishedCoursesDisplay}" TextWrapping="Wrap" Foreground="Gray" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Заметки:" FontWeight="Bold" Margin="0,5,0,2"/>
+            <TextBox Text="{Binding Client.Notes, TargetNullValue=''}" Style="{StaticResource Tbox}"
+                     MinHeight="60" TextWrapping="Wrap" AcceptsReturn="True"
+                     IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+    </StackPanel>
+</UserControl>
