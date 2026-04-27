@@ -65,7 +65,7 @@
                 <TextBox Width="250" Text="{Binding GlobalSearchText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource Tbox}" VerticalAlignment="Center" Margin="10 0"/>
                 <Button Style="{StaticResource PrimaryBtn}" Content="Фильтр"/>
                 </StackPanel>
-                <Button Content="Очистить" Command="{Binding }" Style="{StaticResource SecondaryBtn}" HorizontalAlignment="Right"/>
+                <Button Content="Очистить" Command="{Binding }" Style="{StaticResource SecondaryBtn}" ToolTip="Очистить параметры поиска и вывести весь список" HorizontalAlignment="Right"/>
             </DockPanel>
 
             <ContentControl Grid.Row="1" Margin="20 0 20 20" Content="{Binding CurrentPage}" />

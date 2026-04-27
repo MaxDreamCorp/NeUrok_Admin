@@ -39,7 +39,8 @@
                          IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <TextBlock Text="Статус:" Grid.Row="3" Margin="0,5,10,5" VerticalAlignment="Center" FontWeight="SemiBold"/>
-                <ComboBox Text="{Binding Client.Status.Name, Mode=OneWay, TargetNullValue='Не указан'}"  Style="{StaticResource ModernComboBox}"
+                <ComboBox Text="{Binding Client.Status.Name, Mode=OneWay, TargetNullValue='Не указан'}" 
+                          ItemsSource="{Binding ClientStatuses, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernComboBox}"
                          Grid.Row="3" Grid.Column="1" Margin="0,5" IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <TextBlock Text="Родитель:" Grid.Row="4" Margin="0,5,10,5" FontWeight="SemiBold"/>

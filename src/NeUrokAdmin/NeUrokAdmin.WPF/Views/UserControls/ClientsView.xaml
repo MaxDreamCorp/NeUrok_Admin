@@ -23,7 +23,7 @@
 
                 <DataGridTextColumn Header="Родитель" Binding="{Binding ParentName}" ElementStyle="{StaticResource WrapStyle}" Width="1.5*"/>
                 <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}" ElementStyle="{StaticResource WrapStyle}" Width="*"/>
-                <DataGridTextColumn Header="Желаемые курсы" Binding="{Binding WishedCoursesDisplay}" ElementStyle="{StaticResource WrapStyle}" Width="*"/>
+                <DataGridTextColumn Header="Желаемые курсы" Binding="{Binding WishedCoursesDisplay}" ElementStyle="{StaticResource WrapStyle}" Width="2*"/>
 
                 <DataGridTextColumn Header="Дата регистрации" Binding="{Binding RegistrationDate, StringFormat=\{0:dd.MM.yyyy\}}" Width="*"/>
                 <DataGridTextColumn Header="Заметки" Binding="{Binding Notes}" ElementStyle="{StaticResource WrapStyle}" Width="2*"/>
