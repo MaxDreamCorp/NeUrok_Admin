@@ -3,6 +3,7 @@
     <SolidColorBrush x:Key="MainBg" Color="#f2f2f2"/>
     <SolidColorBrush x:Key="DarkPinkBg" Color="#a83787"/>
     <SolidColorBrush x:Key="VeryDarkPinkBg" Color="#FF71225A"/>
+    <SolidColorBrush x:Key="DangerColor" Color="#FFB93434"/>
     <SolidColorBrush x:Key="LightPinkBg" Color="#ff65c3"/>
     <SolidColorBrush x:Key="PalePink" Color="#FFFFDDF2"/>
     <SolidColorBrush x:Key="LightYellow" Color="#ffff19"/>
@@ -13,6 +14,14 @@
         <Setter Property="Foreground" Value="White" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="FontSize" Value="16" />
+    </Style>
+
+    <Style x:Key="HeaderText" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Constantia" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="FontWeight" Value="Black" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="22" />
     </Style>
 
     <Style x:Key="PrimaryBtn" TargetType="Button">
@@ -28,6 +37,16 @@
                 <Setter Property="Background" Value="{StaticResource VeryDarkPinkBg}" />
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <Style x:Key="DangerBtn" TargetType="Button">
+        <Setter Property="Padding" Value="5,6" />
+        <Setter Property="Height" Value="Auto" />
+        <Setter Property="Background" Value="{StaticResource DangerColor}" />
+        <Setter Property="FontFamily" Value="Constantia" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="16" />
     </Style>
 
     <Style x:Key="SecondaryBtn" TargetType="Button">

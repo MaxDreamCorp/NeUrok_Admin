@@ -12,6 +12,7 @@ using NeUrokAdmin.Infrastructure.Persistance.Repositories;
 using NeUrokAdmin.Infrastructure.Services.Security;
 using NeUrokAdmin.WPF.Interfaces;
 using NeUrokAdmin.WPF.Services;
+using NeUrokAdmin.WPF.Views.CardWindows.ViewModels;
 using NeUrokAdmin.WPF.Views.ModalWindows;
 using NeUrokAdmin.WPF.Views.ModalWindows.ViewModels;
 using NeUrokAdmin.WPF.Views.UserControls;
@@ -66,6 +67,8 @@ namespace NeUrokAdmin.WPF
 
             services.AddTransient<ClientViewViewModel>();
             services.AddTransient<ClientsView>();
+
+            services.AddTransient<StandartCardViewModel>();
 
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IClientRepository, ClientRepository>();
