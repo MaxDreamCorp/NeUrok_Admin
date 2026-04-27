@@ -62,7 +62,7 @@
             <DockPanel Grid.Row="0" Margin="20">
                 <StackPanel Orientation="Horizontal">
                     <Button Content="Добавить" Style="{StaticResource PrimaryBtn}" Command="{Binding GlobalAddCommand}" />
-                <TextBox Width="250" Text="{Binding GlobalSearchText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource Tbox}" VerticalAlignment="Center" Margin="10 0"/>
+                <TextBox Width="250" Text="{Binding GlobalSearchText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlaceholderSearch}" VerticalAlignment="Center" Margin="10 0"/>
                 <Button Style="{StaticResource PrimaryBtn}" Content="Фильтр"/>
                 </StackPanel>
                 <Button Content="Очистить" Command="{Binding }" Style="{StaticResource SecondaryBtn}" ToolTip="Очистить параметры поиска и вывести весь список" HorizontalAlignment="Right"/>

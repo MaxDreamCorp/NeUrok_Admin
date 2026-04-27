@@ -216,6 +216,52 @@
         </Setter>
     </Style>
 
+    <Style x:Key="PlaceholderSearch" TargetType="TextBox">
+        <Setter Property="Background" Value="#d9d9d9"/>
+        <Setter Property="BorderBrush" Value="{StaticResource DarkPinkBg}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Margin" Value="0,7"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Grid>
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <Grid Margin="4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock x:Name="placeholder"
+                                           Margin="3 0"
+                                           Grid.Column="0"
+                                           Text="Поиск..."
+                                           Foreground="Gray"
+                                           FontStyle="Italic"
+                                           Visibility="Collapsed"
+                                           VerticalAlignment="Center"/>
+
+                                <ScrollViewer x:Name="PART_ContentHost"
+                                              Grid.Column="0"
+                                              VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Text" Value="">
+                            <Setter TargetName="placeholder" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- Стиль для PasswordBox с плейсхолдером -->
     <Style x:Key="PlaceholderPasswordBoxStyle" TargetType="PasswordBox">
         <Setter Property="Background" Value="#d9d9d9"/>

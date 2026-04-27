@@ -5,6 +5,8 @@ using NeUrokAdmin.Application.Interfaces;
 using NeUrokAdmin.WPF.Enums;
 using NeUrokAdmin.WPF.Views.CardWindows;
 using NeUrokAdmin.WPF.Views.CardWindows.ViewModels;
+using NeUrokAdmin.WPF.Views.ModalWindows;
+using NeUrokAdmin.WPF.Views.ModalWindows.ViewModels;
 
 namespace NeUrokAdmin.WPF.Services
 {
@@ -34,6 +36,30 @@ namespace NeUrokAdmin.WPF.Services
             wrapper.OperationType = operationType;
 
             var window = new StandartCard
+            {
+                DataContext = wrapper,
+                Owner = System.Windows.Application.Current.Windows
+                .OfType<Window>()
+                .FirstOrDefault(w => w.DataContext == owner)
+                ?? System.Windows.Application.Current.MainWindow
+            };
+
+            wrapper.Closed += window.Close;
+
+            window.ShowDialog();
+        }
+
+        public async Task ShowMultiplySelector<TViewModel>(TViewModel contentViewModel, object owner, string title) where TViewModel : BaseMultiplySelectorViewModel
+        {
+            if (contentViewModel is IAsyncInitializer initializer)
+                await initializer.InitializeAsync();
+
+            var wrapper = GetViewModel<MultiplySelectorViewModel>();
+
+            wrapper.CurrentSelector = contentViewModel;
+            wrapper.Title = title;
+
+            var window = new MultiplySelectorWindow
             {
                 DataContext = wrapper,
                 Owner = System.Windows.Application.Current.Windows

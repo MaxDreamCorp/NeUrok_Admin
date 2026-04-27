@@ -62,6 +62,7 @@
         <StackPanel>
             <TextBlock Text="Желаемые курсы:" FontWeight="Bold" Margin="0,5,0,2"/>
             <TextBlock Text="{Binding Client.WishedCoursesDisplay}" TextWrapping="Wrap" Foreground="Gray" Margin="0,0,0,10"/>
+            <Button x:Name="SelectCoursesBtn" Content="Выбрать курсы" Width="200" Command="{Binding TrCommand}"/>
 
             <TextBlock Text="Заметки:" FontWeight="Bold" Margin="0,5,0,2"/>
             <TextBox Text="{Binding Client.Notes, TargetNullValue=''}" Style="{StaticResource Tbox}"

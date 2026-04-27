@@ -70,6 +70,7 @@ namespace NeUrokAdmin.WPF
 
             services.AddTransient<StandartCardViewModel>();
             services.AddTransient<ClientCardViewModel>();
+            services.AddTransient<MultiplySelectorViewModel>();
 
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IClientRepository, ClientRepository>();
