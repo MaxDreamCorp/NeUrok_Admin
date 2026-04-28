@@ -23,9 +23,16 @@ namespace NeUrokAdmin.WPF
             _navigationService = navigationService;
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            var clientsView = _navigationService.GetUserControl<ClientsView>();
+            AddBtn.Click += async (s, e) => await clientsView.ViewModel.Create();
+            MainConteiner.Content = clientsView;
+        }
+
         private void _viewModel_SideMenuItemClicked(object? sender, SideMenuItemViewModel e)
         {
-            
+
             foreach (var item in _viewModel.SideMenuItems)
                 item.IsSelected = false;
             e.IsSelected = true;
@@ -34,7 +41,7 @@ namespace NeUrokAdmin.WPF
             {
                 case Enums.TabType.Clients:
                     var clientsView = _navigationService.GetUserControl<ClientsView>();
-                    AddBtn.Click += (s, e) => clientsView.ViewModel.Create();
+                    AddBtn.Click += async (s, e) => await clientsView.ViewModel.Create();
                     MainConteiner.Content = clientsView;
                     break;
                 case Enums.TabType.Students:
@@ -47,6 +54,7 @@ namespace NeUrokAdmin.WPF
                     break;
             }
         }
-        
+
+
     }
 }

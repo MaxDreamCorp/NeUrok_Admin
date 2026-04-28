@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MediatR;
 using NeUrokAdmin.Application.Features.ClientOperations.Queries;
 using NeUrokAdmin.Domain.DTOs;
 using NeUrokAdmin.WPF.Services;
+using NeUrokAdmin.WPF.Views.CardWindows;
 
 namespace NeUrokAdmin.WPF.Views.ViewModels
 {
@@ -34,9 +30,13 @@ namespace NeUrokAdmin.WPF.Views.ViewModels
         }
 
         [RelayCommand]
-        public Task Create()
+        public async Task Create()
         {
-            throw new NotImplementedException();
+            var cardVM = new ClientCardViewModel(Enums.OperationType.Create, "Создать клиента");
+            var card = _navigationService.GetWindow<ClientCard>();
+            card.ViewModel = cardVM;
+            card.ShowDialog();
+            await PrintAll();
         }
 
         [RelayCommand]
