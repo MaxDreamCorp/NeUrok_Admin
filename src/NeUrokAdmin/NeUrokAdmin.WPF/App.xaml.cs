@@ -14,6 +14,7 @@ using NeUrokAdmin.WPF.Interfaces;
 using NeUrokAdmin.WPF.Services;
 using NeUrokAdmin.WPF.Views.ModalWindows;
 using NeUrokAdmin.WPF.Views.UserControls;
+using NeUrokAdmin.WPF.Views.ViewModels;
 
 namespace NeUrokAdmin.WPF
 {
@@ -54,12 +55,11 @@ namespace NeUrokAdmin.WPF
             services.AddSingleton<IDialogService, WindowsDialogService>();
 
             services.AddTransient<MainWindow>();
-
             services.AddTransient<LoginWindow>();
             services.AddTransient<RegistrationWindow>();
-
             services.AddTransient<ClientsView>();
 
+            services.AddTransient<ClientViewViewModel>();
 
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IClientRepository, ClientRepository>();

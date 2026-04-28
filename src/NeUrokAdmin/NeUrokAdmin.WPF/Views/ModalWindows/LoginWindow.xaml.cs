@@ -50,6 +50,7 @@ namespace NeUrokAdmin.WPF.Views.ModalWindows
                 await _mediator.Send(cmd);
                 var mainWindow = _navigationService.GetWindow<MainWindow>();
                 mainWindow.Show();
+                Close();
             }
             catch (Exception ex)
             {
