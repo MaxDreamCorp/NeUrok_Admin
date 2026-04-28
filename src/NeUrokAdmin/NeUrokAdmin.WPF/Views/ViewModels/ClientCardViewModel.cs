@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using NeUrokAdmin.Domain.DTOs;
 using NeUrokAdmin.WPF.Enums;
 
@@ -23,6 +24,36 @@ namespace NeUrokAdmin.WPF.Views.ViewModels
         private ClientDTO? _client;
 
         [ObservableProperty]
+        private string _childFullname = null!;
+
+        [ObservableProperty]
+        private DateOnly? _birthDate;
+
+        [ObservableProperty]
+        private int _grade;
+
+        [ObservableProperty]
+        private ClientStatusDTO? _status;
+
+        [ObservableProperty]
+        private string _parentName = null!;
+
+        [ObservableProperty]
+        private string _phone = null!;
+
+        [ObservableProperty]
+        private string _additionalPhone = null!;
+
+        [ObservableProperty]
+        private string? _notes;
+
+        [ObservableProperty]
+        private ObservableCollection<CourseDTO> _wishedCourses = new();
+
+        [ObservableProperty]
+        private string _wishedCoursesDisplay;
+
+        [ObservableProperty]
         private List<string> _clientStatuses = new();
 
         [ObservableProperty]
@@ -39,6 +70,11 @@ namespace NeUrokAdmin.WPF.Views.ViewModels
             OperationType = operationType;
             _headerText = headerText;
             _client = clientDTO;
+
+
+            _wishedCoursesDisplay = _wishedCourses != null ?
+                string.Join(", ", _wishedCourses.Select(c => c.Name))
+                : "";
         }
 
     }

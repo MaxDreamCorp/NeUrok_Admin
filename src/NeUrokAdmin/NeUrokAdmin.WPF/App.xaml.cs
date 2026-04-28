@@ -14,6 +14,7 @@ using NeUrokAdmin.WPF.Interfaces;
 using NeUrokAdmin.WPF.Services;
 using NeUrokAdmin.WPF.Views.CardWindows;
 using NeUrokAdmin.WPF.Views.ModalWindows;
+using NeUrokAdmin.WPF.Views.Selectors;
 using NeUrokAdmin.WPF.Views.UserControls;
 using NeUrokAdmin.WPF.Views.ViewModels;
 
@@ -61,6 +62,8 @@ namespace NeUrokAdmin.WPF
             services.AddTransient<ClientsView>();
 
             services.AddTransient<ClientCard>();
+
+            services.AddTransient<CoursesSelectorWindow>();
 
             services.AddTransient<ClientViewViewModel>();
 
