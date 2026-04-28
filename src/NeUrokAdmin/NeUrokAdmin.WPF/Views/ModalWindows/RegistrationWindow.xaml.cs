@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using NeUrokAdmin.WPF.Services;
-using NeUrokAdmin.WPF.Views.ModalWindows.ViewModels;
 
 namespace NeUrokAdmin.WPF.Views.ModalWindows
 {
@@ -17,9 +16,6 @@ namespace NeUrokAdmin.WPF.Views.ModalWindows
             InitializeComponent();
             _navigationService = navigationService;
 
-            var vm = _navigationService.GetViewModel<RegistrationViewModel>();
-            vm.Closing += Close;
-            DataContext = vm;
         }
 
         private void PassInp_PasswordChanged(object sender, RoutedEventArgs e)

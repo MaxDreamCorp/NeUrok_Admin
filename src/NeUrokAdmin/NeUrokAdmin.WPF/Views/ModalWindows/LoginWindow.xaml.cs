@@ -47,9 +47,11 @@ namespace NeUrokAdmin.WPF.Views.ModalWindows
 
             try
             {
-            await _mediator.Send(cmd);
-                var mainWindow
-            } catch (Exception ex)
+                await _mediator.Send(cmd);
+                var mainWindow = _navigationService.GetWindow<MainWindow>();
+                mainWindow.Show();
+            }
+            catch (Exception ex)
             {
                 _dialogService.ShowError(ex.Message, "Ошибка входа");
             }

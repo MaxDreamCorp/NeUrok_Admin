@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using NeUrokAdmin.WPF.Services;
-using NeUrokAdmin.WPF.Views.Windows.ViewModels;
 
 namespace NeUrokAdmin.WPF
 {
@@ -16,9 +15,6 @@ namespace NeUrokAdmin.WPF
         {
             InitializeComponent();
             _navigationService = navigationService;
-
-            var vm = _navigationService.GetViewModel<MainWindowViewModel>();
-            DataContext = vm;
         }
     }
 }
