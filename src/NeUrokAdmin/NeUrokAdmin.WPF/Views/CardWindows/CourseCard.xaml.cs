@@ -42,52 +42,59 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
 
         private async void AcceptBtn_Click(object sender, RoutedEventArgs e)
         {
+            bool result = false;
             switch (ViewModel.OperationType)
             {
                 case Enums.OperationType.Create:
-                    await CreateCourse();
+                    result = await CreateCourse();
                     break;
                 case Enums.OperationType.Read:
                     break;
                 case Enums.OperationType.Edit:
-                    await EditCourse();
+                    result = await EditCourse();
                     break;
                 case Enums.OperationType.Filter:
                     break;
                 default:
                     break;
             }
-            DialogResult = true;
-            Close();
+
+            if (result)
+            {
+                DialogResult = true;
+                Close();
+            }
         }
 
-        private async Task CreateCourse()
+        private async Task<bool> CreateCourse()
         {
             if (!_dialogService.AskQuetion("Вы уверены, что хотите создать новый курс?"))
-                return;
+                return false;
 
             if (!CheckFields())
-                return;
+                return false;
 
             var cmd = new CreateCourseCommand(ViewModel.Name);
 
             try
             {
                 await _mediator.Send(cmd);
+                return true;
             }
             catch (Exception ex)
             {
                 _dialogService.ShowError(ex.Message);
+                return false;
             }
         }
 
-        private async Task EditCourse()
+        private async Task<bool> EditCourse()
         {
             if (!_dialogService.AskQuetion("Вы уверены, что хотите изменить данные курса?"))
-                return;
+                return false;
 
             if (!CheckFields())
-                return;
+                return false;
 
             var cmd = new UpdateCourseCommand(
                 ViewModel.Id,
@@ -96,10 +103,12 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
             try
             {
                 await _mediator.Send(cmd);
+                return true;
             }
             catch (Exception ex)
             {
                 _dialogService.ShowError(ex.Message);
+                return false;
             }
         }
 

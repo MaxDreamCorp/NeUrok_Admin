@@ -32,11 +32,12 @@ namespace NeUrokAdmin.WPF.Views.ViewModels
         [RelayCommand]
         public async Task Create()
         {
-            var cardVM = new ClientCardViewModel(Enums.OperationType.Create, "Создать клиента");
+            var cardVM = new ClientCardViewModel(Enums.OperationType.Create);
             var card = _navigationService.GetWindow<ClientCard>();
             card.ViewModel = cardVM;
             card.ShowDialog();
-            await PrintAll();
+            if (card.DialogResult == true)
+                await PrintAll();
         }
 
         [RelayCommand]

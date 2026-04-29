@@ -45,9 +45,7 @@
 
                 <TextBlock Text="ID:" 
                            Grid.Row="0" 
-                           Margin="0,5,10,5" 
-                           VerticalAlignment="Center" 
-                           FontWeight="SemiBold"
+                           Style="{StaticResource CardTextBlock}"
                            Visibility="{Binding IsFilter, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVis}}" />
                 <TextBox Text="{Binding Id, UpdateSourceTrigger=PropertyChanged}" 
                          Grid.Row="0" 
@@ -58,9 +56,7 @@
 
                 <TextBlock Text="Название:" 
                            Grid.Row="1" 
-                           Margin="0,5,10,5" 
-                           VerticalAlignment="Center" 
-                           FontWeight="SemiBold"/>
+                           Style="{StaticResource CardTextBlock}"/>
                 <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" 
                          Grid.Row="1" 
                          Grid.Column="1" 

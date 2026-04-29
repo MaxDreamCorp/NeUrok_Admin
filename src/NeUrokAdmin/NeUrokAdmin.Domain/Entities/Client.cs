@@ -32,4 +32,34 @@ public partial class Client
     public virtual ICollection<Student> Students { get; set; } = new List<Student>();
 
     public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
+
+    private Client() { }
+
+    public static Client Create(int id,
+        string childFullname,
+        DateOnly? birthDate,
+        DateOnly registrationDate,
+        int grade,
+        int statusId,
+        string parentName,
+        string phone,
+        List<Course> wishedCourses,
+        string? additionalPhones,
+        string? notes)
+    {
+        return new Client
+        {
+            Id = id,
+            ChildFullname = childFullname,
+            BirthDate = birthDate,
+            RegistrationDate = registrationDate,
+            Grade = grade,
+            StatusId = statusId,
+            ParentName = parentName,
+            Phone = phone,
+            Courses = wishedCourses,
+            AdditionalPhones = additionalPhones,
+            Notes = notes
+        };
+    }
 }

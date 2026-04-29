@@ -11,5 +11,10 @@
         string Phone,
         List<CourseDTO>? WishedCourses,
         string? Notes,
-        string? AdditionalPhones);
+        string? AdditionalPhones)
+    {
+        public string WishedCoursesDisplay => WishedCourses != null && WishedCourses.Any()
+            ? string.Join(", ", WishedCourses.Select(c => c.Name))
+            : string.Empty;
+    }
 }
