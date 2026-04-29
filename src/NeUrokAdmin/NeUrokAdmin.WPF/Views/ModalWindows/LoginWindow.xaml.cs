@@ -1,7 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using MediatR;
+using NeUrokAdmin.Application.Features.Authorization.Commands;
+using NeUrokAdmin.WPF.Interfaces;
 using NeUrokAdmin.WPF.Services;
-using NeUrokAdmin.WPF.Views.ModalWindows.ViewModels;
 
 namespace NeUrokAdmin.WPF.Views.ModalWindows
 {
@@ -11,19 +13,20 @@ namespace NeUrokAdmin.WPF.Views.ModalWindows
     public partial class LoginWindow : Window
     {
         private readonly NavigationService _navigationService;
+        private readonly IMediator _mediator;
+        private readonly IDialogService _dialogService;
 
-        public LoginWindow(NavigationService navigationService)
+        public LoginWindow(NavigationService navigationService, IMediator mediator, IDialogService dialogService)
         {
             InitializeComponent();
             _navigationService = navigationService;
+            _mediator = mediator;
 
-            var vm = _navigationService.GetViewModel<LoginViewModel>();
-            vm.Closing += Close;
-            DataContext = vm;
 
 #if DEBUG
-            vm.Login = "admin";
+            LoginInp.Text = "admin";
             PassInp.Password = "123";
+            _dialogService = dialogService;
 #endif
         }
 
@@ -31,6 +34,34 @@ namespace NeUrokAdmin.WPF.Views.ModalWindows
         {
             if (sender is PasswordBox pb)
                 placeholderText.Visibility = string.IsNullOrEmpty(pb.Password) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private async void LoginBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(LoginInp.Text) || string.IsNullOrEmpty(PassInp.Password))
+            {
+                _dialogService.ShowWarning("Не все поля заполнены");
+                return;
+            }
+            var cmd = new LoginCommand(LoginInp.Text, PassInp.Password);
+
+            try
+            {
+                await _mediator.Send(cmd);
+                var mainWindow = _navigationService.GetWindow<MainWindow>();
+                mainWindow.Show();
+                Close();
+            }
+            catch (Exception ex)
+            {
+                _dialogService.ShowError(ex.Message, "Ошибка входа");
+            }
+        }
+
+        private void RegBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var regWindow = _navigationService.GetWindow<RegistrationWindow>();
+            regWindow.ShowDialog();
         }
     }
 }

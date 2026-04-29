@@ -1,7 +1,7 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
-
 namespace NeUrokAdmin.WPF.Services
 {
     public class NavigationService
@@ -14,7 +14,10 @@ namespace NeUrokAdmin.WPF.Services
         }
 
         public T GetWindow<T>() where T : Window => _serviceProvider.GetRequiredService<T>();
+        public T GetUserControl<T>() where T : UserControl => _serviceProvider.GetRequiredService<T>();
 
         public T GetViewModel<T>() where T : ObservableObject => _serviceProvider.GetRequiredService<T>();
+
+
     }
 }

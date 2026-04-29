@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using NeUrokAdmin.WPF.Services;
-using NeUrokAdmin.WPF.Views.Windows.ViewModels;
+using NeUrokAdmin.WPF.Views.UserControls;
+using NeUrokAdmin.WPF.Views.ViewModels;
 
 namespace NeUrokAdmin.WPF
 {
@@ -10,15 +11,50 @@ namespace NeUrokAdmin.WPF
     public partial class MainWindow : Window
     {
         private readonly NavigationService _navigationService;
-
+        private readonly MainWindowViewModel _viewModel;
 
         public MainWindow(NavigationService navigationService)
         {
             InitializeComponent();
-            _navigationService = navigationService;
+            _viewModel = new MainWindowViewModel();
+            _viewModel.SideMenuItemClicked += _viewModel_SideMenuItemClicked;
+            DataContext = _viewModel;
 
-            var vm = _navigationService.GetViewModel<MainWindowViewModel>();
-            DataContext = vm;
+            _navigationService = navigationService;
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            var clientsView = _navigationService.GetUserControl<ClientsView>();
+            AddBtn.Click += async (s, e) => await clientsView.ViewModel.Create();
+            MainConteiner.Content = clientsView;
+        }
+
+        private void _viewModel_SideMenuItemClicked(object? sender, SideMenuItemViewModel e)
+        {
+
+            foreach (var item in _viewModel.SideMenuItems)
+                item.IsSelected = false;
+            e.IsSelected = true;
+
+            switch (e.Type)
+            {
+                case Enums.TabType.Clients:
+                    var clientsView = _navigationService.GetUserControl<ClientsView>();
+                    AddBtn.Click += async (s, e) => await clientsView.ViewModel.Create();
+                    MainConteiner.Content = clientsView;
+                    break;
+                case Enums.TabType.Students:
+                    break;
+                case Enums.TabType.Groups:
+                    break;
+                case Enums.TabType.Subscriptions:
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
     }
 }

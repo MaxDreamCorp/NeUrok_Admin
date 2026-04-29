@@ -12,11 +12,11 @@ using NeUrokAdmin.Infrastructure.Persistance.Repositories;
 using NeUrokAdmin.Infrastructure.Services.Security;
 using NeUrokAdmin.WPF.Interfaces;
 using NeUrokAdmin.WPF.Services;
+using NeUrokAdmin.WPF.Views.CardWindows;
 using NeUrokAdmin.WPF.Views.ModalWindows;
-using NeUrokAdmin.WPF.Views.ModalWindows.ViewModels;
+using NeUrokAdmin.WPF.Views.Selectors;
 using NeUrokAdmin.WPF.Views.UserControls;
-using NeUrokAdmin.WPF.Views.UserControls.ViewModels;
-using NeUrokAdmin.WPF.Views.Windows.ViewModels;
+using NeUrokAdmin.WPF.Views.ViewModels;
 
 namespace NeUrokAdmin.WPF
 {
@@ -56,19 +56,22 @@ namespace NeUrokAdmin.WPF
             services.AddSingleton(provider => new NavigationService(provider));
             services.AddSingleton<IDialogService, WindowsDialogService>();
 
-            services.AddTransient<MainWindowViewModel>();
             services.AddTransient<MainWindow>();
-
-            services.AddTransient<LoginViewModel>();
             services.AddTransient<LoginWindow>();
-            services.AddTransient<RegistrationViewModel>();
             services.AddTransient<RegistrationWindow>();
+            services.AddTransient<ClientsView>();
+
+            services.AddTransient<ClientCard>();
+            services.AddTransient<CourseCard>();
+
+            services.AddTransient<CoursesSelectorWindow>();
 
             services.AddTransient<ClientViewViewModel>();
-            services.AddTransient<ClientsView>();
 
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IClientRepository, ClientRepository>();
+            services.AddTransient<IClientStatusRepository, ClientStatusRepository>();
+            services.AddTransient<ICourseRepository, CourseRepository>();
 
         }
 

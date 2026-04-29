@@ -13,9 +13,8 @@
         string? Notes,
         string? AdditionalPhones)
     {
-        public string WishedCoursesDisplay =>
-            WishedCourses != null && WishedCourses.Any()
+        public string WishedCoursesDisplay => WishedCourses != null && WishedCourses.Any()
             ? string.Join(", ", WishedCourses.Select(c => c.Name))
-            : "-";
+            : string.Empty;
     }
 }

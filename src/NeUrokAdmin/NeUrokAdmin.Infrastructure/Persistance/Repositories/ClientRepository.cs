@@ -55,7 +55,7 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
             exestingClient.ChildFullname = client.ChildFullname;
             exestingClient.BirthDate = client.BirthDate;
             exestingClient.RegistrationDate = client.RegistrationDate;
-            exestingClient.Status = client.Status;
+            exestingClient.StatusId = client.StatusId;
             exestingClient.Grade = client.Grade;
             exestingClient.ParentName = client.ParentName;
             exestingClient.Phone = client.Phone;

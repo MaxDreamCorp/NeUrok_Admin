@@ -24,8 +24,4 @@
     <ProjectReference Include="..\NeUrokAdmin.Domain\NeUrokAdmin.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>
