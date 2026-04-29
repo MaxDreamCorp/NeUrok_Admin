@@ -96,7 +96,8 @@ namespace NeUrokAdmin.WPF.Views.Selectors
                 var editCourseCard = _navigationService.GetWindow<CourseCard>();
                 editCourseCard.ViewModel = cardVm;
                 editCourseCard.ShowDialog();
-                await RefreeshList();
+                if (editCourseCard.DialogResult == true)
+                    await RefreeshList();
             }
         }
 
@@ -107,6 +108,7 @@ namespace NeUrokAdmin.WPF.Views.Selectors
             var allCourses = await _mediator.Send(new GetAllCoursesQuery());
             var newVM = new CoursesSelectorViewModel(allCourses, selectedCourses);
             ViewModel = newVM;
+            DataContext = ViewModel;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using MediatR;
+using NeUrokAdmin.Application.Features.CourseOperations.Commands;
 using NeUrokAdmin.WPF.Interfaces;
 using NeUrokAdmin.WPF.Services;
 using NeUrokAdmin.WPF.Views.ViewModels.Cards;
@@ -39,10 +40,49 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
 
         }
 
-        private void AcceptBtn_Click(object sender, RoutedEventArgs e)
+        private async void AcceptBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            switch (ViewModel.OperationType)
+            {
+                case Enums.OperationType.Create:
+                    break;
+                case Enums.OperationType.Read:
+                    break;
+                case Enums.OperationType.Edit:
+                    await EditCourse();
+                    break;
+                case Enums.OperationType.Filter:
+                    break;
+                default:
+                    break;
+            }
+            DialogResult = true;
+            Close();
         }
 
+        private async Task EditCourse()
+        {
+            if (!_dialogService.AskQuetion("Вы уверены, что хотите изменить данные курса?"))
+                return;
+
+            if (string.IsNullOrWhiteSpace(ViewModel.Name))
+            {
+                _dialogService.ShowWarning("Название курса не может быть пустым");
+                return;
+            }
+
+            var cmd = new UpdateCourseCommand(
+                ViewModel.Id,
+                ViewModel.Name);
+
+            try
+            {
+                await _mediator.Send(cmd);
+            }
+            catch (Exception ex)
+            {
+                _dialogService.ShowError(ex.Message);
+            }
+        }
     }
 }

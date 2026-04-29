@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace NeUrokAdmin.Domain.Entities;
+﻿namespace NeUrokAdmin.Domain.Entities;
 
 public partial class Course
 {
@@ -16,4 +13,16 @@ public partial class Course
     public virtual ICollection<StudentSubscription> StudentSubscriptions { get; set; } = new List<StudentSubscription>();
 
     public virtual ICollection<Client> Clients { get; set; } = new List<Client>();
+
+    private Course() { }
+
+    public static Course Create(int id,
+        string name)
+    {
+        return new Course
+        {
+            Id = id,
+            Name = name
+        };
+    }
 }
