@@ -29,6 +29,11 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
             return await _context.Courses.FindAsync(id, cancellationToken);
         }
 
+        public async Task<Course?> GetByNameAsync(string name, CancellationToken cancellationToken = default)
+        {
+            return await _context.Courses.FirstOrDefaultAsync(x => x.Name == name, cancellationToken);
+        }
+
         public async Task<int> GetNextIdAsync(CancellationToken cancellationToken = default)
         {
             return await _context.Courses.AnyAsync() ? await _context.Courses.MaxAsync(x => x.Id) + 1 : 1;

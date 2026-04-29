@@ -45,6 +45,7 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
             switch (ViewModel.OperationType)
             {
                 case Enums.OperationType.Create:
+                    await CreateCourse();
                     break;
                 case Enums.OperationType.Read:
                     break;
@@ -60,16 +61,33 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
             Close();
         }
 
+        private async Task CreateCourse()
+        {
+            if (!_dialogService.AskQuetion("Вы уверены, что хотите создать новый курс?"))
+                return;
+
+            if (!CheckFields())
+                return;
+
+            var cmd = new CreateCourseCommand(ViewModel.Name);
+
+            try
+            {
+                await _mediator.Send(cmd);
+            }
+            catch (Exception ex)
+            {
+                _dialogService.ShowError(ex.Message);
+            }
+        }
+
         private async Task EditCourse()
         {
             if (!_dialogService.AskQuetion("Вы уверены, что хотите изменить данные курса?"))
                 return;
 
-            if (string.IsNullOrWhiteSpace(ViewModel.Name))
-            {
-                _dialogService.ShowWarning("Название курса не может быть пустым");
+            if (!CheckFields())
                 return;
-            }
 
             var cmd = new UpdateCourseCommand(
                 ViewModel.Id,
@@ -83,6 +101,17 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
             {
                 _dialogService.ShowError(ex.Message);
             }
+        }
+
+        private bool CheckFields()
+        {
+            if (string.IsNullOrWhiteSpace(ViewModel.Name))
+            {
+                _dialogService.ShowWarning("Название курса не может быть пустым");
+                return false;
+            }
+
+            return true;
         }
     }
 }

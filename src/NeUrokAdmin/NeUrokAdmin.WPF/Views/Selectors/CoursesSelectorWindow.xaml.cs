@@ -64,12 +64,14 @@ namespace NeUrokAdmin.WPF.Views.Selectors
             Close();
         }
 
-        private void AddBtn_Click(object sender, RoutedEventArgs e)
+        private async void AddBtn_Click(object sender, RoutedEventArgs e)
         {
             var vm = new CourseCardViewModel(Enums.OperationType.Create);
             var courseCard = _navigationService.GetWindow<CourseCard>();
             courseCard.ViewModel = vm;
             courseCard.ShowDialog();
+            if (courseCard.DialogResult == true)
+                await RefreeshList();
         }
 
         private void CopyFilterSelectedToAllCourses()
