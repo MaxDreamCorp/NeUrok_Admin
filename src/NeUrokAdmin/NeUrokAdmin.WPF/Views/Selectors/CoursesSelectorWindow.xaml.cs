@@ -1,7 +1,13 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using MediatR;
+using NeUrokAdmin.Application.Features.CourseOperations.Queries;
 using NeUrokAdmin.Domain.DTOs;
+using NeUrokAdmin.WPF.Services;
+using NeUrokAdmin.WPF.Views.CardWindows;
+using NeUrokAdmin.WPF.Views.ViewModels.Cards;
 using NeUrokAdmin.WPF.Views.ViewModels.Selectors;
+using NeUrokAdmin.WPF.Views.ViewModels.Selectors.SelectorItems;
 
 namespace NeUrokAdmin.WPF.Views.Selectors
 {
@@ -10,13 +16,17 @@ namespace NeUrokAdmin.WPF.Views.Selectors
     /// </summary>
     public partial class CoursesSelectorWindow : Window
     {
+        private readonly NavigationService _navigationService;
+        private readonly IMediator _mediator;
         public event EventHandler<List<CourseDTO>>? CoursesSelected;
 
         public CoursesSelectorViewModel ViewModel { get; set; } = null!;
 
-        public CoursesSelectorWindow()
+        public CoursesSelectorWindow(NavigationService navigationService, IMediator mediator)
         {
             InitializeComponent();
+            _navigationService = navigationService;
+            _mediator = mediator;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -56,7 +66,10 @@ namespace NeUrokAdmin.WPF.Views.Selectors
 
         private void AddBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            var vm = new CourseCardViewModel(Enums.OperationType.Create);
+            var courseCard = _navigationService.GetWindow<CourseCard>();
+            courseCard.ViewModel = vm;
+            courseCard.ShowDialog();
         }
 
         private void CopyFilterSelectedToAllCourses()
@@ -70,6 +83,30 @@ namespace NeUrokAdmin.WPF.Views.Selectors
                         it.IsSelected = true;
                 }
             }
+        }
+
+        private async void ListBoxItem_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (sender is ListBoxItem item && item.Content is CourseSelectorItemViewModel vm)
+            {
+                var courseDto = vm.Course;
+
+                var cardVm = new CourseCardViewModel(Enums.OperationType.Edit, courseDto);
+
+                var editCourseCard = _navigationService.GetWindow<CourseCard>();
+                editCourseCard.ViewModel = cardVm;
+                editCourseCard.ShowDialog();
+                await RefreeshList();
+            }
+        }
+
+        private async Task RefreeshList()
+        {
+            var selectedCourses = ViewModel.AllCourses.Where(ci => ci.IsSelected).Select(ci => ci.Course).ToList();
+
+            var allCourses = await _mediator.Send(new GetAllCoursesQuery());
+            var newVM = new CoursesSelectorViewModel(allCourses, selectedCourses);
+            ViewModel = newVM;
         }
     }
 }

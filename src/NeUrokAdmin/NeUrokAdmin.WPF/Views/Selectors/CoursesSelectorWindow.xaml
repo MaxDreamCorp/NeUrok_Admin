@@ -40,8 +40,15 @@
                     Click="SelectBtn_Click"/>
         </DockPanel>
 
-        <ListBox Grid.Row="1"
+        <ListBox x:Name="CourseList"
+                 Grid.Row="1"
                  ItemsSource="{Binding FilteredCourses}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <EventSetter Event="MouseDoubleClick" 
+                                 Handler="ListBoxItem_MouseDoubleClick"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <CheckBox IsChecked="{Binding IsSelected}"
