@@ -31,10 +31,35 @@ namespace NeUrokAdmin.WPF.Views.Selectors
 
         private void QuickSearchInp_TextChanged(object sender, TextChangedEventArgs e)
         {
+            CopyFilterSelectedToAllCourses();
 
+            var searchText = QuickSearchInp.Text.ToLower();
+            if (string.IsNullOrEmpty(searchText))
+            {
+                ViewModel.FilteredCourses = ViewModel.AllCourses;
+                return;
+            }
+
+            ViewModel.FilteredCourses = ViewModel.AllCourses
+                .Where(ci => ci.Course.Id.ToString().Contains(searchText) ||
+                ci.Course.Name.ToLower().Contains(searchText)).ToList();
         }
 
         private void SelectBtn_Click(object sender, RoutedEventArgs e)
+        {
+            CopyFilterSelectedToAllCourses();
+
+            CoursesSelected?.Invoke(this, ViewModel.AllCourses.Where(ci => ci.IsSelected)
+                .Select(ci => ci.Course).ToList());
+            Close();
+        }
+
+        private void AddBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CopyFilterSelectedToAllCourses()
         {
             foreach (var selectionItem in ViewModel.FilteredCourses)
             {
@@ -45,15 +70,6 @@ namespace NeUrokAdmin.WPF.Views.Selectors
                         it.IsSelected = true;
                 }
             }
-
-            CoursesSelected?.Invoke(this, ViewModel.AllCourses.Where(ci => ci.IsSelected)
-                .Select(ci => ci.Course).ToList());
-            Close();
-        }
-
-        private void AddBtn_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

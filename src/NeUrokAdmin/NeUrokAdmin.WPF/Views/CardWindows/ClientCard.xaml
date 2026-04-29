@@ -81,7 +81,7 @@
 
             <StackPanel>
                 <TextBlock Text="Желаемые курсы:" FontWeight="Bold" Margin="0,5,0,2"/>
-                <TextBlock Text="{Binding WishedCoursesDisplay}" TextWrapping="Wrap" Margin="0,0,0,10"/>
+                <TextBox Text="{Binding WishedCoursesDisplay}" TextWrapping="Wrap" Margin="0,0,0,10" Style="{StaticResource Tbox}" IsReadOnly="True" MinHeight="60"/>
                 <Button x:Name="SelectCoursesBtn" Content="Выбрать курсы" Width="200" Style="{StaticResource SecondaryBtn}" Click="SelectCoursesBtn_Click"/>
 
                 <TextBlock Text="Заметки:" FontWeight="Bold" Margin="0,5,0,2"/>
