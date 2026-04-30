@@ -13,12 +13,19 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Background="{StaticResource DarkPinkBg}">
-            <TextBlock Text="НЕурОК: Админ панель" FontSize="20" Foreground="White" FontFamily="Calibri" Margin="30 20" FontWeight="Bold" />
+            <TextBlock Text="НЕурОК: Админ панель" 
+                       FontSize="20" 
+                       Foreground="White" 
+                       FontFamily="Calibri" 
+                       Margin="30 20" 
+                       FontWeight="Bold" />
 
             <ItemsControl ItemsSource="{Binding SideMenuItems}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border Height="42" Cursor="Hand" Background="{StaticResource DarkPinkBg}">
+                        <Border Height="42" 
+                                Cursor="Hand" 
+                                Background="{StaticResource DarkPinkBg}">
                             <Border.InputBindings>
                                 <MouseBinding MouseAction="LeftClick" 
                                       Command="{Binding DataContext.SelectTabCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
@@ -37,9 +44,13 @@
                                 </Style>
                             </Border.Style>
 
-                            <StackPanel Orientation="Horizontal" Margin="20,10">
-                                <Image Source="{Binding IconPath}" Width="25"/>
-                                <TextBlock Text="{Binding Title}" Foreground="White" Margin="20,0,0,0"/>
+                            <StackPanel Orientation="Horizontal" 
+                                        Margin="20,10">
+                                <Image Source="{Binding IconPath}" 
+                                       Width="25"/>
+                                <TextBlock Text="{Binding Title}" 
+                                           Foreground="White"
+                                           Margin="20,0,0,0"/>
                             </StackPanel>
                         </Border>
                     </DataTemplate>
@@ -48,21 +59,9 @@
         </StackPanel>
 
         <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <DockPanel Grid.Row="0" Margin="20">
-                <StackPanel Orientation="Horizontal">
-                    <Button x:Name="AddBtn" Content="Добавить" Style="{StaticResource PrimaryBtn}"/>
-                <TextBox Width="250" Text="{Binding GlobalSearchText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlaceholderSearch}" VerticalAlignment="Center" Margin="10 0"/>
-                <Button x:Name="FilterBtn" Style="{StaticResource PrimaryBtn}" Content="Фильтр"/>
-                </StackPanel>
-                <Button x:Name="ClearBtn" Content="Очистить" Style="{StaticResource SecondaryBtn}" ToolTip="Очистить параметры поиска и вывести весь список" HorizontalAlignment="Right"/>
-            </DockPanel>
-
-            <ContentControl x:Name="MainConteiner" Grid.Row="1" Margin="20 0 20 20"/>
+          
+            <ContentControl x:Name="MainConteiner" 
+                            Margin="20 0 20 20"/>
         </Grid>
     </Grid>
 </Window>

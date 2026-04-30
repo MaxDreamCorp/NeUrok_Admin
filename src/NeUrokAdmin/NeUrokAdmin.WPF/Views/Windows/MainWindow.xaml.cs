@@ -23,14 +23,16 @@ namespace NeUrokAdmin.WPF
             _navigationService = navigationService;
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            var vm = new ClientViewViewModel();
             var clientsView = _navigationService.GetUserControl<ClientsView>();
-            AddBtn.Click += async (s, e) => await clientsView.ViewModel.Create();
+            clientsView.ViewModel = vm;
+            await clientsView.LoadData();
             MainConteiner.Content = clientsView;
         }
 
-        private void _viewModel_SideMenuItemClicked(object? sender, SideMenuItemViewModel e)
+        private async void _viewModel_SideMenuItemClicked(object? sender, SideMenuItemViewModel e)
         {
 
             foreach (var item in _viewModel.SideMenuItems)
@@ -40,8 +42,10 @@ namespace NeUrokAdmin.WPF
             switch (e.Type)
             {
                 case Enums.TabType.Clients:
+                    var vm = new ClientViewViewModel();
                     var clientsView = _navigationService.GetUserControl<ClientsView>();
-                    AddBtn.Click += async (s, e) => await clientsView.ViewModel.Create();
+                    clientsView.ViewModel = vm;
+                    await clientsView.LoadData();
                     MainConteiner.Content = clientsView;
                     break;
                 case Enums.TabType.Students:

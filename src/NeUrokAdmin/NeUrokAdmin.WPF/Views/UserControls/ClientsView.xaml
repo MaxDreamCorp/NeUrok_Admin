@@ -8,8 +8,36 @@
              Loaded="UserControl_Loaded"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="0" Margin="0 20">
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="AddBtn" 
+                        Content="Добавить" 
+                        Style="{StaticResource PrimaryBtn}"
+                        Click="AddBtn_Click"/>
+                <TextBox Width="250" 
+                         Text="{Binding QuickSearchText, UpdateSourceTrigger=PropertyChanged}" 
+                         Style="{StaticResource PlaceholderSearch}" 
+                         VerticalAlignment="Center" 
+                         Margin="10 0"
+                         TextChanged="TextBox_TextChanged"/>
+                <Button x:Name="FilterBtn" 
+                        Style="{StaticResource PrimaryBtn}" 
+                        Content="Фильтр"
+                        Click="FilterBtn_Click"/>
+            </StackPanel>
+            <Button x:Name="ClearBtn" 
+                    Content="Очистить" 
+                    Style="{StaticResource SecondaryBtn}" 
+                    ToolTip="Очистить параметры поиска и вывести весь список" 
+                    HorizontalAlignment="Right"
+                    Click="ClearBtn_Click"/>
+        </DockPanel>
         <DataGrid Grid.Row="1" 
-                  ItemsSource="{Binding Clients}" 
+                  ItemsSource="{Binding DisplayedClients}" 
                   Style="{StaticResource MainDataGridStyle}"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False" 
@@ -21,20 +49,45 @@
                 </Style>
             </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="Auto"/>
-                <DataGridTextColumn Header="ФИО Ребенка" Binding="{Binding ChildFullname}" ElementStyle="{StaticResource WrapStyle}" Width="2*"/>
-                <DataGridTextColumn Header="Дата рождения" Binding="{Binding BirthDate, StringFormat=\{0:dd.MM.yyyy\}}" Width="*"/>
-                <DataGridTextColumn Header="Класс" Binding="{Binding Grade}" Width="60"/>
-
-                <DataGridTextColumn Header="Статус" Binding="{Binding Status.Status}" Width="*"/>
-
-                <DataGridTextColumn Header="Родитель" Binding="{Binding ParentName}" ElementStyle="{StaticResource WrapStyle}" Width="1.5*"/>
-                <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}" ElementStyle="{StaticResource WrapStyle}" Width="*"/>
-                <DataGridTextColumn Header="Желаемые курсы" Binding="{Binding WishedCoursesDisplay}" ElementStyle="{StaticResource WrapStyle}" Width="2*"/>
-
-                <DataGridTextColumn Header="Дата регистрации" Binding="{Binding RegistrationDate, StringFormat=\{0:dd.MM.yyyy\}}" Width="*"/>
-                <DataGridTextColumn Header="Заметки" Binding="{Binding Notes}" ElementStyle="{StaticResource WrapStyle}" Width="2*"/>
-                <DataGridTextColumn Header="Доп. телефоны" Binding="{Binding AdditionalPhones}" ElementStyle="{StaticResource WrapStyle}" Width="2*"/>
+                <DataGridTextColumn Header="ID" 
+                                    Binding="{Binding Id}" 
+                                    Width="Auto"/>
+                <DataGridTextColumn Header="ФИО Ребенка" 
+                                    Binding="{Binding ChildFullname}" 
+                                    ElementStyle="{StaticResource WrapStyle}" 
+                                    Width="2*"/>
+                <DataGridTextColumn Header="Дата рождения" 
+                                    Binding="{Binding BirthDate, StringFormat=\{0:dd.MM.yyyy\}}" 
+                                    Width="*"/>
+                <DataGridTextColumn Header="Класс" 
+                                    Binding="{Binding Grade}" 
+                                    Width="60"/>
+                <DataGridTextColumn Header="Статус" 
+                                    Binding="{Binding Status.Status}" 
+                                    Width="*"/>
+                <DataGridTextColumn Header="Родитель" 
+                                    Binding="{Binding ParentName}" 
+                                    ElementStyle="{StaticResource WrapStyle}" 
+                                    Width="1.5*"/>
+                <DataGridTextColumn Header="Телефон" 
+                                    Binding="{Binding Phone}" 
+                                    ElementStyle="{StaticResource WrapStyle}" 
+                                    Width="*"/>
+                <DataGridTextColumn Header="Желаемые курсы" 
+                                    Binding="{Binding WishedCoursesDisplay}" 
+                                    ElementStyle="{StaticResource WrapStyle}" 
+                                    Width="2*"/>
+                <DataGridTextColumn Header="Дата регистрации" 
+                                    Binding="{Binding RegistrationDate, StringFormat=\{0:dd.MM.yyyy\}}" 
+                                    Width="*"/>
+                <DataGridTextColumn Header="Заметки" 
+                                    Binding="{Binding Notes}" 
+                                    ElementStyle="{StaticResource WrapStyle}"
+                                    Width="2*"/>
+                <DataGridTextColumn Header="Доп. телефоны" 
+                                    Binding="{Binding AdditionalPhones}" 
+                                    ElementStyle="{StaticResource WrapStyle}" 
+                                    Width="2*"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
