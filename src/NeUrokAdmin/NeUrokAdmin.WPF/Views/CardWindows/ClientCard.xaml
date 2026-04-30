@@ -96,7 +96,7 @@
                 <TextBlock Text="Класс:"
                            Grid.Row="4" 
                            Style="{StaticResource CardTextBlock}"/>
-                <TextBox Text="{Binding Grade, UpdateSourceTrigger=PropertyChanged}" 
+                <TextBox Text="{Binding Grade, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
                          Grid.Row="4"
                          Grid.Column="1" 
                          Margin="0,5"

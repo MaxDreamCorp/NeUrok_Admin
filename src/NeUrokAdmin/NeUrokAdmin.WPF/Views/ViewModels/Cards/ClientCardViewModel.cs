@@ -87,7 +87,7 @@ namespace NeUrokAdmin.WPF.Views.ViewModels
         private DateTime _registrationDate;
 
         [ObservableProperty]
-        private int _grade;
+        private int? _grade;
 
         [ObservableProperty]
         private string _status = string.Empty;
