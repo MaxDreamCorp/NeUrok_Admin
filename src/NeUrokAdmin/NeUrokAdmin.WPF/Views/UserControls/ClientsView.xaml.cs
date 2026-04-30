@@ -44,7 +44,10 @@ namespace NeUrokAdmin.WPF.Views.UserControls
                 card.ViewModel = cardVM;
                 card.ShowDialog();
                 if (card.DialogResult == true)
+                {
                     await PrintAll();
+                    QuickSearch();
+                }
             }
         }
 
@@ -56,10 +59,45 @@ namespace NeUrokAdmin.WPF.Views.UserControls
             card.ViewModel = cardVM;
             card.ShowDialog();
             if (card.DialogResult == true)
+            {
                 await PrintAll();
+                QuickSearch();
+            }
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            QuickSearch();
+        }
+
+        private void FilterBtn_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+
+        }
+
+        private async void ClearBtn_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            ViewModel.FilteredClients = null;
+            ViewModel.QuickSearchText = string.Empty;
+            await PrintAll();
+        }
+
+        private async Task PrintAll()
+        {
+            var qry = new GetAllClientsQuery();
+            ViewModel.AllClients = await _mediator.Send(qry);
+            ViewModel.DisplayedClients = new(ViewModel.AllClients);
+        }
+
+        private void ResetDisplayedClientsAfterSearcing()
+        {
+            if (ViewModel.FilteredClients == null)
+                ViewModel.DisplayedClients = new(ViewModel.AllClients);
+            else
+                ViewModel.DisplayedClients = new(ViewModel.FilteredClients);
+        }
+
+        private void QuickSearch()
         {
             var searchText = ViewModel.QuickSearchText.ToLower();
             if (string.IsNullOrEmpty(searchText))
@@ -83,31 +121,6 @@ namespace NeUrokAdmin.WPF.Views.UserControls
                 (c.Notes != null && c.Notes.ToLower().Contains(searchText)) ||
                 (c.AdditionalPhones != null && c.AdditionalPhones.ToLower().Contains(searchText)))
                 .ToList());
-        }
-
-        private void FilterBtn_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-
-        }
-
-        private void ClearBtn_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-
-        }
-
-        private async Task PrintAll()
-        {
-            var qry = new GetAllClientsQuery();
-            ViewModel.AllClients = await _mediator.Send(qry);
-            ViewModel.DisplayedClients = new(ViewModel.AllClients);
-        }
-
-        private void ResetDisplayedClientsAfterSearcing()
-        {
-            if (ViewModel.FilteredClients == null)
-                ViewModel.DisplayedClients = new(ViewModel.AllClients);
-            else
-                ViewModel.DisplayedClients = new(ViewModel.FilteredClients);
         }
     }
 }
