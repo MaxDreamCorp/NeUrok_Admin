@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         MinWidth="500"
         MaxWidth="500"
+        Height="720"
         SizeToContent="WidthAndHeight"
         Loaded="Window_Loaded"
         Title="Клиент">
@@ -33,129 +34,303 @@
                        Margin="10 0 0 0"/>
         </StackPanel>
 
-        <StackPanel Grid.Row="1" 
+        <ScrollViewer Grid.Row="1" 
+                      VerticalScrollBarVisibility="Auto"
                     Margin="0 10">
-            <Grid >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+            <StackPanel>
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                <TextBlock Text="ID:" 
+                    <TextBlock Text="ID:" 
                            Grid.Row="0" 
                            Style="{StaticResource CardTextBlock}"
                            Visibility="{Binding IsFilter, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVis}}" />
-                <TextBox Text="{Binding Id, UpdateSourceTrigger=PropertyChanged}" 
+                    <TextBox Text="{Binding Id, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
                          Grid.Row="0" 
                          Grid.Column="1" 
                          Margin="0,5" 
                          Style="{StaticResource Tbox}"
                          Visibility="{Binding IsFilter, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVis}}" />
 
-                <TextBlock Text="ФИО:" 
-                           Grid.Row="1" 
+
+                    <GroupBox Grid.Row="1"
+                            Grid.Column="1"
+                            Visibility="{Binding IsFilter, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVis}}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="От:"
+                               Style="{StaticResource CardTextBlock}" Margin="0,5,10,5"/>
+                            <ComboBox Text="{Binding IdFrom, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
+                            ItemsSource="{Binding Ids, UpdateSourceTrigger=PropertyChanged}"
+                            IsEditable="True"
+                            StaysOpenOnEdit="True"
+                            HorizontalAlignment="Left"
+                            Width="80"
+                            Margin="0 5 0 0"
+                            FontSize="13"/>
+                            <TextBlock Text="До:"
+                                   Margin=" 15 0"
+                               Style="{StaticResource CardTextBlock}"/>
+                            <ComboBox Text="{Binding IdTo, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
+                         ItemsSource="{Binding Ids, UpdateSourceTrigger=PropertyChanged}"
+                         IsEditable="True"
+                         StaysOpenOnEdit="True"
+                         HorizontalAlignment="Left"
+                         Width="80"
+                         Margin="0 5 0 0"
+                         FontSize="13"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <TextBlock Text="ФИО:" 
+                           Grid.Row="2" 
                            Style="{StaticResource CardTextBlock}"/>
-                <TextBox Text="{Binding ChildFullname, UpdateSourceTrigger=PropertyChanged}" 
-                         Grid.Row="1" 
+                    <TextBox Text="{Binding ChildFullname, UpdateSourceTrigger=PropertyChanged}" 
+                         Grid.Row="2" 
                          Grid.Column="1"
                          Margin="0,5"
                          Style="{StaticResource Tbox}"
                          IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <TextBlock Text="Дата рожд.:"
-                           Grid.Row="2" 
+                    <TextBlock Text="Дата рожд.:"
+                           Grid.Row="3"
                            Style="{StaticResource CardTextBlock}"/>
-                <DatePicker SelectedDate="{Binding BirthDate, UpdateSourceTrigger=PropertyChanged}" 
-                            Grid.Row="2"
-                            Grid.Column="1" 
-                            Margin="0,5" 
-                            Style="{StaticResource DatePicker}"
-                            IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
-
-                <TextBlock Text="Дата рег.:"
-                           Grid.Row="3" 
-                           Style="{StaticResource CardTextBlock}"/>
-                <DatePicker SelectedDate="{Binding RegistrationDate, UpdateSourceTrigger=PropertyChanged}" 
+                    <DatePicker SelectedDate="{Binding BirthDate, UpdateSourceTrigger=PropertyChanged}" 
                             Grid.Row="3"
                             Grid.Column="1" 
                             Margin="0,5" 
                             Style="{StaticResource DatePicker}"
                             IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <TextBlock Text="Класс:"
-                           Grid.Row="4" 
+                    <GroupBox Grid.Row="4"
+                            Grid.Column="1"
+                            Visibility="{Binding IsFilter, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVis}}">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="От:"
+                               Style="{StaticResource CardTextBlock}" VerticalAlignment="Center" />
+                                <DatePicker SelectedDate="{Binding BirthDateFrom, UpdateSourceTrigger=PropertyChanged}"
+                                Margin="0 5"
+                                Style="{StaticResource DatePicker}"/>
+                                <TextBlock Text="До:"
+                               Style="{StaticResource CardTextBlock}" Margin="15 0"/>
+                                <DatePicker SelectedDate="{Binding BirthDateTo, UpdateSourceTrigger=PropertyChanged}"
+                                                    Margin="0 5"
+                                                    Style="{StaticResource DatePicker}"/>
+                            </StackPanel>
+                            <TextBlock Text="По oтдельности:"
+                               Style="{StaticResource CardTextBlock}" />
+
+
+
+                            <StackPanel Orientation="Horizontal">
+                                <ComboBox SelectedItem="{Binding BirthDateDay, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
+                                  ItemsSource="{Binding Days, UpdateSourceTrigger=PropertyChanged}"
+                                  IsEditable="True"
+                                  StaysOpenOnEdit="True"
+                                  Width="80"
+                                  Margin="0,0,15,0"
+                                  FontSize="13"/>
+                                <ComboBox SelectedItem="{Binding BirthDateMonth, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
+                                  ItemsSource="{Binding Months, UpdateSourceTrigger=PropertyChanged}"
+                                  IsEditable="True"
+                                  StaysOpenOnEdit="True"
+                                  Width="80"
+                                  Margin="0,0,15,0"
+                                  FontSize="13"/>
+                                <ComboBox SelectedItem="{Binding BirthDateYear, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
+                                  ItemsSource="{Binding Years, UpdateSourceTrigger=PropertyChanged}"
+                                  IsEditable="True"
+                                  StaysOpenOnEdit="True"
+                                  Width="120"
+                                  Margin="0,0,15,0"
+                                  FontSize="13"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </GroupBox>
+                    <TextBlock Text="Дата рег.:"
+                           Grid.Row="5" 
                            Style="{StaticResource CardTextBlock}"/>
-                <TextBox Text="{Binding Grade, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
-                         Grid.Row="4"
+                    <DatePicker SelectedDate="{Binding RegistrationDate, UpdateSourceTrigger=PropertyChanged}" 
+                            Grid.Row="5"
+                            Grid.Column="1" 
+                            Margin="0,5" 
+                            Style="{StaticResource DatePicker}"
+                            IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
+
+
+                    <StackPanel Grid.Row="6"
+                            Grid.Column="1"
+                            Visibility="{Binding IsFilter, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVis}}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="От:"
+             Style="{StaticResource CardTextBlock}" />
+                            <DatePicker SelectedDate="{Binding RegistrationDateFrom, UpdateSourceTrigger=PropertyChanged}"
+               Style="{StaticResource DatePicker}" Margin="0,5,0,5"/>
+                            <TextBlock Text="До:"
+             Style="{StaticResource CardTextBlock}" Margin="15 0"/>
+                            <DatePicker SelectedDate="{Binding RegistrationDateTo, UpdateSourceTrigger=PropertyChanged}"
+                                   Margin="0 5"
+                                   Style="{StaticResource DatePicker}"/>
+                        </StackPanel>
+                        <TextBlock Text="По oтдельности:"
+             Style="{StaticResource CardTextBlock}" Margin="0,0,10,5"/>
+
+                        <StackPanel Orientation="Horizontal">
+                            <ComboBox SelectedItem="{Binding RegistrationDateDay, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
+                 ItemsSource="{Binding Days, UpdateSourceTrigger=PropertyChanged}"
+                 IsEditable="True"
+                 StaysOpenOnEdit="True"
+                 Width="80"
+                 Margin="0,0,15,0"
+                 FontSize="13"/>
+                            <ComboBox SelectedItem="{Binding RegistrationDateMonth, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
+                 ItemsSource="{Binding Months, UpdateSourceTrigger=PropertyChanged}"
+                 IsEditable="True"
+                 StaysOpenOnEdit="True"
+                 Width="80"
+                 Margin="0,0,15,0"
+                 FontSize="13"/>
+                            <ComboBox SelectedItem="{Binding RegistrationDateYear, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
+                 ItemsSource="{Binding Years, UpdateSourceTrigger=PropertyChanged}"
+                 IsEditable="True"
+                 StaysOpenOnEdit="True"
+                 Width="120"
+                 Margin="0,0,15,0"
+                 FontSize="13"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <TextBlock Text="Класс:"
+                           Grid.Row="7" 
+                           Style="{StaticResource CardTextBlock}"/>
+                    <TextBox Text="{Binding Grade, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
+                         Grid.Row="7"
                          Grid.Column="1" 
                          Margin="0,5"
                          Style="{StaticResource Tbox}"
                          IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <TextBlock Text="Статус:" 
-                           Grid.Row="5" 
+                    <GroupBox Grid.Row="8"
+                          Grid.Column="1"
+                          Visibility="{Binding IsFilter, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVis}}">
+
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="От:"
+                             Style="{StaticResource CardTextBlock}" Margin="0,5,10,5"/>
+                            <ComboBox SelectedItem="{Binding GradeFrom, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
+                                ItemsSource="{Binding Grades, UpdateSourceTrigger=PropertyChanged}"
+                                IsEditable="True"
+                                StaysOpenOnEdit="True"
+                                HorizontalAlignment="Left"
+                                Width="80"
+                                Margin="0,5,0,5"
+                                FontSize="13"/>
+                            <TextBlock Text="До:"
+                             Style="{StaticResource CardTextBlock}" Margin="10,5,10,5"/>
+                            <ComboBox SelectedItem="{Binding GradeTo, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
+                                ItemsSource="{Binding Grades, UpdateSourceTrigger=PropertyChanged}"
+                                IsEditable="True"
+                                StaysOpenOnEdit="True"
+                                HorizontalAlignment="Left"
+                                Width="80"
+                                Margin="0 5 15 5"
+                                FontSize="13"/>
+                        </StackPanel>
+                    </GroupBox>
+                    <TextBlock Text="Статус:" 
+                           Grid.Row="9" 
                            Style="{StaticResource CardTextBlock}"/>
-                <ComboBox SelectedItem="{Binding Status, UpdateSourceTrigger=PropertyChanged}" 
+                    <ComboBox SelectedItem="{Binding Status, UpdateSourceTrigger=PropertyChanged}" 
                           ItemsSource="{Binding ClientStatuses, UpdateSourceTrigger=PropertyChanged}" 
                           Style="{StaticResource ModernComboBox}"
-                          Grid.Row="5" 
+                          Grid.Row="9" 
                           Grid.Column="1" 
                           Margin="0,5" 
                           IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <TextBlock Text="Родитель:" 
-                           Grid.Row="6" 
+                    <GroupBox Grid.Row="10"
+                            Grid.Column="1"
+                            Margin="0 5"
+                            Visibility="{Binding IsFilter, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVis}}">
+                        <StackPanel>
+                            <TextBlock Text="Статусы:" 
+                               Style="{StaticResource CardTextBlock}"/>
+                            <TextBox Text="{Binding SearchingStatusesDisplay}"
+                             TextWrapping="Wrap"
+                             Margin="0,0,0,5" 
+                             Style="{StaticResource Tbox}" 
+                             IsReadOnly="True"/>
+                            <Button x:Name="SelectSearchingStatusesBtn" 
+                            Content="Выбрать статусы"
+                            Width="130" 
+                            Style="{StaticResource SecondaryBtn}"
+                            Padding="0 4" 
+                            HorizontalAlignment="Right"
+                                    Click="SelectSearchingStatusesBtn_Click"/>
+                        </StackPanel>
+                    </GroupBox>
+                    <TextBlock Text="Родитель:" 
+                           Grid.Row="11" 
                            Style="{StaticResource CardTextBlock}"/>
-                <TextBox Text="{Binding ParentName, TargetNullValue=''}" 
-                         Grid.Row="6" 
+                    <TextBox Text="{Binding ParentName, TargetNullValue=''}" 
+                         Grid.Row="11" 
                          Grid.Column="1" 
                          Margin="0,5"
                          Style="{StaticResource Tbox}"
                          IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <TextBlock Text="Телефон:" 
-                           Grid.Row="7" 
+                    <TextBlock Text="Телефон:" 
+                           Grid.Row="12" 
                            Style="{StaticResource CardTextBlock}"/>
-                <TextBox Text="{Binding Phone, TargetNullValue=''}" 
-                         Grid.Row="7"
+                    <TextBox Text="{Binding Phone, TargetNullValue=''}" 
+                         Grid.Row="12"
                          Grid.Column="1"
                          Margin="0,5" 
                          Style="{StaticResource Tbox}"
                          IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <TextBlock Text="Доп. связь:" 
-                           Grid.Row="8" 
+                    <TextBlock Text="Доп. связь:" 
+                           Grid.Row="13" 
                            Style="{StaticResource CardTextBlock}"/>
-                <TextBox Text="{Binding AdditionalPhone, TargetNullValue=''}" 
-                         Grid.Row="8"
+                    <TextBox Text="{Binding AdditionalPhone, TargetNullValue=''}" 
+                         Grid.Row="13"
                          Grid.Column="1" 
                          Margin="0,5" 
                          TextWrapping="Wrap" 
                          Style="{StaticResource Tbox}"
                          IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
-            </Grid>
+                </Grid>
 
-            <StackPanel>
-                <TextBlock Text="Желаемые курсы:" 
+                <StackPanel>
+                    <TextBlock Text="Желаемые курсы:" 
                            Style="{StaticResource CardTextBlock}"/>
-                <TextBox Text="{Binding WishedCoursesDisplay}"
+                    <TextBox Text="{Binding WishedCoursesDisplay}"
                          TextWrapping="Wrap"
                          Margin="0,0,0,5" 
                          Style="{StaticResource Tbox}" 
                          IsReadOnly="True" 
                          MinHeight="60"/>
-                <Button x:Name="SelectCoursesBtn" 
+                    <Button x:Name="SelectCoursesBtn" 
                         Content="Выбрать курсы"
                         Width="120" 
                         Style="{StaticResource SecondaryBtn}"
@@ -163,16 +338,17 @@
                         HorizontalAlignment="Right"
                         Click="SelectCoursesBtn_Click"/>
 
-                <TextBlock Text="Заметки:"
+                    <TextBlock Text="Заметки:"
                            Style="{StaticResource CardTextBlock}"/>
-                <TextBox Text="{Binding Notes, TargetNullValue=''}" 
+                    <TextBox Text="{Binding Notes, TargetNullValue=''}" 
                          Style="{StaticResource Tbox}"
                          MinHeight="60" 
                          TextWrapping="Wrap" 
                          AcceptsReturn="True"
                         IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
+        </ScrollViewer>
 
     <DockPanel Grid.Row="2">
         <Button x:Name="DelBtn" 

@@ -16,12 +16,14 @@ namespace NeUrokAdmin.WPF.Views.UserControls
         private readonly NavigationService _navigationService;
         private readonly IMediator _mediator;
         public ClientViewViewModel ViewModel { get; set; } = null!;
+        private ClientCardViewModel _filterVM;
 
         public ClientsView(NavigationService navigationService, IMediator mediator)
         {
             InitializeComponent();
             _navigationService = navigationService;
             _mediator = mediator;
+            _filterVM = new ClientCardViewModel(Enums.OperationType.Filter);
         }
 
         private void UserControl_Loaded(object sender, System.Windows.RoutedEventArgs e)
@@ -70,15 +72,25 @@ namespace NeUrokAdmin.WPF.Views.UserControls
             QuickSearch();
         }
 
-        private void FilterBtn_Click(object sender, System.Windows.RoutedEventArgs e)
+        private async void FilterBtn_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-
+            var card = _navigationService.GetWindow<ClientCard>();
+            card.ViewModel = _filterVM;
+            card.ShowDialog();
+            if (card.DialogResult == true)
+            {
+                var searchDto = _filterVM.GetSearchDTO();
+                var qry = new GetClientsByFilterQuery(searchDto);
+                ViewModel.FilteredClients = new(await _mediator.Send(qry));
+                ResetDisplayedClientsAfterSearcing();
+            }
         }
 
         private async void ClearBtn_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             ViewModel.FilteredClients = null;
             ViewModel.QuickSearchText = string.Empty;
+            _filterVM = new ClientCardViewModel(Enums.OperationType.Filter);
             await PrintAll();
         }
 
