@@ -8,7 +8,6 @@
         MinWidth="500"
         MaxWidth="500"
         Height="720"
-        SizeToContent="WidthAndHeight"
         Loaded="Window_Loaded"
         Title="Клиент">
 

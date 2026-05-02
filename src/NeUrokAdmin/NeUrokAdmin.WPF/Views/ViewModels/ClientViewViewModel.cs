@@ -9,6 +9,9 @@ namespace NeUrokAdmin.WPF.Views.ViewModels
         public List<ClientDTO> AllClients { get; set; } = new();
 
         [ObservableProperty]
+        private bool _isFiltering;
+
+        [ObservableProperty]
         private ObservableCollection<ClientDTO>? _filteredClients;
 
         [ObservableProperty]

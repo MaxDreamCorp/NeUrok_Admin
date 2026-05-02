@@ -34,7 +34,7 @@ namespace NeUrokAdmin.WPF.Views.UserControls
         public async Task LoadData()
         {
             DataContext = ViewModel;
-            await PrintAll();
+            await Clear();
         }
 
         private async void DataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -62,7 +62,7 @@ namespace NeUrokAdmin.WPF.Views.UserControls
             card.ShowDialog();
             if (card.DialogResult == true)
             {
-                await PrintAll();
+                await Clear();
                 QuickSearch();
             }
         }
@@ -82,16 +82,26 @@ namespace NeUrokAdmin.WPF.Views.UserControls
                 var searchDto = _filterVM.GetSearchDTO();
                 var qry = new GetClientsByFilterQuery(searchDto);
                 ViewModel.FilteredClients = new(await _mediator.Send(qry));
+                ViewModel.IsFiltering = true;
                 ResetDisplayedClientsAfterSearcing();
             }
         }
 
         private async void ClearBtn_Click(object sender, System.Windows.RoutedEventArgs e)
         {
+            await Clear();
+        }
+
+        private async Task Clear()
+        {
             ViewModel.FilteredClients = null;
+            ViewModel.IsFiltering = false;
             ViewModel.QuickSearchText = string.Empty;
-            _filterVM = new ClientCardViewModel(Enums.OperationType.Filter);
             await PrintAll();
+            _filterVM = new ClientCardViewModel(Enums.OperationType.Filter,
+                maxId: ViewModel.AllClients.Any() ?
+                ViewModel.AllClients.Max(c => c.Id) :
+                null);
         }
 
         private async Task PrintAll()

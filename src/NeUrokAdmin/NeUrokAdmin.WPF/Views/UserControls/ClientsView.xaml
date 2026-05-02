@@ -7,12 +7,23 @@
              mc:Ignorable="d" 
              Loaded="UserControl_Loaded"
              d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <Style x:Key="FilterBtnStyle" TargetType="Button" BasedOn="{StaticResource PrimaryBtn}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsFiltering, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                    <Setter Property="BorderBrush" Value="{StaticResource LightYellow}" />
+                    <Setter Property="BorderThickness" Value="4" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <DockPanel Grid.Row="0" Margin="0 20">
+        <DockPanel Grid.Row="0" Margin="0 10">
             <StackPanel Orientation="Horizontal">
                 <Button x:Name="AddBtn" 
                         Content="Добавить" 
@@ -22,10 +33,10 @@
                          Text="{Binding QuickSearchText, UpdateSourceTrigger=PropertyChanged}" 
                          Style="{StaticResource PlaceholderSearch}" 
                          VerticalAlignment="Center" 
-                         Margin="10 0"
+                         Margin="10 10"
                          TextChanged="TextBox_TextChanged"/>
                 <Button x:Name="FilterBtn" 
-                        Style="{StaticResource PrimaryBtn}" 
+                        Style="{StaticResource FilterBtnStyle}" 
                         Content="Фильтр"
                         Click="FilterBtn_Click"/>
             </StackPanel>

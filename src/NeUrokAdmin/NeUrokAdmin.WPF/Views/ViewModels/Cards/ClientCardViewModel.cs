@@ -77,7 +77,7 @@ namespace NeUrokAdmin.WPF.Views.ViewModels
         private string _headerText = null!;
 
         [ObservableProperty]
-        private List<int> _ids = Enumerable.Range(1, 3).ToList();
+        private List<int> _ids;
 
         [ObservableProperty]
         private List<int> _days = Enumerable.Range(1, 31).ToList();
@@ -89,7 +89,7 @@ namespace NeUrokAdmin.WPF.Views.ViewModels
         private List<int> _years = Enumerable.Range(2000, DateTime.UtcNow.Year - 2000).Reverse().ToList();
 
         [ObservableProperty]
-        private List<int> _grades = Enumerable.Range(-6, 11).ToList();
+        private List<int> _grades = Enumerable.Range(-6, 17).ToList();
 
 
         [ObservableProperty]
@@ -180,7 +180,7 @@ namespace NeUrokAdmin.WPF.Views.ViewModels
 
         private List<ClientStatusDTO> _clientStatusesDTO = new();
 
-        public ClientCardViewModel(OperationType operationType, ClientDTO? clientDTO = null)
+        public ClientCardViewModel(OperationType operationType, ClientDTO? clientDTO = null, int? maxId = null)
         {
             if (clientDTO != null)
             {
@@ -248,6 +248,7 @@ namespace NeUrokAdmin.WPF.Views.ViewModels
                 WishedCoursesDisplay = string.Join(", ", WishedCourses.Select(c => c.Name));
                 SearchingStatusesDisplay = string.Join(", ", SearchingStatuses.Select(s => s.Status));
             }
+            _ids = Enumerable.Range(1, maxId ?? 100).ToList();
             if (operationType == OperationType.Create)
                 _registrationDate = DateTime.Now;
             OperationType = operationType;
