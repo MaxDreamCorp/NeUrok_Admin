@@ -60,6 +60,7 @@ namespace NeUrokAdmin.WPF
             services.AddTransient<LoginWindow>();
             services.AddTransient<RegistrationWindow>();
             services.AddTransient<ClientsView>();
+            services.AddTransient<GroupsView>();
 
             services.AddTransient<ClientCard>();
             services.AddTransient<CourseCard>();
@@ -73,6 +74,7 @@ namespace NeUrokAdmin.WPF
             services.AddTransient<IClientRepository, ClientRepository>();
             services.AddTransient<IClientStatusRepository, ClientStatusRepository>();
             services.AddTransient<ICourseRepository, CourseRepository>();
+            services.AddTransient<IGroupRepository, GroupRepository>();
 
         }
 

@@ -39,23 +39,21 @@ namespace NeUrokAdmin.WPF
                 item.IsSelected = false;
             e.IsSelected = true;
 
-            switch (e.Type)
+            if (e.Type == Enums.TabType.Clients)
             {
-                case Enums.TabType.Clients:
-                    var vm = new ClientsViewViewModel();
-                    var clientsView = _navigationService.GetUserControl<ClientsView>();
-                    clientsView.ViewModel = vm;
-                    await clientsView.LoadData();
-                    MainConteiner.Content = clientsView;
-                    break;
-                case Enums.TabType.Students:
-                    break;
-                case Enums.TabType.Groups:
-                    break;
-                case Enums.TabType.Subscriptions:
-                    break;
-                default:
-                    break;
+                var vm = new ClientsViewViewModel();
+                var clientsView = _navigationService.GetUserControl<ClientsView>();
+                clientsView.ViewModel = vm;
+                await clientsView.LoadData();
+                MainConteiner.Content = clientsView;
+            }
+            else if (e.Type == Enums.TabType.Groups)
+            {
+                var vm = new GroupsViewViewModel();
+                var groupsView = _navigationService.GetUserControl<GroupsView>();
+                groupsView.ViewModel = vm;
+                await groupsView.LoadData();
+                MainConteiner.Content = groupsView;
             }
         }
 

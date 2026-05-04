@@ -21,12 +21,20 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
 
         public async Task<List<Group>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            return await _context.Groups.ToListAsync(cancellationToken);
+            return await _context.Groups
+                .Include(g => g.Course)
+                .Include(g => g.Teacher)
+                .Include(g => g.GroupStatus)
+                .ToListAsync(cancellationToken);
         }
 
         public async Task<Group?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            return await _context.Groups.FindAsync(id, cancellationToken);
+            return await _context.Groups
+                .Include(g => g.Course)
+                .Include(g => g.Teacher)
+                .Include(g => g.GroupStatus)
+                .FirstOrDefaultAsync(g => g.Id == id, cancellationToken);
         }
 
         public async Task<int> GetNextIdAsync(CancellationToken cancellationToken = default)

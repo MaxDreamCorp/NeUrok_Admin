@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using MediatR;
+using NeUrokAdmin.Application.Features.GroupOperation.Queries;
 using NeUrokAdmin.WPF.Views.ViewModels;
 
 namespace NeUrokAdmin.WPF.Views.UserControls
@@ -12,9 +14,12 @@ namespace NeUrokAdmin.WPF.Views.UserControls
     {
         public GroupsViewViewModel ViewModel { get; set; } = null!;
 
-        public GroupsView()
+        private readonly IMediator _mediator;
+
+        public GroupsView(IMediator mediator)
         {
             InitializeComponent();
+            _mediator = mediator;
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -55,7 +60,17 @@ namespace NeUrokAdmin.WPF.Views.UserControls
 
         private async Task Clear()
         {
+            ViewModel.FilteredGroups = null;
+            ViewModel.IsFiltering = false;
+            ViewModel.QuickSearchText = string.Empty;
+            await PrintAll();
+        }
 
+        private async Task PrintAll()
+        {
+            var qry = new GetAllGroupsQuery();
+            ViewModel.AllGroups = await _mediator.Send(qry);
+            ViewModel.DisplayedGroups = new(ViewModel.AllGroups);
         }
     }
 }
