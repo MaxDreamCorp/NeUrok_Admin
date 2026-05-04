@@ -112,5 +112,24 @@ namespace NeUrokAdmin.WPF.Views.Selectors
             ViewModel = newVM;
             DataContext = ViewModel;
         }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            if (!ViewModel.IsSingleton)
+                return;
+
+            if (sender is CheckBox checkBox && checkBox.DataContext is CourseSelectorItemViewModel vm)
+            {
+                var it = ViewModel.AllCourses.Find(ci => ci.Course.Id == vm.Course.Id);
+                if (it != null)
+                {
+                    foreach (var course in ViewModel.AllCourses)
+                    {
+                        if (course.Course.Id != it.Course.Id)
+                            course.IsSelected = false;
+                    }
+                }
+            }
+        }
     }
 }

@@ -84,7 +84,7 @@
                              IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
                     <Button Content="Выбрать курс"
                             x:Name="SelectCourseBtn"
-                            Style="{StaticResource SecondaryBtn}"
+                            Style="{StaticResource MiniSecondaryBtn}"
                             HorizontalAlignment="Right"
                             IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"
                             Click="SelectCourseBtn_Click"/>
@@ -103,7 +103,7 @@
                              IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
                     <Button Content="Выбрать преподавателя"
                             x:Name="SelectTeacherBtn"
-                            Style="{StaticResource SecondaryBtn}"
+                            Style="{StaticResource MiniSecondaryBtn}"
                             HorizontalAlignment="Right"
                             IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"
                             Click="SelectTeacherBtn_Click"/>
@@ -140,7 +140,7 @@
                     </StackPanel>
                     <Button Content="Подтвердить"
                             x:Name="AcceptDatesBtn"
-                            Style="{StaticResource SecondaryBtn}"
+                            Style="{StaticResource MiniSecondaryBtn}"
                             HorizontalAlignment="Right"
                             Click="AcceptDatesBtn_Click"/>
                 </StackPanel>

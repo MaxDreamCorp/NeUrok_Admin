@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         MinWidth="500"
         MaxWidth="500"
-        Height="720"
+        Height="620"
         Loaded="Window_Loaded"
         Title="Клиент">
 
@@ -281,9 +281,7 @@
                              IsReadOnly="True"/>
                             <Button x:Name="SelectSearchingStatusesBtn" 
                             Content="Выбрать статусы"
-                            Width="130" 
-                            Style="{StaticResource SecondaryBtn}"
-                            Padding="0 4" 
+                            Style="{StaticResource MiniSecondaryBtn}"
                             HorizontalAlignment="Right"
                                     Click="SelectSearchingStatusesBtn_Click"/>
                         </StackPanel>
@@ -331,9 +329,7 @@
                          MinHeight="60"/>
                     <Button x:Name="SelectCoursesBtn" 
                         Content="Выбрать курсы"
-                        Width="120" 
-                        Style="{StaticResource SecondaryBtn}"
-                        Padding="0 4" 
+                        Style="{StaticResource MiniSecondaryBtn}"
                         HorizontalAlignment="Right"
                         Click="SelectCoursesBtn_Click"/>
 

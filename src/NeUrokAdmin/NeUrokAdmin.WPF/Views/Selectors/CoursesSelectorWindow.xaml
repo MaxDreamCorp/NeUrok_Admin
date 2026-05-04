@@ -52,6 +52,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <CheckBox IsChecked="{Binding IsSelected}"
+                              Checked="CheckBox_Checked"
                               VerticalAlignment="Center">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding Course.Id}"/>
