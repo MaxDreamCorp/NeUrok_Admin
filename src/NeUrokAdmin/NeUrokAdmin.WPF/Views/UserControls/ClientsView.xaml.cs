@@ -15,7 +15,7 @@ namespace NeUrokAdmin.WPF.Views.UserControls
     {
         private readonly NavigationService _navigationService;
         private readonly IMediator _mediator;
-        public ClientViewViewModel ViewModel { get; set; } = null!;
+        public ClientsViewViewModel ViewModel { get; set; } = null!;
         private ClientCardViewModel _filterVM;
 
         public ClientsView(NavigationService navigationService, IMediator mediator)

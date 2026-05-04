@@ -25,7 +25,7 @@ namespace NeUrokAdmin.WPF
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var vm = new ClientViewViewModel();
+            var vm = new ClientsViewViewModel();
             var clientsView = _navigationService.GetUserControl<ClientsView>();
             clientsView.ViewModel = vm;
             await clientsView.LoadData();
@@ -42,7 +42,7 @@ namespace NeUrokAdmin.WPF
             switch (e.Type)
             {
                 case Enums.TabType.Clients:
-                    var vm = new ClientViewViewModel();
+                    var vm = new ClientsViewViewModel();
                     var clientsView = _navigationService.GetUserControl<ClientsView>();
                     clientsView.ViewModel = vm;
                     await clientsView.LoadData();

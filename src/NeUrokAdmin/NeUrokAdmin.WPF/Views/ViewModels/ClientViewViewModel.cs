@@ -4,7 +4,7 @@ using NeUrokAdmin.Domain.DTOs;
 
 namespace NeUrokAdmin.WPF.Views.ViewModels
 {
-    public partial class ClientViewViewModel : ObservableObject
+    public partial class ClientsViewViewModel : ObservableObject
     {
         public List<ClientDTO> AllClients { get; set; } = new();
 
