@@ -55,6 +55,8 @@
                         Content="Зарегистрироваться"
                         Click="RegistrateBtn_Click"/>
                 <Button Style="{StaticResource SecondaryBtn}" 
+                         Padding="5 6"
+                        FontSize="16"
                         x:Name="LoginBtn"
                         Content="Войти" 
                         Margin="0 10"

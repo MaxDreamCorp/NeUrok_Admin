@@ -1,0 +1,197 @@
+﻿<Window x:Class="NeUrokAdmin.WPF.Views.CardWindows.GroupCard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NeUrokAdmin.WPF.Views.CardWindows"
+        mc:Ignorable="d"
+                Width="480"
+        SizeToContent="Height"
+        Loaded="Window_Loaded"
+        Title="Группа">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </Window.Resources>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0"
+                    Orientation="Horizontal">
+            <Button x:Name="BackBtn" 
+                    Style="{StaticResource SecondaryBtn}" 
+                    Content="Назад"
+                    Click="BackBtn_Click"/>
+            <TextBlock Style="{StaticResource HeaderText}"
+                       Text="{Binding HeaderText, UpdateSourceTrigger=PropertyChanged}"
+                       Margin="10 0 0 0"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" 
+                    Margin="0 10">
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="ID:" 
+                           Grid.Row="0" 
+                           Style="{StaticResource CardTextBlock}"
+                           Visibility="{Binding IsFilter, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVis}}" />
+                <TextBox Text="{Binding Id, UpdateSourceTrigger=PropertyChanged}" 
+                         Grid.Row="0" 
+                         Grid.Column="1" 
+                         Margin="0,5" 
+                         Style="{StaticResource Tbox}"
+                         Visibility="{Binding IsFilter, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVis}}" />
+
+                <TextBlock Text="Название:" 
+                           Grid.Row="1" 
+                           Style="{StaticResource CardTextBlock}"/>
+                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" 
+                         Grid.Row="1" 
+                         Grid.Column="1" 
+                         Margin="0,5" 
+                         Style="{StaticResource Tbox}"
+                         IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Text="Курс:"
+                       Grid.Row="2"
+                           VerticalAlignment="Top"
+                       Style="{StaticResource CardTextBlock}"/>
+                <StackPanel Grid.Row="2"
+                            Grid.Column="1">
+                    <TextBox Text="{Binding Course.Name, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
+                             Margin="0,5" 
+                             Style="{StaticResource Tbox}"
+                             IsReadOnly="True"
+                             IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button Content="Выбрать курс"
+                            x:Name="SelectCourseBtn"
+                            Style="{StaticResource SecondaryBtn}"
+                            HorizontalAlignment="Right"
+                            IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"
+                            Click="SelectCourseBtn_Click"/>
+                </StackPanel>
+
+                <TextBlock Text="Преподаватель:"
+                       Grid.Row="3"
+                           VerticalAlignment="Top"
+                       Style="{StaticResource CardTextBlock}"/>
+                <StackPanel Grid.Row="3"
+                            Grid.Column="1">
+                    <TextBox Text="{Binding Teacher.Fullname, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
+                             Margin="0,5" 
+                             Style="{StaticResource Tbox}"
+                             IsReadOnly="True"
+                             IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button Content="Выбрать преподавателя"
+                            x:Name="SelectTeacherBtn"
+                            Style="{StaticResource SecondaryBtn}"
+                            HorizontalAlignment="Right"
+                            IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"
+                            Click="SelectTeacherBtn_Click"/>
+                </StackPanel>
+
+                <TextBlock Text="Статус:" 
+                            Grid.Row="4" 
+                            Style="{StaticResource CardTextBlock}"/>
+                <ComboBox SelectedItem="{Binding Status.Status, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
+                          ItemsSource="{Binding Statuses, UpdateSourceTrigger=PropertyChanged}"
+                         Grid.Row="4" 
+                         Grid.Column="1" 
+                         Margin="0,5" 
+                         IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Text="Даты занятий:"
+                           Grid.Row="5"
+                           VerticalAlignment="Top"
+                           Style="{StaticResource CardTextBlock}"/>
+                <StackPanel Grid.Row="5"
+                            Grid.Column="1">
+                    <StackPanel Orientation="Horizontal">
+                        <Calendar SelectionMode="MultipleRange"
+                              SelectedDatesChanged="Calendar_SelectedDatesChanged"
+                              IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
+                        <ScrollViewer Margin="5"
+                                  Height="160"
+                                  Width="160"
+                                  VerticalScrollBarVisibility="Auto">
+                            <TextBlock Text="{Binding ClassesDates, UpdateSourceTrigger=PropertyChanged}"
+                               TextWrapping="Wrap"/>
+                        </ScrollViewer>
+                    </StackPanel>
+                    <Button Content="Подтвердить"
+                            x:Name="AcceptDatesBtn"
+                            Style="{StaticResource SecondaryBtn}"
+                            HorizontalAlignment="Right"
+                            Click="AcceptDatesBtn_Click"/>
+                </StackPanel>
+
+                    <TextBlock Text="Дни недели:" 
+                           Grid.Row="6" 
+                           Style="{StaticResource CardTextBlock}"/>
+                <TextBox Text="{Binding WeekDays, UpdateSourceTrigger=PropertyChanged}" 
+                         Grid.Row="6" 
+                         Grid.Column="1" 
+                         Margin="0,5" 
+                         Style="{StaticResource Tbox}"
+                         IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Text="Время:" 
+                            Grid.Row="7" 
+                            Style="{StaticResource CardTextBlock}"/>
+
+                <StackPanel Grid.Row="7"
+                            Grid.Column="1"
+                            Orientation="Horizontal">
+                    <ComboBox SelectedItem="{Binding TimeHours, UpdateSourceTrigger=PropertyChanged}"
+                              ItemsSource="{Binding Hours}"
+                              IsEditable="True"
+                              Width="40"
+                              StaysOpenOnEdit="True"/>
+                    <TextBlock Text=":"
+                               VerticalAlignment="Center"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Margin="3 0"/>
+                    <ComboBox SelectedItem="{Binding TimeMinutes, UpdateSourceTrigger=PropertyChanged}"
+                              ItemsSource="{Binding Minutes}"
+                              IsEditable="True"
+                              Width="40"
+                              StaysOpenOnEdit="True"/>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+
+        <DockPanel Grid.Row="2">
+            <Button x:Name="DelBtn" 
+                    Style="{StaticResource DangerBtn}" 
+                    HorizontalAlignment="Left"
+                    Content="Удалить"
+                    IsEnabled="{Binding IsDeletable, UpdateSourceTrigger=PropertyChanged}"
+                    Click="DelBtn_Click"/>
+            <Button x:Name="AcceptBtn" 
+                    Style="{StaticResource PrimaryBtn}" 
+                    HorizontalAlignment="Right"
+                    Content="Подтвердить"
+                    Click="AcceptBtn_Click"/>
+        </DockPanel>
+    </Grid>
+</Window>

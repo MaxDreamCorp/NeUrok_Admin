@@ -3,7 +3,10 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using MediatR;
 using NeUrokAdmin.Application.Features.GroupOperation.Queries;
+using NeUrokAdmin.WPF.Services;
+using NeUrokAdmin.WPF.Views.CardWindows;
 using NeUrokAdmin.WPF.Views.ViewModels;
+using NeUrokAdmin.WPF.Views.ViewModels.Cards;
 
 namespace NeUrokAdmin.WPF.Views.UserControls
 {
@@ -15,11 +18,13 @@ namespace NeUrokAdmin.WPF.Views.UserControls
         public GroupsViewViewModel ViewModel { get; set; } = null!;
 
         private readonly IMediator _mediator;
+        private readonly NavigationService _navigationService;
 
-        public GroupsView(IMediator mediator)
+        public GroupsView(IMediator mediator, NavigationService navigationService)
         {
             InitializeComponent();
             _mediator = mediator;
+            _navigationService = navigationService;
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -29,7 +34,10 @@ namespace NeUrokAdmin.WPF.Views.UserControls
 
         private void AddBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            var vm = new GroupCardViewModel(Enums.OperationType.Create);
+            var groupCard = _navigationService.GetWindow<GroupCard>();
+            groupCard.ViewModel = vm;
+            groupCard.ShowDialog();
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)

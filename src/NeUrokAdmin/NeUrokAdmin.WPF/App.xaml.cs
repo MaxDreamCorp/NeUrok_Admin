@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Globalization;
+using System.IO;
 using System.Windows;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -64,6 +65,7 @@ namespace NeUrokAdmin.WPF
 
             services.AddTransient<ClientCard>();
             services.AddTransient<CourseCard>();
+            services.AddTransient<GroupCard>();
 
             services.AddTransient<CoursesSelectorWindow>();
             services.AddTransient<ClientStatusesSelectorWindow>();
@@ -82,6 +84,7 @@ namespace NeUrokAdmin.WPF
         {
             await _host.StartAsync();
 
+            CultureInfo.CurrentCulture = new CultureInfo("ru-RU");
             var loginWindow = _host.Services.GetRequiredService<LoginWindow>();
             loginWindow.Show();
 
