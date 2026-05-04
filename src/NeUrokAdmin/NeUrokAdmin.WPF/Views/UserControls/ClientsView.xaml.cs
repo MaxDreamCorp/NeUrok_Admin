@@ -83,7 +83,7 @@ namespace NeUrokAdmin.WPF.Views.UserControls
                 var qry = new GetClientsByFilterQuery(searchDto);
                 ViewModel.FilteredClients = new(await _mediator.Send(qry));
                 ViewModel.IsFiltering = true;
-                ResetDisplayedClientsAfterSearcing();
+                ResetDisplayedClientsAfterSearching();
             }
         }
 
@@ -111,7 +111,7 @@ namespace NeUrokAdmin.WPF.Views.UserControls
             ViewModel.DisplayedClients = new(ViewModel.AllClients);
         }
 
-        private void ResetDisplayedClientsAfterSearcing()
+        private void ResetDisplayedClientsAfterSearching()
         {
             if (ViewModel.FilteredClients == null)
                 ViewModel.DisplayedClients = new(ViewModel.AllClients);
@@ -124,7 +124,7 @@ namespace NeUrokAdmin.WPF.Views.UserControls
             var searchText = ViewModel.QuickSearchText.ToLower();
             if (string.IsNullOrEmpty(searchText))
             {
-                ResetDisplayedClientsAfterSearcing();
+                ResetDisplayedClientsAfterSearching();
                 return;
             }
 

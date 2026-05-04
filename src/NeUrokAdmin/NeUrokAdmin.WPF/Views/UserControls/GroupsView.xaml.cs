@@ -66,11 +66,39 @@ namespace NeUrokAdmin.WPF.Views.UserControls
             await PrintAll();
         }
 
+        private void QuickSearch()
+        {
+            if (string.IsNullOrWhiteSpace(ViewModel.QuickSearchText))
+            {
+                ResetDisplayedGroupsAfterSearching();
+                return;
+            }
+
+            var lowerSearchText = ViewModel.QuickSearchText.ToLower();
+            ViewModel.DisplayedGroups = new(ViewModel.AllGroups.Where(g =>
+                g.Id.ToString().Contains(lowerSearchText) ||
+                g.Name.ToLower().Contains(lowerSearchText) ||
+                g.Course.Name.ToLower().Contains(lowerSearchText) ||
+                g.Teacher.Fullname.ToLower().Contains(lowerSearchText) ||
+                g.GroupStatus.Status.ToLower().Contains(lowerSearchText) ||
+                g.WeekDays.ToLower().Contains(lowerSearchText) ||
+                g.Time.ToString("HH:mm").Contains(lowerSearchText))
+                .ToList());
+        }
+
         private async Task PrintAll()
         {
             var qry = new GetAllGroupsQuery();
             ViewModel.AllGroups = await _mediator.Send(qry);
             ViewModel.DisplayedGroups = new(ViewModel.AllGroups);
         }
+
+        private void ResetDisplayedGroupsAfterSearching()
+        {
+            ViewModel.DisplayedGroups = ViewModel.FilteredGroups == null ?
+                new(ViewModel.AllGroups) :
+                new(ViewModel.FilteredGroups);
+        }
+
     }
 }
