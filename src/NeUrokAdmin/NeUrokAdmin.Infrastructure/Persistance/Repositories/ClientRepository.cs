@@ -146,20 +146,20 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
 
         public async Task UpdateAsync(Client client, CancellationToken cancellationToken = default)
         {
-            var exestingClient = await GetByIdAsync(client.Id, cancellationToken);
-            if (exestingClient == null)
+            var existingClient = await GetByIdAsync(client.Id, cancellationToken);
+            if (existingClient == null)
                 throw new ArgumentException();
 
-            exestingClient.ChildFullname = client.ChildFullname;
-            exestingClient.BirthDate = client.BirthDate;
-            exestingClient.RegistrationDate = client.RegistrationDate;
-            exestingClient.StatusId = client.StatusId;
-            exestingClient.Grade = client.Grade;
-            exestingClient.ParentName = client.ParentName;
-            exestingClient.Phone = client.Phone;
-            exestingClient.Notes = client.Notes;
-            exestingClient.AdditionalPhones = client.AdditionalPhones;
-            exestingClient.Courses = client.Courses;
+            existingClient.ChildFullname = client.ChildFullname;
+            existingClient.BirthDate = client.BirthDate;
+            existingClient.RegistrationDate = client.RegistrationDate;
+            existingClient.StatusId = client.StatusId;
+            existingClient.Grade = client.Grade;
+            existingClient.ParentName = client.ParentName;
+            existingClient.Phone = client.Phone;
+            existingClient.Notes = client.Notes;
+            existingClient.AdditionalPhones = client.AdditionalPhones;
+            existingClient.Courses = client.Courses;
 
             await _context.SaveChangesAsync(cancellationToken);
         }
