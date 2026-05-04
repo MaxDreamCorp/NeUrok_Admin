@@ -9,6 +9,8 @@ public partial class Teacher
 
     public string Fullname { get; set; } = null!;
 
+    public decimal IndividualLessonsShare { get; set; }
+
     public string? Notes { get; set; }
 
     public virtual ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();

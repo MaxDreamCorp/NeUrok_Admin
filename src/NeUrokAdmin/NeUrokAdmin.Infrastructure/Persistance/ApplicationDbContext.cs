@@ -80,8 +80,11 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.CourseId).HasColumnName("course_id");
             entity.Property(e => e.IsCompleted).HasColumnName("is_completed");
             entity.Property(e => e.Price)
-                .HasPrecision(10)
+                .HasPrecision(10, 2)
                 .HasColumnName("price");
+            entity.Property(e => e.TeacherShare)
+                .HasPrecision(10, 2)
+                .HasColumnName("teacher_share");
             entity.Property(e => e.TeacherId).HasColumnName("teacher_id");
 
             entity.HasOne(d => d.AttendanceStatus).WithMany(p => p.Attendances)
@@ -453,6 +456,9 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Fullname)
                 .HasMaxLength(255)
                 .HasColumnName("fullname");
+            entity.Property(e => e.IndividualLessonsShare)
+               .HasPrecision(10, 2)
+               .HasColumnName("individual_lessons_share");
             entity.Property(e => e.Notes)
                 .HasColumnType("text")
                 .HasColumnName("notes");
