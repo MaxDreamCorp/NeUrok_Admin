@@ -112,12 +112,13 @@
                 <TextBlock Text="Статус:" 
                             Grid.Row="4" 
                             Style="{StaticResource CardTextBlock}"/>
-                <ComboBox SelectedItem="{Binding Status.Status, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
-                          ItemsSource="{Binding Statuses, UpdateSourceTrigger=PropertyChanged}"
-                         Grid.Row="4" 
-                         Grid.Column="1" 
-                         Margin="0,5" 
-                         IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
+                <ComboBox ItemsSource="{Binding Statuses}" 
+                          DisplayMemberPath="Status"
+                          SelectedItem="{Binding SelectedStatus}"
+                          Grid.Row="4" 
+                          Grid.Column="1" 
+                          Margin="0,5" 
+                          IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <TextBlock Text="Даты занятий:"
                            Grid.Row="5"

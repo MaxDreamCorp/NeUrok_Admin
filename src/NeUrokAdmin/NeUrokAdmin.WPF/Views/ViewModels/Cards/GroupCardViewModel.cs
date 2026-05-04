@@ -85,7 +85,7 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
         private TeacherDTO? _teacher;
 
         [ObservableProperty]
-        private GroupStatusDTO? _status;
+        private string _selectedStatus = string.Empty;
 
         [ObservableProperty]
         private string _classesDates = string.Empty;
@@ -111,7 +111,7 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
                 _name = groupDTO.Name;
                 _course = groupDTO.Course;
                 _teacher = groupDTO.Teacher;
-                _status = groupDTO.GroupStatus;
+                _selectedStatus = groupDTO.GroupStatus.Status;
                 _weekDays = groupDTO.WeekDays;
                 _time = groupDTO.Time;
             }

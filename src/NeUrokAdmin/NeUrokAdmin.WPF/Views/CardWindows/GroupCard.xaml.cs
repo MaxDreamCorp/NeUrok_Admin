@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using MediatR;
+using NeUrokAdmin.Application.Features.GroupOperation.Queries;
 using NeUrokAdmin.WPF.Views.ViewModels.Cards;
 
 namespace NeUrokAdmin.WPF.Views.CardWindows
@@ -9,16 +11,22 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
     /// </summary>
     public partial class GroupCard : Window
     {
+        private readonly IMediator _mediator;
+
         public GroupCardViewModel ViewModel { get; set; } = null!;
 
-        public GroupCard()
+        public GroupCard(IMediator mediator)
         {
             InitializeComponent();
+            _mediator = mediator;
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             DataContext = ViewModel;
+
+            var statuses = await _mediator.Send(new GetAllGroupStatusesQuery());
+            ViewModel.Statuses = new(statuses);
         }
 
         private void BackBtn_Click(object sender, RoutedEventArgs e)
