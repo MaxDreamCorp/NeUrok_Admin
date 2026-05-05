@@ -4,6 +4,9 @@ using System.Windows.Input;
 using MediatR;
 using NeUrokAdmin.Application.Features.TeacherOperations.Queries;
 using NeUrokAdmin.Domain.DTOs;
+using NeUrokAdmin.WPF.Services;
+using NeUrokAdmin.WPF.Views.CardWindows;
+using NeUrokAdmin.WPF.Views.ViewModels.Cards;
 using NeUrokAdmin.WPF.Views.ViewModels.Selectors;
 using NeUrokAdmin.WPF.Views.ViewModels.Selectors.SelectorItems;
 
@@ -18,11 +21,13 @@ namespace NeUrokAdmin.WPF.Views.Selectors
         public event EventHandler<List<TeacherDTO>>? TeachersSelected;
 
         private readonly IMediator _mediator;
+        private readonly NavigationService _navigationService;
 
-        public TeachersSelectorWindow(IMediator mediator)
+        public TeachersSelectorWindow(IMediator mediator, NavigationService navigationService)
         {
             InitializeComponent();
             _mediator = mediator;
+            _navigationService = navigationService;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -40,9 +45,14 @@ namespace NeUrokAdmin.WPF.Views.Selectors
 
         }
 
-        private void AddBtn_Click(object sender, RoutedEventArgs e)
+        private async void AddBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            var vm = new TeacherCardViewModel(Enums.OperationType.Create);
+            var card = _navigationService.GetWindow<TeacherCard>();
+            card.ViewModel = vm;
+            card.ShowDialog();
+            if (card.DialogResult == true)
+                await RefreeshList();
         }
 
         private void SelectBtn_Click(object sender, RoutedEventArgs e)

@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using MediatR;
 using NeUrokAdmin.Application.Features.CourseOperations.Queries;
 using NeUrokAdmin.Application.Features.GroupOperation.Queries;
+using NeUrokAdmin.Application.Features.TeacherOperations.Queries;
 using NeUrokAdmin.Domain.DTOs;
 using NeUrokAdmin.WPF.Services;
 using NeUrokAdmin.WPF.Views.Selectors;
@@ -68,9 +69,21 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
                 ViewModel.Course = e[0];
         }
 
-        private void SelectTeacherBtn_Click(object sender, RoutedEventArgs e)
+        private async void SelectTeacherBtn_Click(object sender, RoutedEventArgs e)
         {
+            var allTeachers = await _mediator.Send(new GetAllTeachersQuery());
 
+            var vm = new TeacherSelectorViewModel(allTeachers, ViewModel.Teacher);
+            var selectorWindow = _navigationService.GetWindow<TeachersSelectorWindow>();
+            selectorWindow.ViewModel = vm;
+            selectorWindow.TeachersSelected += SelectorWindow_TeachersSelected;
+            selectorWindow.ShowDialog();
+        }
+
+        private void SelectorWindow_TeachersSelected(object? sender, List<TeacherDTO> e)
+        {
+            if (e.Count > 0)
+                ViewModel.Teacher = e[0];
         }
 
         private void Calendar_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)

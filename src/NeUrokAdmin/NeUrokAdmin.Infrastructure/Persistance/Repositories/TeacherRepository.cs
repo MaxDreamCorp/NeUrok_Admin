@@ -24,6 +24,11 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
             return await _context.Teachers.ToListAsync(cancellationToken);
         }
 
+        public async Task<Teacher?> GetByFullnameAsync(string fullname, CancellationToken cancellationToken = default)
+        {
+            return await _context.Teachers.FirstOrDefaultAsync(t => t.Fullname == fullname, cancellationToken);
+        }
+
         public async Task<Teacher?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
             return await _context.Teachers.FirstOrDefaultAsync(t => t.Id == id, cancellationToken);

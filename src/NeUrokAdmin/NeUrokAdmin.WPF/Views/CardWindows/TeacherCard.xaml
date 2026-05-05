@@ -69,7 +69,7 @@
                 <TextBlock Text="Доля за инд.:" 
                            Grid.Row="2" 
                            Style="{StaticResource CardTextBlock}"/>
-                <TextBox Text="{Binding IndividualLessonsShare, UpdateSourceTrigger=PropertyChanged}" 
+                <TextBox Text="{Binding IndividualLessonsShare, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
                          Grid.Row="2" 
                          Grid.Column="1" 
                          Margin="0,5" 

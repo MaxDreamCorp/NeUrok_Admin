@@ -54,23 +54,41 @@
                     <CheckBox IsChecked="{Binding IsSelected}"
                               Checked="CheckBox_Checked"
                               VerticalAlignment="Center">
-                        <Grid ShowGridLines="True">
+                        <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" MaxWidth="150" />
+                                <ColumnDefinition Width="*" MaxWidth="250" />
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" MaxWidth="150" />
+                                <ColumnDefinition Width="*" MaxWidth="250" />
                             </Grid.ColumnDefinitions>
-                                <TextBlock Text="{Binding Teacher.Id}"
-                                           Grid.Column="0"/>
-                                <TextBlock Text="{Binding Teacher.Fullname}"
+                            <Border BorderThickness="1"
+                                           Grid.Column="0"
+                                    Padding="5 4"
+                                    BorderBrush="Black">
+                                <TextBlock Text="{Binding Teacher.Id}"/>
+                            </Border>
+                            <Border BorderThickness="0,1,1,1"
                                            Grid.Column="1"
+                                    MaxWidth="250"
+                                    Padding="5 4"
+                                    BorderBrush="Black">
+                                <TextBlock Text="{Binding Teacher.Fullname}"
                                            TextWrapping="Wrap"/>
-                            <TextBlock Text="{Binding Teacher.IndividualLessonsShare}"
-                                       Grid.Column="2"/>
-                            <TextBlock Text="{Binding Teacher.Notes}"
+                            </Border>
+                            <Border BorderThickness="0,1,0,1"
+                                       Grid.Column="2"
+                                    Padding="5 4"
+                                    BorderBrush="Black">
+                                <TextBlock Text="{Binding Teacher.IndividualLessonsShare}"/>
+                            </Border>
+                            <Border BorderThickness="1"
                                          Grid.Column="3"
+                                    Padding="5 4"
+                                    MaxWidth="250"
+                                    BorderBrush="Black">
+                                <TextBlock Text="{Binding Teacher.Notes}"
                                          TextWrapping="Wrap"/>
+                            </Border>
                         </Grid>
                     </CheckBox>
                 </DataTemplate>

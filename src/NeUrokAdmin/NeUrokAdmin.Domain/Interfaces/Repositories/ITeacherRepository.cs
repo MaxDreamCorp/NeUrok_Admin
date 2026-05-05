@@ -9,6 +9,7 @@ namespace NeUrokAdmin.Domain.Interfaces.Repositories
         Task UpdateAsync(Teacher teacher, CancellationToken cancellationToken = default);
         Task<int> GetNextIdAsync(CancellationToken cancellationToken = default);
         Task<Teacher?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
+        Task<Teacher?> GetByFullnameAsync(string fullname, CancellationToken cancellationToken = default);
         Task<List<Teacher>> GetAllAsync(CancellationToken cancellationToken = default);
     }
 }

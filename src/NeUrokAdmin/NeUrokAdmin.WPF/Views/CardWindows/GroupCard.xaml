@@ -90,7 +90,7 @@
                             Click="SelectCourseBtn_Click"/>
                 </StackPanel>
 
-                <TextBlock Text="Преподаватель:"
+                <TextBlock Text="Педагог:"
                        Grid.Row="3"
                            VerticalAlignment="Top"
                        Style="{StaticResource CardTextBlock}"/>
@@ -101,7 +101,7 @@
                              Style="{StaticResource Tbox}"
                              IsReadOnly="True"
                              IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Button Content="Выбрать преподавателя"
+                    <Button Content="Выбрать педагога"
                             x:Name="SelectTeacherBtn"
                             Style="{StaticResource MiniSecondaryBtn}"
                             HorizontalAlignment="Right"

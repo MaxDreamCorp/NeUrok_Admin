@@ -67,13 +67,13 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
         private string _fullname = string.Empty;
 
         [ObservableProperty]
-        private decimal _individualLessonsShare;
+        private decimal? _individualLessonsShare;
 
         [ObservableProperty]
         private string? _notes;
 
 
-        public TeacherCardViewModel(OperationType operationType, TeacherDTO? teacherDTO)
+        public TeacherCardViewModel(OperationType operationType, TeacherDTO? teacherDTO = null)
         {
             if (teacherDTO != null)
             {
