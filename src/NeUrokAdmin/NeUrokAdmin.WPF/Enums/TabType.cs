@@ -8,5 +8,6 @@
         Courses,
         Teachers,
         Subscriptions,
+        Management
     }
 }
