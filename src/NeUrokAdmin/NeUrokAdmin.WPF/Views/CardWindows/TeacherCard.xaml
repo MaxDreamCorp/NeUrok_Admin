@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NeUrokAdmin.WPF.Views.CardWindows"
         mc:Ignorable="d"
-                MinWidth="480"
-        SizeToContent="WidthAndHeight"
+        Width="480"
+        SizeToContent="Height"
         Loaded="Window_Loaded"
         Title="Педагог">
     <Window.Resources>

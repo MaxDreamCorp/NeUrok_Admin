@@ -33,9 +33,27 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
             Close();
         }
 
-        private void DelBtn_Click(object sender, RoutedEventArgs e)
+        private async void DelBtn_Click(object sender, RoutedEventArgs e)
         {
+            if (ViewModel.Id == null)
+                return;
 
+            var result = _dialogService.AskQuetion("Вы уверены, что хотите удалить данного педагога?");
+            if (!result)
+                return;
+
+            var cmd = new RemoveTeacherCommand(ViewModel.Id.Value);
+
+            try
+            {
+                await _mediator.Send(cmd);
+                DialogResult = true;
+                Close();
+            }
+            catch (Exception ex)
+            {
+                _dialogService.ShowError(ex.Message);
+            }
         }
 
         private async void AcceptBtn_Click(object sender, RoutedEventArgs e)
@@ -81,7 +99,7 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
                 return false;
             }
         }
-        
+
         private async Task<bool> UpdateCourse()
         {
             if (!_dialogService.AskQuetion("Вы уверены, что хотите изменить педагога?"))

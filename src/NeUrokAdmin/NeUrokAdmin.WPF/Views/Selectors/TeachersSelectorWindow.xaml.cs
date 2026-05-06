@@ -37,7 +37,7 @@ namespace NeUrokAdmin.WPF.Views.Selectors
 
         private void BackBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            Close();
         }
 
         private void QuickSearchInp_TextChanged(object sender, TextChangedEventArgs e)

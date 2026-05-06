@@ -43,6 +43,8 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
 
         public async Task RemoveAsync(Teacher teacher, CancellationToken cancellationToken = default)
         {
+            if (await _context.Groups.AnyAsync(g => g.TeacherId == teacher.Id, cancellationToken))
+                throw new InvalidOperationException("Невозможно удалить учителя, так как он ведет группы");
             _context.Teachers.Remove(teacher);
             await _context.SaveChangesAsync(cancellationToken);
         }

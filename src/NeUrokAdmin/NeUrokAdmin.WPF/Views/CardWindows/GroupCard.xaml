@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NeUrokAdmin.WPF.Views.CardWindows"
         mc:Ignorable="d"
-                Width="480"
+        Width="480"
         SizeToContent="Height"
         Loaded="Window_Loaded"
         Title="Группа">
