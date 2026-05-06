@@ -64,9 +64,21 @@ namespace NeUrokAdmin.WPF.Views.Selectors
             Close();
         }
 
-        private void ListBoxItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private async void ListBoxItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            if (sender is ListBoxItem item && item.DataContext is TeacherSelectorItemViewModel vm)
+            {
+                var teacher = ViewModel.AllTeachers.Find(ci => ci.Teacher.Id == vm.Teacher.Id)?.Teacher;
+                if (teacher != null)
+                {
+                    var teacherVM = new TeacherCardViewModel(Enums.OperationType.Edit, teacher);
+                    var card = _navigationService.GetWindow<TeacherCard>();
+                    card.ViewModel = teacherVM;
+                    card.ShowDialog();
+                    if (card.DialogResult == true)
+                        await RefreeshList();
+                }
+            }
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)

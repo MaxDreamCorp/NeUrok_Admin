@@ -47,6 +47,7 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
                     result = await CreateCourse();
                     break;
                 case Enums.OperationType.Edit:
+                    result = await UpdateCourse();
                     break;
             }
 
@@ -65,10 +66,34 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
             if (!CheckFields())
                 return false;
 
-
             try
             {
                 var cmd = new CreateTeacherCommand(
+                    ViewModel.Fullname,
+                    ViewModel.IndividualLessonsShare ?? throw new InvalidOperationException("Доля индивидуальных занятий не может быть пустой"),
+                    ViewModel.Notes);
+                await _mediator.Send(cmd);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _dialogService.ShowError(ex.Message);
+                return false;
+            }
+        }
+        
+        private async Task<bool> UpdateCourse()
+        {
+            if (!_dialogService.AskQuetion("Вы уверены, что хотите изменить педагога?"))
+                return false;
+
+            if (!CheckFields())
+                return false;
+
+            try
+            {
+                var cmd = new UpdateTeacherCommand(
+                    ViewModel.Id ?? throw new InvalidOperationException("Id не может быть пустым"),
                     ViewModel.Fullname,
                     ViewModel.IndividualLessonsShare ?? throw new InvalidOperationException("Доля индивидуальных занятий не может быть пустой"),
                     ViewModel.Notes);
