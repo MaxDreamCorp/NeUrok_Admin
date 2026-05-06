@@ -5,6 +5,8 @@
         Clients,
         Students,
         Groups,
-        Subscriptions
+        Courses,
+        Teachers,
+        Subscriptions,
     }
 }

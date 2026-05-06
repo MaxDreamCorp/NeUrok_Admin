@@ -47,6 +47,7 @@
                             <StackPanel Orientation="Horizontal" 
                                         Margin="20,10">
                                 <Image Source="{Binding IconPath}" 
+                                       RenderOptions.BitmapScalingMode="HighQuality"
                                        Width="25"/>
                                 <TextBlock Text="{Binding Title}" 
                                            Foreground="White"
