@@ -42,7 +42,20 @@ namespace NeUrokAdmin.WPF.Views.Selectors
 
         private void QuickSearchInp_TextChanged(object sender, TextChangedEventArgs e)
         {
+            CopyFilterSelectedToAllTeachers();
 
+            var searchText = QuickSearchInp.Text.ToLower();
+            if (string.IsNullOrEmpty(searchText))
+            {
+                ViewModel.FilteredTeachers = ViewModel.AllTeachers;
+                return;
+            }
+
+            ViewModel.FilteredTeachers = ViewModel.AllTeachers
+                .Where(t => t.Teacher.Id.ToString().Contains(searchText) ||
+                t.Teacher.Fullname.ToLower().Contains(searchText) ||
+                t.Teacher.IndividualLessonsShare.ToString().Contains(searchText) ||
+                (t.Teacher.Notes != null && t.Teacher.Notes.ToLower().Contains(searchText))).ToList();
         }
 
         private async void AddBtn_Click(object sender, RoutedEventArgs e)
