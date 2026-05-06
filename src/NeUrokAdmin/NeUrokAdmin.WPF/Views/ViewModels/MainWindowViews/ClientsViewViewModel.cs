@@ -2,9 +2,9 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using NeUrokAdmin.Domain.DTOs;
 
-namespace NeUrokAdmin.WPF.Views.ViewModels
+namespace NeUrokAdmin.WPF.Views.ViewModels.MainWindowViews
 {
-    public partial class ClientViewViewModel : ObservableObject
+    public partial class ClientsViewViewModel : ObservableObject
     {
         public List<ClientDTO> AllClients { get; set; } = new();
 

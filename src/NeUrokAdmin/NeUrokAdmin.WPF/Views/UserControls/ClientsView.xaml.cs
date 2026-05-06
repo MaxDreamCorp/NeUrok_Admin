@@ -5,6 +5,7 @@ using NeUrokAdmin.Domain.DTOs;
 using NeUrokAdmin.WPF.Services;
 using NeUrokAdmin.WPF.Views.CardWindows;
 using NeUrokAdmin.WPF.Views.ViewModels;
+using NeUrokAdmin.WPF.Views.ViewModels.MainWindowViews;
 
 namespace NeUrokAdmin.WPF.Views.UserControls
 {
@@ -48,6 +49,7 @@ namespace NeUrokAdmin.WPF.Views.UserControls
                 if (card.DialogResult == true)
                 {
                     await PrintAll();
+                    await Refilter();
                     QuickSearch();
                 }
             }
@@ -63,6 +65,7 @@ namespace NeUrokAdmin.WPF.Views.UserControls
             if (card.DialogResult == true)
             {
                 await Clear();
+                await Refilter();
                 QuickSearch();
             }
         }
@@ -117,6 +120,17 @@ namespace NeUrokAdmin.WPF.Views.UserControls
                 ViewModel.DisplayedClients = new(ViewModel.AllClients);
             else
                 ViewModel.DisplayedClients = new(ViewModel.FilteredClients);
+        }
+
+        private async Task Refilter()
+        {
+            if (ViewModel.IsFiltering)
+            {
+                var searchDto = _filterVM.GetSearchDTO();
+                var qry = new GetClientsByFilterQuery(searchDto);
+                ViewModel.FilteredClients = new(await _mediator.Send(qry));
+                ResetDisplayedClientsAfterSearching();
+            }
         }
 
         private void QuickSearch()

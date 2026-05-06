@@ -2,6 +2,7 @@
 using NeUrokAdmin.WPF.Services;
 using NeUrokAdmin.WPF.Views.UserControls;
 using NeUrokAdmin.WPF.Views.ViewModels;
+using NeUrokAdmin.WPF.Views.ViewModels.MainWindowViews;
 
 namespace NeUrokAdmin.WPF
 {
@@ -54,6 +55,14 @@ namespace NeUrokAdmin.WPF
                 groupsView.ViewModel = vm;
                 await groupsView.LoadData();
                 MainConteiner.Content = groupsView;
+            }
+            else if (e.Type == Enums.TabType.Courses)
+            {
+                var vm = new CoursesViewViewModel();
+                var coursesView = _navigationService.GetUserControl<CoursesView>();
+                coursesView.ViewModel = vm;
+                await coursesView.LoadData();
+                MainConteiner.Content = coursesView;
             }
         }
 

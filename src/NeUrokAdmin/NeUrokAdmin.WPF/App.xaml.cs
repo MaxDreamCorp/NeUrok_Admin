@@ -17,7 +17,6 @@ using NeUrokAdmin.WPF.Views.CardWindows;
 using NeUrokAdmin.WPF.Views.ModalWindows;
 using NeUrokAdmin.WPF.Views.Selectors;
 using NeUrokAdmin.WPF.Views.UserControls;
-using NeUrokAdmin.WPF.Views.ViewModels;
 
 namespace NeUrokAdmin.WPF
 {
@@ -62,6 +61,7 @@ namespace NeUrokAdmin.WPF
             services.AddTransient<RegistrationWindow>();
             services.AddTransient<ClientsView>();
             services.AddTransient<GroupsView>();
+            services.AddTransient<CoursesView>();
 
             services.AddTransient<ClientCard>();
             services.AddTransient<CourseCard>();
@@ -71,8 +71,6 @@ namespace NeUrokAdmin.WPF
             services.AddTransient<CoursesSelectorWindow>();
             services.AddTransient<TeachersSelectorWindow>();
             services.AddTransient<ClientStatusesSelectorWindow>();
-
-            services.AddTransient<ClientsViewViewModel>();
 
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IClientRepository, ClientRepository>();
