@@ -47,13 +47,13 @@ namespace NeUrokAdmin.WPF.Views.UserControls
             {
                 await Clear();
                 //await Refilter();
-                //QuickSearch();
+                QuickSearch();
             }
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-
+            QuickSearch();
         }
 
         private void FilterBtn_Click(object sender, RoutedEventArgs e)
@@ -61,9 +61,9 @@ namespace NeUrokAdmin.WPF.Views.UserControls
 
         }
 
-        private void ClearBtn_Click(object sender, RoutedEventArgs e)
+        private async void ClearBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            await Clear();
         }
 
         private async void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -78,7 +78,7 @@ namespace NeUrokAdmin.WPF.Views.UserControls
                 {
                     await PrintAll();
                     //await Refilter();
-                    //QuickSearch();
+                    QuickSearch();
                 }
             }
         }
@@ -100,6 +100,33 @@ namespace NeUrokAdmin.WPF.Views.UserControls
             var qry = new GetAllSubscriptionsQuery();
             ViewModel.AllSubscriptions = await _mediator.Send(qry);
             ViewModel.DisplayedSubscriptions = new(ViewModel.AllSubscriptions);
+        }
+
+        private void ResetDisplayedSubscriptionsAfterSearching()
+        {
+            if (ViewModel.FilteredSubscriptions == null)
+                ViewModel.DisplayedSubscriptions = new(ViewModel.AllSubscriptions);
+            else
+                ViewModel.DisplayedSubscriptions = new(ViewModel.FilteredSubscriptions);
+        }
+
+        private void QuickSearch()
+        {
+            var searchText = ViewModel.QuickSearchText.ToLower();
+            if (string.IsNullOrEmpty(searchText))
+            {
+                ResetDisplayedSubscriptionsAfterSearching();
+                return;
+            }
+
+            var initialList = ViewModel.FilteredSubscriptions?.ToList() ?? ViewModel.AllSubscriptions;
+
+            ViewModel.DisplayedSubscriptions = new(initialList.Where(s =>
+                s.Id.ToString().Contains(searchText) ||
+                s.Name.ToLower().Contains(searchText) ||
+                s.ClassesType.Type.ToLower().Contains(searchText) ||
+                s.Cost.ToString().Contains(searchText) ||
+                s.ClassesAmount.ToString().Contains(searchText)));
         }
     }
 }
