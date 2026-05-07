@@ -100,5 +100,15 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
             }
             OperationType = operationType;
         }
+
+        public SubscriptionDTO GetSubscriptionDTO()
+        {
+            return new SubscriptionDTO(
+                Id ?? 0,
+                Name,
+                ClassesTypesDTO.FirstOrDefault(ct => ct.Type == ClassesType) ?? throw new ArgumentNullException(nameof(ClassesType)),
+                Cost ?? throw new ArgumentNullException(nameof(Cost)),
+                ClassesAmount ?? throw new ArgumentNullException(nameof(ClassesAmount)));
+        }
     }
 }
