@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using MediatR;
+using NeUrokAdmin.Application.Features.SubscriptionOperations.Queries;
 using NeUrokAdmin.WPF.Services;
 using NeUrokAdmin.WPF.Views.CardWindows;
 using NeUrokAdmin.WPF.Views.ViewModels.Cards;
@@ -32,10 +33,10 @@ namespace NeUrokAdmin.WPF.Views.UserControls
         public async Task LoadData()
         {
             DataContext = ViewModel;
-            //await Clear();
+            await Clear();
         }
 
-        private void AddBtn_Click(object sender, RoutedEventArgs e)
+        private async void AddBtn_Click(object sender, RoutedEventArgs e)
         {
             var cardVM = new SubscriptionCardViewModel(Enums.OperationType.Create);
             var card = _navigationService.GetWindow<SubscriptionCard>();
@@ -43,7 +44,7 @@ namespace NeUrokAdmin.WPF.Views.UserControls
             card.ShowDialog();
             if (card.DialogResult == true)
             {
-                //await Clear();
+                await Clear();
                 //await Refilter();
                 //QuickSearch();
             }
@@ -67,6 +68,25 @@ namespace NeUrokAdmin.WPF.Views.UserControls
         private void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
 
+        }
+
+        private async Task Clear()
+        {
+            ViewModel.FilteredSubscriptions = null;
+            ViewModel.IsFiltering = false;
+            ViewModel.QuickSearchText = string.Empty;
+            await PrintAll();
+            _filterVM = new SubscriptionCardViewModel(Enums.OperationType.Filter,
+                maxId: ViewModel.AllSubscriptions.Any() ?
+                ViewModel.AllSubscriptions.Max(c => c.Id) :
+                null);
+        }
+
+        private async Task PrintAll()
+        {
+            var qry = new GetAllSubscriptionsQuery();
+            ViewModel.AllSubscriptions = await _mediator.Send(qry);
+            ViewModel.DisplayedSubscriptions = new(ViewModel.AllSubscriptions);
         }
     }
 }

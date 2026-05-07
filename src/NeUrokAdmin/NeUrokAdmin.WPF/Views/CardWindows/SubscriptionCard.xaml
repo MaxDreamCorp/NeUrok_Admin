@@ -71,7 +71,7 @@
                             Grid.Row="2" 
                             Style="{StaticResource CardTextBlock}"/>
                 <ComboBox SelectedItem="{Binding ClassesType, UpdateSourceTrigger=PropertyChanged}" 
-                           ItemsSource="{Binding ClassesTyped, UpdateSourceTrigger=PropertyChanged}" 
+                           ItemsSource="{Binding ClassesTypes, UpdateSourceTrigger=PropertyChanged}" 
                            Style="{StaticResource ModernComboBox}"
                            Grid.Row="2" 
                            Grid.Column="1" 

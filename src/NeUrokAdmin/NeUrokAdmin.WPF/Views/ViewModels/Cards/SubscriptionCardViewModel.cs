@@ -88,7 +88,7 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
         [ObservableProperty]
         private int? _classesAmount;
 
-        public SubscriptionCardViewModel(OperationType operationType, SubscriptionDTO? subscriptionDTO = null)
+        public SubscriptionCardViewModel(OperationType operationType, SubscriptionDTO? subscriptionDTO = null, int? maxId = null)
         {
             if (subscriptionDTO != null)
             {
