@@ -53,12 +53,12 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
             switch (ViewModel.OperationType)
             {
                 case Enums.OperationType.Create:
-                    result = await CreateClient();
+                    result = await CreateSubscription();
                     break;
                 case Enums.OperationType.Read:
                     break;
                 case Enums.OperationType.Edit:
-                    //result = await UpdateClient();
+                    result = await UpdateSubscription();
                     break;
                 case Enums.OperationType.Filter:
                     result = true;
@@ -74,7 +74,7 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
             }
         }
 
-        private async Task<bool> CreateClient()
+        private async Task<bool> CreateSubscription()
         {
             if (!_dialogService.AskQuetion("Вы уверены, что хотите создать новый абонемент?"))
                 return false;
@@ -97,6 +97,34 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
             catch (Exception ex)
             {
                 _dialogService.ShowError($"Ошибка при создании абонемента: {ex.Message}");
+                return false;
+            }
+        }
+
+        private async Task<bool> UpdateSubscription()
+        {
+            if (!_dialogService.AskQuetion("Вы уверены, что хотите изменить абонемент?"))
+                return false;
+
+            if (!CheckFields())
+                return false;
+
+            try
+            {
+                var subscription = ViewModel.GetSubscriptionDTO();
+                var cmd = new UpdateSubscriptionCommand(
+                    subscription.Id,
+                    subscription.Name,
+                    subscription.ClassesType.Id,
+                    subscription.Cost,
+                    subscription.ClassesAmount);
+
+                await _mediator.Send(cmd);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _dialogService.ShowError($"Ошибка при изменении абонемента: {ex.Message}");
                 return false;
             }
         }
