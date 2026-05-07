@@ -62,6 +62,7 @@ namespace NeUrokAdmin.WPF
             services.AddTransient<ClientsView>();
             services.AddTransient<GroupsView>();
             services.AddTransient<CoursesView>();
+            services.AddTransient<TeachersView>();
 
             services.AddTransient<ClientCard>();
             services.AddTransient<CourseCard>();

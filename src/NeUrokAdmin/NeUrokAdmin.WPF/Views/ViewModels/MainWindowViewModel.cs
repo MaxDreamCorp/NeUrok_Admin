@@ -19,7 +19,7 @@ namespace NeUrokAdmin.WPF.Views.ViewModels
             SideMenuItems.Add(new SideMenuItemViewModel { Title = "Группы", Type = Enums.TabType.Groups, IconPath = "/Resources/Icons/GroupIcon.png" });
             SideMenuItems.Add(new SideMenuItemViewModel { Title = "Ученики", Type = Enums.TabType.Students, IconPath = "/Resources/Icons/StudyIcon.png" });
             SideMenuItems.Add(new SideMenuItemViewModel { Title = "Курсы", Type = Enums.TabType.Courses, IconPath = "/Resources/Icons/CourseIcon.png" });
-            SideMenuItems.Add(new SideMenuItemViewModel { Title = "Учителя", Type = Enums.TabType.Teachers, IconPath = "/Resources/Icons/TeacherIcon.png" });
+            SideMenuItems.Add(new SideMenuItemViewModel { Title = "Педагоги", Type = Enums.TabType.Teachers, IconPath = "/Resources/Icons/TeacherIcon.png" });
             SideMenuItems.Add(new SideMenuItemViewModel { Title = "Абонементы", Type = Enums.TabType.Subscriptions, IconPath = "/Resources/Icons/TicketIcon.png" });
             SideMenuItems.Add(new SideMenuItemViewModel { Title = "Управление", Type = Enums.TabType.Subscriptions, IconPath = "/Resources/Icons/ManagementIcon.png" });
 
