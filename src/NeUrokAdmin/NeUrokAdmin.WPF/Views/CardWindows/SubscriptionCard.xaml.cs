@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using MediatR;
+using NeUrokAdmin.Application.Features.SubscriptionOperations.Queries;
 using NeUrokAdmin.WPF.Interfaces;
 using NeUrokAdmin.WPF.Services;
 using NeUrokAdmin.WPF.Views.ViewModels.Cards;
@@ -25,9 +26,14 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
             _dialogService = dialogService;
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             DataContext = ViewModel;
+
+            var qry = new GetAllClassesTypesQuery();
+            var types = await _mediator.Send(qry);
+
+            ViewModel.ClassesTypesDTO = types;
         }
 
         private void BackBtn_Click(object sender, RoutedEventArgs e)

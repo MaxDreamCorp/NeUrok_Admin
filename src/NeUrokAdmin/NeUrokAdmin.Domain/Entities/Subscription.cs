@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace NeUrokAdmin.Domain.Entities;
+﻿namespace NeUrokAdmin.Domain.Entities;
 
 public partial class Subscription
 {
@@ -18,4 +15,23 @@ public partial class Subscription
     public virtual ClassType ClassesType { get; set; } = null!;
 
     public virtual ICollection<StudentSubscription> StudentSubscriptions { get; set; } = new List<StudentSubscription>();
+
+    private Subscription() { }
+
+    public static Subscription Create(
+        int id,
+        string name,
+        int classesTypeId,
+        decimal cost,
+        int classesAmount)
+    {
+        return new Subscription
+        {
+            Id = id,
+            Name = name,
+            ClassesTypeId = classesTypeId,
+            Cost = cost,
+            ClassesAmount = classesAmount
+        };
+    }
 }
