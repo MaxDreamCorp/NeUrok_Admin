@@ -42,9 +42,27 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
             Close();
         }
 
-        private void DelBtn_Click(object sender, RoutedEventArgs e)
+        private async void DelBtn_Click(object sender, RoutedEventArgs e)
         {
+            if (!_dialogService.AskQuetion("Вы уверены, что хотите удалить абонемент?\n" +
+                "Этот абонемент удалится из всех учеников, которые на него подписаны"))
+                return;
 
+            if (!ViewModel.Id.HasValue)
+                return;
+
+            var cmd = new RemoveSubscriptionCommand(ViewModel.Id.Value);
+
+            try
+            {
+                await _mediator.Send(cmd);
+                DialogResult = true;
+                Close();
+            }
+            catch (Exception ex)
+            {
+                _dialogService.ShowError(ex.Message);
+            }
         }
 
         private async void AcceptBtn_Click(object sender, RoutedEventArgs e)
