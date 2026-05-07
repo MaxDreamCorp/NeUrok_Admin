@@ -418,7 +418,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.ClassesAmount).HasColumnName("classes_amount");
             entity.Property(e => e.ClassesTypeId).HasColumnName("classes_type_id");
             entity.Property(e => e.Cost)
-                .HasPrecision(10)
+                .HasPrecision(10, 2)
                 .HasColumnName("cost");
             entity.Property(e => e.Name)
                 .HasMaxLength(200)

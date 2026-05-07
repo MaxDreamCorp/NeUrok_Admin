@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using NeUrokAdmin.Domain.Entities;
 using NeUrokAdmin.Domain.Interfaces.Repositories;
 
@@ -26,7 +21,9 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
 
         public async Task<List<Subscription>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            return await _context.Subscribtions.ToListAsync(cancellationToken);
+            return await _context.Subscribtions
+                .Include(s => s.ClassesType)
+                .ToListAsync(cancellationToken);
         }
 
         public async Task<Subscription?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
