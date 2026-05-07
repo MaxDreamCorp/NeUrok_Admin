@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NeUrokAdmin.Domain.Entities;
 
-public partial class Subscribtion
+public partial class Subscription
 {
     public int Id { get; set; }
 

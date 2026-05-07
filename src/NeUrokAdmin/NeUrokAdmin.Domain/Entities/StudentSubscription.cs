@@ -25,7 +25,7 @@ public partial class StudentSubscription
 
     public virtual Student Student { get; set; } = null!;
 
-    public virtual Subscribtion Subscription { get; set; } = null!;
+    public virtual Subscription Subscription { get; set; } = null!;
 
     public virtual SubscriptlonStatus SubscriptlonStatus { get; set; } = null!;
 }

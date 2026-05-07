@@ -38,7 +38,7 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<StudentSubscription> StudentSubscriptions { get; set; }
 
-    public virtual DbSet<Subscribtion> Subscribtions { get; set; }
+    public virtual DbSet<Subscription> Subscribtions { get; set; }
 
     public virtual DbSet<SubscriptlonStatus> SubscriptlonStatuses { get; set; }
 
@@ -404,11 +404,11 @@ public partial class ApplicationDbContext : DbContext
                 .HasConstraintName("FK_student_subscription_subscription_status");
         });
 
-        modelBuilder.Entity<Subscribtion>(entity =>
+        modelBuilder.Entity<Subscription>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("subscribtions");
+            entity.ToTable("subscriptions");
 
             entity.HasIndex(e => e.ClassesTypeId, "FK_subscribtion_class_type_idx");
 
