@@ -80,6 +80,7 @@ namespace NeUrokAdmin.WPF
             services.AddTransient<IGroupRepository, GroupRepository>();
             services.AddTransient<IGroupStatusRepository, GroupStatusRepository>();
             services.AddTransient<ITeacherRepository, TeacherRepository>();
+            services.AddTransient<IClassesTypeRepository, ClassesTypeRepository>();
 
         }
 
