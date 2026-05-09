@@ -2,9 +2,12 @@
 using MediatR;
 using NeUrokAdmin.Application.Features.SubscriptionOperations.Commands;
 using NeUrokAdmin.Application.Features.SubscriptionOperations.Queries;
+using NeUrokAdmin.Domain.DTOs;
 using NeUrokAdmin.WPF.Interfaces;
 using NeUrokAdmin.WPF.Services;
+using NeUrokAdmin.WPF.Views.Selectors;
 using NeUrokAdmin.WPF.Views.ViewModels.Cards;
+using NeUrokAdmin.WPF.Views.ViewModels.Selectors;
 
 namespace NeUrokAdmin.WPF.Views.CardWindows
 {
@@ -172,9 +175,21 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
             return true;
         }
 
-        private void SelectClassesTypesBtn_Click(object sender, RoutedEventArgs e)
+        private async void SelectClassesTypesBtn_Click(object sender, RoutedEventArgs e)
         {
+            var allClassesTypes = await _mediator.Send(new GetAllClassesTypesQuery());
 
+            var vm = new ClassesTypesSelectorViewModel(allClassesTypes, ViewModel.SearchingClassesTypes.ToList());
+            var selectorWindow = _navigationService.GetWindow<ClassesTypesSelectorWindow>();
+            selectorWindow.ViewModel = vm;
+            selectorWindow.ClassesTypesSelected += SelectorWindow_ClassesTypesSelected;
+            selectorWindow.ShowDialog();
+        }
+
+        private void SelectorWindow_ClassesTypesSelected(object? sender, List<ClassesTypeDTO> e)
+        {
+            ViewModel.SearchingClassesTypes = new(e);
+            ViewModel.SearchingClassesTypesDisplay = string.Join(", ", ViewModel.SearchingClassesTypes.Select(ct => ct.Type));
         }
     }
 }

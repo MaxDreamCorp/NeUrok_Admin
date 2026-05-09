@@ -74,6 +74,7 @@ namespace NeUrokAdmin.WPF
             services.AddTransient<CoursesSelectorWindow>();
             services.AddTransient<TeachersSelectorWindow>();
             services.AddTransient<ClientStatusesSelectorWindow>();
+            services.AddTransient<ClassesTypesSelectorWindow>();
 
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IClientRepository, ClientRepository>();
