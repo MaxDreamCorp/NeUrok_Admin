@@ -1,5 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using NeUrokAdmin.Domain.DTOs;
+using NeUrokAdmin.Domain.DTOs.SearchDTOs;
 using NeUrokAdmin.WPF.Enums;
 
 namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
@@ -47,6 +49,8 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
 
         private OperationType _operationType;
 
+        public SubscriptionSearchDTO? SearchDTO { get; set; }
+
         [ObservableProperty]
         private List<string> _classesTypes = new();
 
@@ -60,6 +64,9 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
             }
         }
         private List<ClassesTypeDTO> _classesTypesDTO = new();
+
+        [ObservableProperty]
+        private List<int> _ids;
 
         [ObservableProperty]
         private bool _isDeletable;
@@ -88,6 +95,32 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
         [ObservableProperty]
         private int? _classesAmount;
 
+
+        [ObservableProperty]
+        private int? _idFrom;
+
+        [ObservableProperty]
+        private int? _idTo;
+
+        [ObservableProperty]
+        private ObservableCollection<ClassesTypeDTO> _searchingClassesTypes = new();
+
+        [ObservableProperty]
+        private string _searchingClassesTypesDisplay = string.Empty;
+
+        [ObservableProperty]
+        private decimal? _costFrom;
+
+        [ObservableProperty]
+        private decimal? _costTo;
+
+        [ObservableProperty]
+        private int? _classesAmountFrom;
+
+        [ObservableProperty]
+        private int? _classesAmountTo;
+
+
         public SubscriptionCardViewModel(OperationType operationType, SubscriptionDTO? subscriptionDTO = null, int? maxId = null)
         {
             if (subscriptionDTO != null)
@@ -98,6 +131,23 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
                 _cost = subscriptionDTO.Cost;
                 _classesAmount = subscriptionDTO.ClassesAmount;
             }
+            if (SearchDTO != null)
+            {
+                _id = SearchDTO.Id;
+                _name = SearchDTO.Name ?? string.Empty;
+                _classesType = SearchDTO.ClassesType ?? string.Empty;
+                _cost = SearchDTO.Cost;
+                _classesAmount = SearchDTO.ClassesAmount;
+                _idFrom = SearchDTO.IdFrom;
+                _idTo = SearchDTO.IdTo;
+                _costFrom = SearchDTO.CostFrom;
+                _costTo = SearchDTO.CostTo;
+                _classesAmountFrom = SearchDTO.ClassesAmountFrom;
+                _classesAmountTo = SearchDTO.ClassesAmountTo;
+                if (SearchDTO.ClassesTypes != null)
+                    SearchingClassesTypes = new ObservableCollection<ClassesTypeDTO>(SearchDTO.ClassesTypes);
+            }
+            _ids = maxId.HasValue ? Enumerable.Range(1, maxId.Value).ToList() : new List<int>();
             OperationType = operationType;
         }
 
@@ -109,6 +159,26 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
                 ClassesTypesDTO.FirstOrDefault(ct => ct.Type == ClassesType) ?? throw new ArgumentNullException(nameof(ClassesType)),
                 Cost ?? throw new ArgumentNullException(nameof(Cost)),
                 ClassesAmount ?? throw new ArgumentNullException(nameof(ClassesAmount)));
+        }
+
+        public SubscriptionSearchDTO GetSearchDTO()
+        {
+            SearchDTO = new SubscriptionSearchDTO(
+                Id: Id,
+                Name: string.IsNullOrWhiteSpace(Name) ? null : Name,
+                ClassesType: string.IsNullOrWhiteSpace(ClassesType) ? null : ClassesType,
+                Cost: Cost,
+                ClassesAmount: ClassesAmount,
+                IdFrom: IdFrom,
+                IdTo: IdTo,
+                CostFrom: CostFrom,
+                CostTo: CostTo,
+                ClassesAmountFrom: ClassesAmountFrom,
+                ClassesAmountTo: ClassesAmountTo,
+                ClassesTypeIds: SearchingClassesTypes?.Select(ct => ct.Id).ToList(),
+                ClassesTypes: SearchingClassesTypes?.ToList()
+            );
+            return SearchDTO;
         }
     }
 }

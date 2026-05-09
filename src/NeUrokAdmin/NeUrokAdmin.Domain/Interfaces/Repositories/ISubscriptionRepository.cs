@@ -1,4 +1,5 @@
-﻿using NeUrokAdmin.Domain.Entities;
+﻿using NeUrokAdmin.Domain.DTOs.SearchDTOs;
+using NeUrokAdmin.Domain.Entities;
 
 namespace NeUrokAdmin.Domain.Interfaces.Repositories
 {
@@ -10,5 +11,6 @@ namespace NeUrokAdmin.Domain.Interfaces.Repositories
         Task<int> GetNextIdAsync(CancellationToken cancellationToken = default);
         Task<Subscription?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
         Task<List<Subscription>> GetAllAsync(CancellationToken cancellationToken = default);
+        Task<List<Subscription>> SearchAsync(SubscriptionSearchDTO request, CancellationToken cancellationToken = default);
     }
 }

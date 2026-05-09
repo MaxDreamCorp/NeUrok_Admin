@@ -43,6 +43,10 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
 
                 </Grid.RowDefinitions>
 
@@ -57,47 +61,142 @@
                          Style="{StaticResource Tbox}"
                          Visibility="{Binding IsFilter, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVis}}" />
 
+                <GroupBox Grid.Row="1"
+                          Grid.Column="1"
+                          Visibility="{Binding IsFilter, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVis}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="От:"
+                                Style="{StaticResource CardTextBlock}" Margin="0,5,10,5"/>
+                        <ComboBox Text="{Binding IdFrom, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
+                                  ItemsSource="{Binding Ids, UpdateSourceTrigger=PropertyChanged}"
+                                  IsEditable="True"
+                                  StaysOpenOnEdit="True"
+                                  HorizontalAlignment="Left"
+                                  Width="80"
+                                  Margin="0 5 0 0"
+                                  FontSize="13"/>   
+                        <TextBlock Text="До:"
+                                   Margin=" 15 0"
+                                   Style="{StaticResource CardTextBlock}"/>
+                        <ComboBox Text="{Binding IdTo, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
+                                   ItemsSource="{Binding Ids, UpdateSourceTrigger=PropertyChanged}"
+                                   IsEditable="True"
+                                   StaysOpenOnEdit="True"
+                                   HorizontalAlignment="Left"
+                                   Width="80"
+                                   Margin="0 5 0 0"
+                                   FontSize="13"/>                      
+                    </StackPanel>
+                </GroupBox>
+
                 <TextBlock Text="Название:" 
-                           Grid.Row="1" 
+                           Grid.Row="2" 
                            Style="{StaticResource CardTextBlock}"/>
                 <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" 
-                         Grid.Row="1" 
+                         Grid.Row="2" 
                          Grid.Column="1" 
                          Margin="0,5" 
                          Style="{StaticResource Tbox}"
                          IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <TextBlock Text="Тип занятий:" 
-                            Grid.Row="2" 
+                            Grid.Row="3" 
                             Style="{StaticResource CardTextBlock}"/>
                 <ComboBox SelectedItem="{Binding ClassesType, UpdateSourceTrigger=PropertyChanged}" 
                            ItemsSource="{Binding ClassesTypes, UpdateSourceTrigger=PropertyChanged}" 
                            Style="{StaticResource ModernComboBox}"
-                           Grid.Row="2" 
+                           Grid.Row="3" 
                            Grid.Column="1" 
                            Margin="0,5" 
                            IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
 
+                <GroupBox Grid.Row="4"
+                            Grid.Column="1"
+                            Margin="0 5"
+                            Visibility="{Binding IsFilter, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVis}}">
+                    <StackPanel>
+                        <TextBlock Text="Типы занятий:" 
+                                    Style="{StaticResource CardTextBlock}"/>
+                        <TextBox Text="{Binding SearchingClassesTypesDisplay}"
+                                 TextWrapping="Wrap"
+                                 Margin="0,0,0,5" 
+                                 Style="{StaticResource Tbox}" 
+                                 IsReadOnly="True"/>
+                        <Button x:Name="SelectClassesTypesBtn" 
+                                Content="Выбрать типы"
+                                Style="{StaticResource MiniSecondaryBtn}"
+                                HorizontalAlignment="Right"
+                                Click="SelectClassesTypesBtn_Click"/>
+                    </StackPanel>
+                </GroupBox>
+                
                 <TextBlock Text="Стоимость:" 
-                            Grid.Row="3" 
+                            Grid.Row="5" 
                             Style="{StaticResource CardTextBlock}"/>
                 <TextBox Text="{Binding Cost, UpdateSourceTrigger=PropertyChanged}" 
-                            Grid.Row="3" 
+                            Grid.Row="5" 
                             Grid.Column="1" 
                             Margin="0,5" 
                             Style="{StaticResource Tbox}"
                             IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <GroupBox Grid.Row="6"
+                           Grid.Column="1"
+                           Visibility="{Binding IsFilter, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVis}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="От:"
+                                    Style="{StaticResource CardTextBlock}" Margin="0,5,10,5"/>
+                        <TextBox Text="{Binding CostFrom, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
+                                   Style="{StaticResource Tbox}"
+                                   HorizontalAlignment="Left"
+                                   Width="80"
+                                   Margin="0 5 0 0"
+                                   FontSize="13"/>
+                        <TextBlock Text="До:"
+                                    Margin=" 15 0"
+                                    Style="{StaticResource CardTextBlock}"/>
+                        <TextBox Text="{Binding CostTo, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
+                                   Style="{StaticResource Tbox}"
+                                   HorizontalAlignment="Left"
+                                   Width="80"
+                                   Margin="0 5 0 0"
+                                   FontSize="13"/>
+                    </StackPanel>
+                </GroupBox>
 
                 <TextBlock Text="Кол-во занятий:" 
-                            Grid.Row="4" 
+                            Grid.Row="7" 
                             Style="{StaticResource CardTextBlock}"/>
                 <TextBox Text="{Binding ClassesAmount, UpdateSourceTrigger=PropertyChanged}" 
-                            Grid.Row="4" 
+                            Grid.Row="7" 
                             Grid.Column="1" 
                             Margin="0,5" 
                             Style="{StaticResource Tbox}"
                             IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
 
+                <GroupBox Grid.Row="8"
+                         Grid.Column="1"
+                         Visibility="{Binding IsFilter, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVis}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="От:"
+                                    Style="{StaticResource CardTextBlock}" Margin="0,5,10,5"/>
+                        <TextBox Text="{Binding ClassesAmountFrom, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
+                                 Style="{StaticResource Tbox}"
+                                 HorizontalAlignment="Left"
+                                 Width="80"
+                                 Margin="0 5 0 0"
+                                 FontSize="13"/>
+                        <TextBlock Text="До:"
+                                    Margin=" 15 0"
+                                    Style="{StaticResource CardTextBlock}"/>
+                        <TextBox Text="{Binding ClassesAmountTo, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
+                                 Style="{StaticResource Tbox}"
+                                 HorizontalAlignment="Left"
+                                 Width="80"
+                                 Margin="0 5 0 0"
+                                 FontSize="13"/>
+                    </StackPanel>
+                </GroupBox>
             </Grid>
         </StackPanel>
 

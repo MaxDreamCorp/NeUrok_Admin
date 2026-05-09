@@ -171,5 +171,10 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
             }
             return true;
         }
+
+        private void SelectClassesTypesBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

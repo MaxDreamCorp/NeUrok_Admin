@@ -46,7 +46,7 @@ namespace NeUrokAdmin.WPF.Views.UserControls
             if (card.DialogResult == true)
             {
                 await Clear();
-                //await Refilter();
+                await Refilter();
                 QuickSearch();
             }
         }
@@ -56,9 +56,19 @@ namespace NeUrokAdmin.WPF.Views.UserControls
             QuickSearch();
         }
 
-        private void FilterBtn_Click(object sender, RoutedEventArgs e)
+        private async void FilterBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            var card = _navigationService.GetWindow<SubscriptionCard>();
+            card.ViewModel = _filterVM;
+            card.ShowDialog();
+            if (card.DialogResult == true)
+            {
+                var searchDto = _filterVM.GetSearchDTO();
+                var qry = new GetSubscriptionsByFilterQuery(searchDto);
+                ViewModel.FilteredSubscriptions = new(await _mediator.Send(qry));
+                ViewModel.IsFiltering = true;
+                ResetDisplayedSubscriptionsAfterSearching();
+            }
         }
 
         private async void ClearBtn_Click(object sender, RoutedEventArgs e)
@@ -77,7 +87,7 @@ namespace NeUrokAdmin.WPF.Views.UserControls
                 if (card.DialogResult == true)
                 {
                     await PrintAll();
-                    //await Refilter();
+                    await Refilter();
                     QuickSearch();
                 }
             }
@@ -108,6 +118,17 @@ namespace NeUrokAdmin.WPF.Views.UserControls
                 ViewModel.DisplayedSubscriptions = new(ViewModel.AllSubscriptions);
             else
                 ViewModel.DisplayedSubscriptions = new(ViewModel.FilteredSubscriptions);
+        }
+
+        private async Task Refilter()
+        {
+            if (ViewModel.IsFiltering)
+            {
+                var searchDto = _filterVM.GetSearchDTO();
+                var qry = new GetSubscriptionsByFilterQuery(searchDto);
+                ViewModel.FilteredSubscriptions = new(await _mediator.Send(qry));
+                ResetDisplayedSubscriptionsAfterSearching();
+            }
         }
 
         private void QuickSearch()
