@@ -22,7 +22,6 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
         public async Task<List<Student>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             return await _context.Students
-                .Include(s => s.Client)
                 .Include(s => s.StudentSubscriptions)
                 .ToListAsync(cancellationToken);
         }
@@ -30,7 +29,6 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
         public async Task<Student?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
             return await _context.Students
-                .Include(s => s.Client)
                 .Include(s => s.StudentSubscriptions)
                 .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
         }
