@@ -48,6 +48,14 @@ namespace NeUrokAdmin.WPF
                 await clientsView.LoadData();
                 MainConteiner.Content = clientsView;
             }
+            if (e.Type == Enums.TabType.Students)
+            {
+                var vm = new StudentsViewViewModel();
+                var studentsView = _navigationService.GetUserControl<StudentsView>();
+                studentsView.ViewModel = vm;
+                await studentsView.LoadData();
+                MainConteiner.Content = studentsView;
+            }
             else if (e.Type == Enums.TabType.Groups)
             {
                 var vm = new GroupsViewViewModel();
