@@ -81,7 +81,7 @@
                              Style="{StaticResource Tbox}"
                              IsReadOnly="True"
                              IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Button Content="Выбрать курс"
+                    <Button Content="Выбрать абонемент"
                             x:Name="SelectSubscriptionBtn"
                             Style="{StaticResource MiniSecondaryBtn}"
                             HorizontalAlignment="Right"

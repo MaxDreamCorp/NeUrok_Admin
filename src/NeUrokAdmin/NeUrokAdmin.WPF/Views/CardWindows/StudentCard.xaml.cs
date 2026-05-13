@@ -2,6 +2,7 @@
 using MediatR;
 using NeUrokAdmin.Application.Features.ClientOperations.Queries;
 using NeUrokAdmin.Domain.DTOs;
+using NeUrokAdmin.WPF.Interfaces;
 using NeUrokAdmin.WPF.Services;
 using NeUrokAdmin.WPF.Views.Selectors;
 using NeUrokAdmin.WPF.Views.ViewModels.Cards;
@@ -18,12 +19,14 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
 
         private readonly IMediator _mediator;
         private readonly NavigationService _navigationService;
+        private readonly IDialogService _dialogService;
 
-        public StudentCard(IMediator mediator, NavigationService navigationService)
+        public StudentCard(IMediator mediator, NavigationService navigationService, IDialogService dialogService)
         {
             InitializeComponent();
             _mediator = mediator;
             _navigationService = navigationService;
+            _dialogService = dialogService;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -70,7 +73,16 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
 
         private void AddSubscriptionBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            if (ViewModel.Client == null)
+            {
+                _dialogService.ShowWarning("Сначала выберите клиента");
+                return;
+            }
+            var cardVM = new StudentSubscriptionCardViewModel(Enums.OperationType.Create, ViewModel.Client.ChildFullname);
+            var card = _navigationService.GetWindow<StudentSubscriptionCard>();
+            card.ViewModel = cardVM;
+            card.ShowDialog();
         }
     }
 }
+

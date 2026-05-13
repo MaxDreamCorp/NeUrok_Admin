@@ -44,6 +44,7 @@
          ItemsSource="{Binding FilteredSubscriptions}"
          HorizontalContentAlignment="Stretch"
          Background="Transparent"
+                 Grid.Row="1"
          BorderThickness="0">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
@@ -72,12 +73,15 @@
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock Grid.Column="0" 
+                                           Margin="5 0"
                                    Text="{Binding Subscription.Id, StringFormat='ID: {0}'}" 
                                    Foreground="#9E9E9E" 
                                    VerticalAlignment="Center"
                                    FontSize="11"/>
 
-                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <StackPanel Grid.Column="1"
+                                            Margin="5 0"
+                                            VerticalAlignment="Center">
                                     <TextBlock Text="{Binding Subscription.Name}" 
                                        FontWeight="Bold" 
                                        FontSize="14" 
@@ -90,6 +94,7 @@
                                 <StackPanel Grid.Column="2" 
                                     Orientation="Horizontal" 
                                     HorizontalAlignment="Center" 
+                                            Margin="5 0"
                                     VerticalAlignment="Center">
                                     <TextBlock Text="{Binding Subscription.ClassesAmount}" 
                                        FontSize="16" 
