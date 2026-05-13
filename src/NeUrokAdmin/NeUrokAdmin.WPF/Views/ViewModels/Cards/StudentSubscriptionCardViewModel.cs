@@ -47,6 +47,16 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
 
         private OperationType _operationType;
 
+        public List<SubscriptionStatusDTO> SubscriptionStatusesDTO
+        {
+            get => _subscriptionStatusesDTO;
+            set
+            {
+                SetProperty(ref _subscriptionStatusesDTO, value);
+                SubscriptionStatuses = value.Select(cs => cs.Status).ToList();
+            }
+        }
+
         [ObservableProperty]
         private bool _isDeletable;
 
@@ -90,6 +100,8 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
         [ObservableProperty]
         private DateTime? _finishDate;
 
+        private List<SubscriptionStatusDTO> _subscriptionStatusesDTO = new List<SubscriptionStatusDTO>();
+
         public StudentSubscriptionCardViewModel(OperationType operationType, string studentFullName, StudentSubscriptionDTO? studentSubscription = null)
         {
             _studentFullname = studentFullName;
@@ -106,6 +118,28 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
 
             }
             OperationType = operationType;
+        }
+
+        public StudentSubscriptionDTO GetStudentSubscriptionDTO()
+        {
+            if (Subscription == null)
+                throw new ArgumentNullException(nameof(Subscription));
+            if (!StartDate.HasValue)
+                throw new ArgumentNullException(nameof(StartDate));
+
+            if (!FinishDate.HasValue)
+                FinishDate = StartDate.Value.AddDays(Subscription.ClassesAmount);
+
+            return new StudentSubscriptionDTO(
+                Id ?? 0,
+                0,
+                Subscription,
+                IsPaid,
+                Course ?? throw new ArgumentNullException(nameof(Course)),
+                _subscriptionStatusesDTO.Find(ss => ss.Status == SubscriptionStatusStr) ?? throw new ArgumentNullException(nameof(SubscriptionStatusStr)),
+                DateOnly.FromDateTime(StartDate.Value),
+                FinishDate.HasValue ? DateOnly.FromDateTime(FinishDate.Value) : throw new ArgumentNullException(nameof(FinishDate))
+                );
         }
     }
 }

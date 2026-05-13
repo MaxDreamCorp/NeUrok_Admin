@@ -45,6 +45,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
 
                 </Grid.RowDefinitions>
 
@@ -89,11 +90,30 @@
                             Click="SelectSubscriptionBtn_Click"/>
                 </StackPanel>
 
+                <TextBlock Text="Курс:"
+                            Grid.Row="3"
+                            VerticalAlignment="Top"
+                            Style="{StaticResource CardTextBlock}"/>
+                <StackPanel Grid.Row="3"
+                            Grid.Column="1">
+                    <TextBox Text="{Binding Course.Name, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
+                              Margin="0,5" 
+                              Style="{StaticResource Tbox}"
+                              IsReadOnly="True"
+                              IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button Content="Выбрать курс"
+                             x:Name="SelectCourseBtn"
+                             Style="{StaticResource MiniSecondaryBtn}"
+                             HorizontalAlignment="Right"
+                             IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"
+                             Click="SelectCourseBtn_Click"/>
+                </StackPanel>
+
                 <TextBlock Text="Оплачен:" 
-                            Grid.Row="3" 
+                            Grid.Row="4" 
                             Style="{StaticResource CardTextBlock}"/>
                 <CheckBox IsChecked="{Binding IsPaid, UpdateSourceTrigger=PropertyChanged}" 
-                          Grid.Row="3" 
+                          Grid.Row="4" 
                           Grid.Column="1" 
                           Margin="0,5" 
                           Background="{StaticResource InpBg}"
@@ -103,32 +123,32 @@
                           IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}" />
 
                 <TextBlock Text="Статус:" 
-                            Grid.Row="4" 
+                            Grid.Row="5" 
                             Style="{StaticResource CardTextBlock}"/>
                 <ComboBox SelectedItem="{Binding SubscriptionStatusStr, UpdateSourceTrigger=PropertyChanged}" 
                           ItemsSource="{Binding SubscriptionStatuses, UpdateSourceTrigger=PropertyChanged}" 
                           Style="{StaticResource ModernComboBox}"
-                          Grid.Row="4" 
+                          Grid.Row="5" 
                           Grid.Column="1" 
                           Margin="0,5" 
                           IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <TextBlock Text="Начало:"
-                            Grid.Row="5" 
+                            Grid.Row="6" 
                             Style="{StaticResource CardTextBlock}"/>
                 <DatePicker SelectedDate="{Binding StartDate, UpdateSourceTrigger=PropertyChanged}" 
-                             Grid.Row="5"
+                             Grid.Row="6"
                              Grid.Column="1" 
                              Margin="0,5" 
                              Style="{StaticResource DatePicker}"
                              IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <TextBlock Text="Конец:"
-                            Grid.Row="6" 
+                            Grid.Row="7" 
                             Style="{StaticResource CardTextBlock}"
                            Visibility="{Binding IsFilter, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVis}}" />
                 <DatePicker SelectedDate="{Binding FinishDate, UpdateSourceTrigger=PropertyChanged}" 
-                             Grid.Row="6"
+                             Grid.Row="7"
                              Grid.Column="1" 
                              Margin="0,5" 
                              Style="{StaticResource DatePicker}"

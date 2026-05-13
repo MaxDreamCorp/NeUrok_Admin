@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using MediatR;
 using NeUrokAdmin.Application.Features.ClientOperations.Queries;
 using NeUrokAdmin.Domain.DTOs;
@@ -63,12 +64,25 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
         private void SelectorWindow_ClientsSelected(object? sender, List<ClientDTO> e)
         {
             if (e.Any())
+            {
                 ViewModel.Client = e.First();
+                if (ViewModel.Subscriptions.Any())
+                {
+                    if (_dialogService.AskQuetion("Хотите ли вы очистить список абонементов?"))
+                        ViewModel.Subscriptions.Clear();
+                }
+            }
         }
 
         private void RemoveSubscriptionBtn_Click(object sender, RoutedEventArgs e)
         {
+            if (SubsriptionsDg.SelectedItem is StudentSubscriptionDTO studentSubscriptionDTO)
+            {
+                if (!_dialogService.AskQuetion("Вы уверены, что хотите удалить запись?"))
+                    return;
 
+                ViewModel.Subscriptions.Remove(studentSubscriptionDTO);
+            }
         }
 
         private void AddSubscriptionBtn_Click(object sender, RoutedEventArgs e)
@@ -81,7 +95,35 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
             var cardVM = new StudentSubscriptionCardViewModel(Enums.OperationType.Create, ViewModel.Client.ChildFullname);
             var card = _navigationService.GetWindow<StudentSubscriptionCard>();
             card.ViewModel = cardVM;
+            card.StudentSubscriptionCreated += Card_StudentSubscriptionCreated;
             card.ShowDialog();
+        }
+
+        private void Card_StudentSubscriptionCreated(object? sender, StudentSubscriptionDTO e)
+        {
+            ViewModel.Subscriptions.Add(e);
+        }
+
+        private void DataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (sender is DataGrid dataGrid && dataGrid.SelectedItem is StudentSubscriptionDTO studentSubscriptionDTO)
+            {
+                if (ViewModel.Client == null)
+                {
+                    _dialogService.ShowWarning("Сначала выберите клиента");
+                    return;
+                }
+                var cardVM = new StudentSubscriptionCardViewModel(Enums.OperationType.Edit, ViewModel.Client.ChildFullname, studentSubscriptionDTO);
+                var card = _navigationService.GetWindow<StudentSubscriptionCard>();
+                card.ViewModel = cardVM;
+                card.StudentSubscriptionEdited += (s, ss) =>
+                {
+                    int index = ViewModel.Subscriptions.IndexOf(studentSubscriptionDTO);
+                    if (index >= 0)
+                        ViewModel.Subscriptions[index] = ss;
+                };
+                card.ShowDialog();
+            }
         }
     }
 }

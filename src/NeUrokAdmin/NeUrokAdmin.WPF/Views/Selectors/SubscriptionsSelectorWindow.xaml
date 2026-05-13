@@ -86,7 +86,7 @@
                                        FontWeight="Bold" 
                                        FontSize="14" 
                                        TextWrapping="Wrap"/>
-                                    <TextBlock Text="{Binding Subscription.ClassesType.Name}" 
+                                    <TextBlock Text="{Binding Subscription.ClassesType.Type}" 
                                        FontSize="11" 
                                        Foreground="#1976D2"/>
                                 </StackPanel>
