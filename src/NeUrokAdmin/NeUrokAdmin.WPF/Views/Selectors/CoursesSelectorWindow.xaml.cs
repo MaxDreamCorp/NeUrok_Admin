@@ -67,10 +67,10 @@ namespace NeUrokAdmin.WPF.Views.Selectors
         private async void AddBtn_Click(object sender, RoutedEventArgs e)
         {
             var vm = new CourseCardViewModel(Enums.OperationType.Create);
-            var courseCard = _navigationService.GetWindow<CourseCard>();
-            courseCard.ViewModel = vm;
-            courseCard.ShowDialog();
-            if (courseCard.DialogResult == true)
+            var card = _navigationService.GetWindow<CourseCard>();
+            card.ViewModel = vm;
+            card.ShowDialog();
+            if (card.DialogResult == true)
                 await RefreeshList();
         }
 
@@ -91,14 +91,14 @@ namespace NeUrokAdmin.WPF.Views.Selectors
         {
             if (sender is ListBoxItem item && item.Content is CourseSelectorItemViewModel vm)
             {
-                var courseDto = vm.Course;
+                var dto = vm.Course;
 
-                var cardVm = new CourseCardViewModel(Enums.OperationType.Edit, courseDto);
+                var cardVm = new CourseCardViewModel(Enums.OperationType.Edit, dto);
 
-                var editCourseCard = _navigationService.GetWindow<CourseCard>();
-                editCourseCard.ViewModel = cardVm;
-                editCourseCard.ShowDialog();
-                if (editCourseCard.DialogResult == true)
+                var editCard = _navigationService.GetWindow<CourseCard>();
+                editCard.ViewModel = cardVm;
+                editCard.ShowDialog();
+                if (editCard.DialogResult == true)
                     await RefreeshList();
             }
         }
@@ -123,10 +123,10 @@ namespace NeUrokAdmin.WPF.Views.Selectors
                 var it = ViewModel.AllCourses.Find(ci => ci.Course.Id == vm.Course.Id);
                 if (it != null)
                 {
-                    foreach (var course in ViewModel.AllCourses)
+                    foreach (var selItem in ViewModel.AllCourses)
                     {
-                        if (course.Course.Id != it.Course.Id)
-                            course.IsSelected = false;
+                        if (selItem.Course.Id != it.Course.Id)
+                            selItem.IsSelected = false;
                     }
                 }
             }
