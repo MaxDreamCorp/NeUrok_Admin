@@ -38,7 +38,7 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
                         IsFilter = true;
                         IsEditable = true;
                         IsDeletable = false;
-                        HeaderText = "Фильтр клиентов";
+                        HeaderText = "Фильтр учеников";
                         break;
                     default:
                         break;
