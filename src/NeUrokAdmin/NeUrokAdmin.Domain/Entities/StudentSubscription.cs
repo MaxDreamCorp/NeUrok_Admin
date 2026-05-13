@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace NeUrokAdmin.Domain.Entities;
+﻿namespace NeUrokAdmin.Domain.Entities;
 
 public partial class StudentSubscription
 {
@@ -28,4 +25,28 @@ public partial class StudentSubscription
     public virtual Subscription Subscription { get; set; } = null!;
 
     public virtual SubscriptlonStatus SubscriptlonStatus { get; set; } = null!;
+
+    private StudentSubscription() { }
+
+    public static StudentSubscription Create(int id,
+                                             int studentId,
+                                             int subscriptionId,
+                                             sbyte isPaid,
+                                             int courseId,
+                                             int subscriptlonStatusId,
+                                             DateOnly subscriptionStartDate,
+                                             DateOnly subscriptionFinishDate)
+    {
+        return new StudentSubscription()
+        {
+            Id = id,
+            StudentId = studentId,
+            SubscriptionId = subscriptionId,
+            IsPaid = isPaid,
+            CourseId = courseId,
+            SubscriptlonStatusId = subscriptlonStatusId,
+            SubscriptionStartDate = subscriptionStartDate,
+            SubscriptionFinishDate = subscriptionFinishDate,
+        };
+    }
 }

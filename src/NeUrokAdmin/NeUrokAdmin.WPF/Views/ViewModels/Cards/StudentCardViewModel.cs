@@ -85,7 +85,7 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
         public StudentDTO GetStudentDTO()
         {
             return new StudentDTO(
-                Id.HasValue ? Id.Value : throw new InvalidOperationException("Id не должно быть пустым"),
+                Id.HasValue ? Id.Value : 0,
                 Client ?? throw new InvalidOperationException("Клиент не должен быть пустым"),
                 Subscriptions.ToList());
         }

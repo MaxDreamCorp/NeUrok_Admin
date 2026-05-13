@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using MediatR;
 using NeUrokAdmin.Application.Features.ClientOperations.Queries;
+using NeUrokAdmin.Application.Features.StudentOperations.Commands;
 using NeUrokAdmin.Domain.DTOs;
 using NeUrokAdmin.WPF.Interfaces;
 using NeUrokAdmin.WPF.Services;
@@ -37,7 +38,7 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
 
         private void BackBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            Close();
         }
 
         private void DelBtn_Click(object sender, RoutedEventArgs e)
@@ -45,9 +46,31 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
 
         }
 
-        private void AcceptBtn_Click(object sender, RoutedEventArgs e)
+        private async void AcceptBtn_Click(object sender, RoutedEventArgs e)
         {
+            bool result = false;
+            switch (ViewModel.OperationType)
+            {
+                case Enums.OperationType.Create:
+                    result = await CreateStudent();
+                    break;
+                case Enums.OperationType.Read:
+                    break;
+                case Enums.OperationType.Edit:
+                    //result = await UpdateClient();
+                    break;
+                case Enums.OperationType.Filter:
+                    result = true;
+                    break;
+                default:
+                    break;
+            }
 
+            if (result)
+            {
+                DialogResult = true;
+                Close();
+            }
         }
 
         private async void SelectClientBtn_Click(object sender, RoutedEventArgs e)
@@ -124,6 +147,56 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
                 };
                 card.ShowDialog();
             }
+        }
+
+        private async Task<bool> CreateStudent()
+        {
+            if (!_dialogService.AskQuetion("Вы уверены, что хотите создать нового ученика?"))
+                return false;
+
+            if (!CheckFields())
+                return false;
+
+            StudentDTO? dto;
+            try
+            {
+                dto = ViewModel.GetStudentDTO();
+            }
+            catch (Exception ex)
+            {
+                _dialogService.ShowError(ex.Message);
+                return false;
+            }
+
+            var cmd = new CreateStudentCommand(
+                dto.Client.Id,
+                dto.StudentSubscriptions);
+
+            try
+            {
+                await _mediator.Send(cmd);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _dialogService.ShowError(ex.Message);
+                return false;
+            }
+        }
+
+        private bool CheckFields()
+        {
+            if (ViewModel.Client == null)
+            {
+                _dialogService.ShowWarning("Клиент не выбран");
+                return false;
+            }
+            if (!ViewModel.Subscriptions.Any())
+            {
+                _dialogService.ShowWarning("Ни один абонемент не выбран");
+                return false;
+            }
+            return true;
         }
     }
 }
