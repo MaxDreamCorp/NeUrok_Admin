@@ -4,6 +4,8 @@ using System.Windows.Input;
 using MediatR;
 using NeUrokAdmin.Application.Features.StudentOperations.Queries;
 using NeUrokAdmin.WPF.Services;
+using NeUrokAdmin.WPF.Views.CardWindows;
+using NeUrokAdmin.WPF.Views.ViewModels.Cards;
 using NeUrokAdmin.WPF.Views.ViewModels.MainWindowViews;
 
 namespace NeUrokAdmin.WPF.Views.UserControls
@@ -30,9 +32,16 @@ namespace NeUrokAdmin.WPF.Views.UserControls
             await PrintAll();
         }
 
-        private void AddBtn_Click(object sender, RoutedEventArgs e)
+        private async void AddBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            var cardVM = new StudentCardViewModel(Enums.OperationType.Create);
+            var card = _navigationService.GetWindow<StudentCard>();
+            card.ViewModel = cardVM;
+            card.ShowDialog();
+            if (card.DialogResult == true)
+            {
+                await PrintAll();
+            }
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)

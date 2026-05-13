@@ -79,7 +79,7 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
                 _client = studentDTO.Client;
                 _subscriptions = new(studentDTO.StudentSubscriptions);
             }
-            _operationType = operationType;
+            OperationType = operationType;
         }
 
         public StudentDTO GetStudentDTO()

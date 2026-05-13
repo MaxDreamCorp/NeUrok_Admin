@@ -1,7 +1,11 @@
 ﻿using System.Windows;
 using MediatR;
+using NeUrokAdmin.Application.Features.ClientOperations.Queries;
+using NeUrokAdmin.Domain.DTOs;
 using NeUrokAdmin.WPF.Services;
+using NeUrokAdmin.WPF.Views.Selectors;
 using NeUrokAdmin.WPF.Views.ViewModels.Cards;
+using NeUrokAdmin.WPF.Views.ViewModels.Selectors;
 
 namespace NeUrokAdmin.WPF.Views.CardWindows
 {
@@ -42,9 +46,21 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
 
         }
 
-        private void SelectClientBtn_Click(object sender, RoutedEventArgs e)
+        private async void SelectClientBtn_Click(object sender, RoutedEventArgs e)
         {
+            var allClients = await _mediator.Send(new GetAllClientsQuery());
 
+            var vm = new ClientsSelectorViewModel(allClients, ViewModel.Client);
+            var selectorWindow = _navigationService.GetWindow<ClientsSelectorWindow>();
+            selectorWindow.ViewModel = vm;
+            selectorWindow.ClientsSelected += SelectorWindow_ClientsSelected;
+            selectorWindow.ShowDialog();
+        }
+
+        private void SelectorWindow_ClientsSelected(object? sender, List<ClientDTO> e)
+        {
+            if (e.Any())
+                ViewModel.Client = e.First();
         }
 
         private void RemoveSubscriptionBtn_Click(object sender, RoutedEventArgs e)
