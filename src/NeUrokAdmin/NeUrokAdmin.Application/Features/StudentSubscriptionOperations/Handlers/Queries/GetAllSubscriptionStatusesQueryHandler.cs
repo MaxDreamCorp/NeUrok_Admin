@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using NeUrokAdmin.Application.Features.SubscriptionOperations.Queries;
+using NeUrokAdmin.Application.Features.StudentSubscriptionOperations.Queries;
 using NeUrokAdmin.Domain.DTOs;
 using NeUrokAdmin.Domain.Interfaces.Repositories;
 
-namespace NeUrokAdmin.Application.Features.SubscriptionOperations.Handlers.Queries
+namespace NeUrokAdmin.Application.Features.StudentSubscriptionOperations.Handlers.Queries
 {
     public class GetAllSubscriptionStatusesQueryHandler : IRequestHandler<GetAllSubscriptionStatusesQuery, List<SubscriptionStatusDTO>>
     {

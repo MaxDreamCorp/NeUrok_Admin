@@ -22,7 +22,8 @@
                     Content="Назад"
                     HorizontalAlignment="Left"
                     Click="BackBtn_Click"/>
-            <TextBox x:Name="QuickSearchInp" Style="{StaticResource PlaceholderSearch}"
+            <TextBox Text="{Binding QuickSearchText, UpdateSourceTrigger=PropertyChanged}" 
+                     Style="{StaticResource PlaceholderSearch}"
                      Margin="10"
                      HorizontalAlignment="Center"
                      MinWidth="250"

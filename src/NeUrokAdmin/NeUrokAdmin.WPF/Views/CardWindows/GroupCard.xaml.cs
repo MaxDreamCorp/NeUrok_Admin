@@ -105,7 +105,7 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
         private void AcceptDatesBtn_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.WeekDays = string.Join(", ", ViewModel.SelectedDates.
-                Order().Select(d => d.ToString("ddd")).Distinct());
+                OrderBy(d => d.DayOfWeek).Select(d => d.ToString("ddd")).Distinct());
         }
 
         private void RemoveStudentBtn_Click(object sender, RoutedEventArgs e)
@@ -125,6 +125,8 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
 
             var vm = new StudentsSelectorViewModel(allStudents, ViewModel.Students.ToList());
             var selectorWindow = _navigationService.GetWindow<StudentsSelectorWindow>();
+            if (ViewModel.Course != null)
+                vm.QuickSearchText = ViewModel.Course.Name;
             selectorWindow.ViewModel = vm;
             selectorWindow.StudentsSelected += SelectorWindow_StudentsSelected;
             selectorWindow.ShowDialog();

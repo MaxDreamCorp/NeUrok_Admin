@@ -108,7 +108,9 @@ namespace NeUrokAdmin.WPF.Views.UserControls
             ViewModel.DisplayedStudents = new(initialList.Where(s =>
                 s.Id.ToString().Contains(searchText) ||
                 s.Client.ChildFullname.ToLower().Contains(searchText) ||
-                s.StudentSubscriptions.Any(ss => ss.Subscription.Name.ToLower().Contains(searchText)) ||
+                s.StudentSubscriptions.Any(ss => ss.ClassesType.Type.ToLower().Contains(searchText)) ||
+                s.StudentSubscriptions.Any(ss => ss.Cost.ToString().Contains(searchText)) ||
+                s.StudentSubscriptions.Any(ss => ss.ClassesAmount.ToString().Contains(searchText)) ||
                 s.StudentSubscriptions.Any(ss => ss.Course.Name.ToLower().Contains(searchText)) ||
                 s.StudentSubscriptions.Any(ss => ss.SubscriptionStatus.Status.ToLower().Contains(searchText)) ||
                 s.StudentSubscriptions.Any(ss => ss.StartDate.ToDateTime(TimeOnly.MinValue).ToString("dd.MM.yyyy").Contains(searchText)) ||

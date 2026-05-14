@@ -40,13 +40,10 @@ namespace NeUrokAdmin.Application.Features.StudentOperations.Handlers.Queries
                         studentSubscription.Id,
                         student.Id,
                         new(
-                            studentSubscription.Subscription.Id,
-                            studentSubscription.Subscription.Name,
-                            new(
-                                studentSubscription.Subscription.ClassesType.Id,
-                                studentSubscription.Subscription.ClassesType.Type),
-                            studentSubscription.Subscription.Cost,
-                            studentSubscription.Subscription.ClassesAmount),
+                            studentSubscription.ClassesType.Id,
+                            studentSubscription.ClassesType.Type),
+                        studentSubscription.Cost,
+                        studentSubscription.ClassesAmount,
                         studentSubscription.IsPaid == 1,
                         new(
                             studentSubscription.Course.Id,

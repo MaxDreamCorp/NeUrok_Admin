@@ -36,7 +36,9 @@ namespace NeUrokAdmin.Application.Features.StudentOperations.Handlers.Commands
                     var studentSubscription = StudentSubscription.Create(
                         await _studentSubscriptionRepository.GetNextIdAsync(cancellationToken),
                         student.Id,
-                        dto.Subscription.Id,
+                        dto.ClassesType.Id,
+                        dto.Cost,
+                        dto.ClassesAmount,
                         (sbyte)(dto.IsPaid ? 1 : 0),
                         dto.Course.Id,
                         dto.SubscriptionStatus.Id,
@@ -51,7 +53,9 @@ namespace NeUrokAdmin.Application.Features.StudentOperations.Handlers.Commands
                         var studentSubscription = StudentSubscription.Create(
                             dto.Id,
                             student.Id,
-                            dto.Subscription.Id,
+                            dto.ClassesType.Id,
+                            dto.Cost,
+                            dto.ClassesAmount,
                             (sbyte)(dto.IsPaid ? 1 : 0),
                             dto.Course.Id,
                             dto.SubscriptionStatus.Id,

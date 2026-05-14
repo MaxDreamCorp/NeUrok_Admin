@@ -80,14 +80,6 @@ namespace NeUrokAdmin.WPF
                 await teachersView.LoadData();
                 MainConteiner.Content = teachersView;
             }
-            else if (e.Type == Enums.TabType.Subscriptions)
-            {
-                var vm = new SubscriptionViewViewModel();
-                var subscriptionView = _navigationService.GetUserControl<SubscriptionView>();
-                subscriptionView.ViewModel = vm;
-                await subscriptionView.LoadData();
-                MainConteiner.Content = subscriptionView;
-            }
         }
     }
 }

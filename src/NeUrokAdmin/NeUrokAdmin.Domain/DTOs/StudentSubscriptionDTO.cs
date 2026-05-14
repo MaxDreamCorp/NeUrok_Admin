@@ -3,7 +3,9 @@
     public record StudentSubscriptionDTO(
         int Id,
         int StudentId,
-        SubscriptionDTO Subscription,
+        ClassesTypeDTO ClassesType,
+        decimal Cost,
+        int ClassesAmount,
         bool IsPaid,
         CourseDTO Course,
         SubscriptionStatusDTO SubscriptionStatus,

@@ -13,6 +13,9 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Selectors
 
         public bool IsSingleton { get; set; }
 
+        [ObservableProperty]
+        private string _quickSearchText = string.Empty;
+
         public StudentsSelectorViewModel(List<StudentDTO> allStudents, List<StudentDTO>? selectedStudents)
         {
             var selectedIds = selectedStudents?.Select(c => c.Id).ToList() ?? new();

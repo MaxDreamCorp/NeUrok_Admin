@@ -7,7 +7,6 @@
         Groups,
         Courses,
         Teachers,
-        Subscriptions,
         Management
     }
 }
