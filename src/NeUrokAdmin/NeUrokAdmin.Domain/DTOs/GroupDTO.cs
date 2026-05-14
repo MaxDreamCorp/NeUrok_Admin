@@ -7,5 +7,6 @@
         TeacherDTO Teacher,
         GroupStatusDTO GroupStatus,
         string WeekDays,
-        TimeOnly Time);
+        TimeOnly Time,
+        List<StudentDTO>? Students = null);
 }

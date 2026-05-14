@@ -3,8 +3,10 @@ using System.Windows.Controls;
 using MediatR;
 using NeUrokAdmin.Application.Features.CourseOperations.Queries;
 using NeUrokAdmin.Application.Features.GroupOperation.Queries;
+using NeUrokAdmin.Application.Features.StudentOperations.Queries;
 using NeUrokAdmin.Application.Features.TeacherOperations.Queries;
 using NeUrokAdmin.Domain.DTOs;
+using NeUrokAdmin.WPF.Interfaces;
 using NeUrokAdmin.WPF.Services;
 using NeUrokAdmin.WPF.Views.Selectors;
 using NeUrokAdmin.WPF.Views.ViewModels.Cards;
@@ -19,14 +21,16 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
     {
         private readonly IMediator _mediator;
         private readonly NavigationService _navigationService;
+        private readonly IDialogService _dialogService;
 
         public GroupCardViewModel ViewModel { get; set; } = null!;
 
-        public GroupCard(IMediator mediator, NavigationService navigationService)
+        public GroupCard(IMediator mediator, NavigationService navigationService, IDialogService dialogService)
         {
             InitializeComponent();
             _mediator = mediator;
             _navigationService = navigationService;
+            _dialogService = dialogService;
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
@@ -102,6 +106,33 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
         {
             ViewModel.WeekDays = string.Join(", ", ViewModel.SelectedDates.
                 Order().Select(d => d.ToString("ddd")).Distinct());
+        }
+
+        private void RemoveStudentBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (StudentsDg.SelectedItem is StudentDTO studentDTO)
+            {
+                if (!_dialogService.AskQuetion("Вы уверены, что хотите удалить запись?"))
+                    return;
+
+                ViewModel.Students.Remove(studentDTO);
+            }
+        }
+
+        private async void AddStudentBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var allStudents = await _mediator.Send(new GetAllStudentsQuery());
+
+            var vm = new StudentsSelectorViewModel(allStudents, ViewModel.Students.ToList());
+            var selectorWindow = _navigationService.GetWindow<StudentsSelectorWindow>();
+            selectorWindow.ViewModel = vm;
+            selectorWindow.StudentsSelected += SelectorWindow_StudentsSelected;
+            selectorWindow.ShowDialog();
+        }
+
+        private void SelectorWindow_StudentsSelected(object? sender, List<StudentDTO> e)
+        {
+            ViewModel.Students = new(e);
         }
     }
 }

@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NeUrokAdmin.WPF.Views.CardWindows"
         mc:Ignorable="d"
-        Width="480"
-        SizeToContent="Height"
+        MinWidth="480"
+        SizeToContent="WidthAndHeight"
         Loaded="Window_Loaded"
         Title="Группа">
     <Window.Resources>
@@ -177,6 +177,85 @@
                               IsEditable="True"
                               Width="40"
                               StaysOpenOnEdit="True"/>
+                </StackPanel>
+
+                <TextBlock Text="Ученики:" 
+                            Grid.Row="8"
+                           VerticalAlignment="Top"
+                            Style="{StaticResource CardTextBlock}"/>
+                <StackPanel Grid.Row="8"
+                            Margin="0 5 0 0"
+                            Grid.Column="1">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                   MaxHeight="150">
+                        <DataGrid x:Name="StudentsDg"
+                                  BorderThickness="1"
+                          ItemsSource="{Binding Students}" 
+                          Style="{StaticResource MainDataGridStyle}"
+                         AutoGenerateColumns="False" 
+                  CanUserAddRows="False"
+                          IsReadOnly="True"
+                  RowDetailsVisibilityMode="VisibleWhenSelected">
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
+                                <DataGridTextColumn Header="ФИО студента" 
+                    Binding="{Binding Client.ChildFullname}" 
+                    Width="*"/>
+                            </DataGrid.Columns>
+
+                            <DataGrid.RowDetailsTemplate>
+                                <DataTemplate>
+                                    <Border Background="#F0F4F7" Padding="5" BorderBrush="#D1D1D1" BorderThickness="0,1,0,1">
+                                        <StackPanel>
+                                            <TextBlock Text="Активные абонементы:" 
+                       FontWeight="Bold" 
+                       Margin="0,0,0,10" 
+                       Foreground="#2C3E50"/>
+
+                                            <DataGrid ItemsSource="{Binding StudentSubscriptions}" 
+                              Style="{StaticResource MainDataGridStyle}"
+                              BorderThickness="1"
+                      AutoGenerateColumns="False" 
+                      CanUserAddRows="False"
+                      IsReadOnly="True">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="Название" Binding="{Binding Subscription.Name}" Width="Auto"/>
+                                                    <DataGridCheckBoxColumn Header="Оплачен" Binding="{Binding IsPaid}"/>
+                                                    <DataGridTextColumn Header="Курс" Binding="{Binding Course.Name}" Width="Auto"/>
+                                                    <DataGridTextColumn Header="Статус" Binding="{Binding SubscriptionStatus.Status}" Width="Auto"/>
+                                                    <DataGridTextColumn Header="Начало" Binding="{Binding StartDate, StringFormat=\{0:dd.MM.yyyy\}}" Width="Auto"/>
+                                                    <DataGridTextColumn Header="Окончание" Binding="{Binding FinishDate, StringFormat=\{0:dd.MM.yyyy\}}" Width="Auto"/>
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </DataGrid.RowDetailsTemplate>
+                        </DataGrid>
+                    </ScrollViewer>
+                    <StackPanel HorizontalAlignment="Right"
+                                Margin="0 5 0 0"
+                                Orientation="Horizontal">
+                        <Button Content="-"
+                                 x:Name="RemoveStudentBtn"
+                                 Style="{StaticResource MiniSecondaryBtn}"
+                                 HorizontalAlignment="Right"
+                                 IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"
+                                 Click="RemoveStudentBtn_Click"
+                                Width="24" 
+                                Height="24" 
+                                Margin="0,0,10,0"/>
+                        <Button Content="+"
+                                 x:Name="AddStudentBtn"
+                                 Style="{StaticResource PrimaryBtn}"
+                                Padding="5 0"
+                                 HorizontalAlignment="Right"
+                                 IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"
+                                 Click="AddStudentBtn_Click"
+                                Width="24" 
+                                Height="24" />  
+                    </StackPanel>
                 </StackPanel>
             </Grid>
         </StackPanel>

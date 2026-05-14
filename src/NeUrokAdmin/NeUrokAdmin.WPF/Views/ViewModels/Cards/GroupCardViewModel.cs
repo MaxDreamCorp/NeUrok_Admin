@@ -102,6 +102,9 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
         [ObservableProperty]
         private TimeOnly? _time;
 
+        [ObservableProperty]
+        private ObservableCollection<StudentDTO> _students = new();
+
 
         public GroupCardViewModel(OperationType operationType, GroupDTO? groupDTO = null)
         {
@@ -114,6 +117,8 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
                 _selectedStatus = groupDTO.GroupStatus.Status;
                 _weekDays = groupDTO.WeekDays;
                 _time = groupDTO.Time;
+                if (groupDTO.Students != null) 
+                _students = new(groupDTO.Students);
             }
 
             OperationType = operationType;
