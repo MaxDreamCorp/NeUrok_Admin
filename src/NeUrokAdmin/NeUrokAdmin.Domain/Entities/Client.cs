@@ -15,7 +15,7 @@ public partial class Client
 
     public int StatusId { get; set; }
 
-    public int Grade { get; set; }
+    public int? Grade { get; set; }
 
     public string ParentName { get; set; } = null!;
 
@@ -39,7 +39,7 @@ public partial class Client
         string childFullname,
         DateOnly? birthDate,
         DateOnly registrationDate,
-        int grade,
+        int? grade,
         int statusId,
         string parentName,
         string phone,

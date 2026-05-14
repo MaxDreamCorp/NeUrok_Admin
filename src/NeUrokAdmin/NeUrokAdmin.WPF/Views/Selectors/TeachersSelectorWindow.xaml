@@ -1,0 +1,99 @@
+﻿<Window x:Class="NeUrokAdmin.WPF.Views.Selectors.TeachersSelectorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NeUrokAdmin.WPF.Views.Selectors"
+        mc:Ignorable="d"
+        Title="Педагоги" 
+        Loaded="Window_Loaded"
+        MinHeight="450" 
+        MinWidth="400"
+        SizeToContent="WidthAndHeight">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0">
+            <Button x:Name="BackBtn"
+                    Style="{StaticResource SecondaryBtn}"
+                    Content="Назад"
+                    HorizontalAlignment="Left"
+                    Click="BackBtn_Click"/>
+            <TextBox x:Name="QuickSearchInp" Style="{StaticResource PlaceholderSearch}"
+                     Margin="10"
+                     HorizontalAlignment="Center"
+                     MinWidth="250"
+                     TextChanged="QuickSearchInp_TextChanged"/>
+            <Button x:Name="AddBtn"
+                    Style="{StaticResource SecondaryBtn}"
+                    Content="Создать"
+                    Margin="10 0"
+                    HorizontalAlignment="Right"
+                    Click="AddBtn_Click"/>
+            <Button x:Name="SelectBtn"
+                    Style="{StaticResource PrimaryBtn}"
+                    Content="Выбрать"
+                    HorizontalAlignment="Right"
+                    Click="SelectBtn_Click"/>
+        </DockPanel>
+
+        <ListBox x:Name="TeacherList"
+                 Grid.Row="1"
+                 ItemsSource="{Binding FilteredTeachers}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <EventSetter Event="MouseDoubleClick" 
+                                 Handler="ListBoxItem_MouseDoubleClick"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <CheckBox IsChecked="{Binding IsSelected}"
+                              Checked="CheckBox_Checked"
+                              VerticalAlignment="Center">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" MaxWidth="250" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" MaxWidth="250" />
+                            </Grid.ColumnDefinitions>
+                            <Border BorderThickness="1"
+                                           Grid.Column="0"
+                                    Padding="5 4"
+                                    BorderBrush="Black">
+                                <TextBlock Text="{Binding Teacher.Id}"/>
+                            </Border>
+                            <Border BorderThickness="0,1,1,1"
+                                           Grid.Column="1"
+                                    MaxWidth="250"
+                                    Padding="5 4"
+                                    BorderBrush="Black">
+                                <TextBlock Text="{Binding Teacher.Fullname}"
+                                           TextWrapping="Wrap"/>
+                            </Border>
+                            <Border BorderThickness="0,1,0,1"
+                                       Grid.Column="2"
+                                    Padding="5 4"
+                                    BorderBrush="Black">
+                                <TextBlock Text="{Binding Teacher.IndividualLessonsShare}"/>
+                            </Border>
+                            <Border BorderThickness="1"
+                                         Grid.Column="3"
+                                    Padding="5 4"
+                                    MaxWidth="250"
+                                    BorderBrush="Black">
+                                <TextBlock Text="{Binding Teacher.Notes}"
+                                         TextWrapping="Wrap"/>
+                            </Border>
+                        </Grid>
+                    </CheckBox>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+    </Grid>
+</Window>

@@ -1,0 +1,174 @@
+﻿<Window x:Class="NeUrokAdmin.WPF.Views.CardWindows.StudentSubscriptionCard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NeUrokAdmin.WPF.Views.CardWindows"
+        mc:Ignorable="d"
+                MinWidth="480"
+        SizeToContent="WidthAndHeight"
+        Loaded="Window_Loaded"
+        Title="Абонемент ученика">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </Window.Resources>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0"
+                    Orientation="Horizontal">
+            <Button x:Name="BackBtn" 
+                    Style="{StaticResource SecondaryBtn}" 
+                    Content="Назад"
+                    Click="BackBtn_Click"/>
+            <TextBlock Style="{StaticResource HeaderText}"
+                       Text="{Binding HeaderText, UpdateSourceTrigger=PropertyChanged}"
+                       Margin="10 0 0 0"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" 
+                    Margin="0 10">
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="ID:" 
+                           Grid.Row="0" 
+                           Style="{StaticResource CardTextBlock}"
+                           Visibility="{Binding IsFilter, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVis}}" />
+                <TextBox Text="{Binding Id, UpdateSourceTrigger=PropertyChanged}" 
+                         Grid.Row="0" 
+                         Grid.Column="1" 
+                         Margin="0,5" 
+                         Style="{StaticResource Tbox}"
+                         Visibility="{Binding IsFilter, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVis}}" />
+
+                <TextBlock Text="Ученик:" 
+                           Grid.Row="1" 
+                           Style="{StaticResource CardTextBlock}"/>
+                <TextBox Text="{Binding StudentFullname, UpdateSourceTrigger=PropertyChanged}" 
+                         Grid.Row="1" 
+                         Grid.Column="1" 
+                         Margin="0,5" 
+                         Style="{StaticResource Tbox}"
+                         IsReadOnly="True"/>
+
+
+                <TextBlock Text="Абонемент:"
+                       Grid.Row="2"
+                           VerticalAlignment="Top"
+                       Style="{StaticResource CardTextBlock}"/>
+                <StackPanel Grid.Row="2"
+                            Grid.Column="1">
+                    <TextBox Text="{Binding Subscription.Name, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
+                             Margin="0,5" 
+                             Style="{StaticResource Tbox}"
+                             IsReadOnly="True"
+                             IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button Content="Выбрать абонемент"
+                            x:Name="SelectSubscriptionBtn"
+                            Style="{StaticResource MiniSecondaryBtn}"
+                            HorizontalAlignment="Right"
+                            IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"
+                            Click="SelectSubscriptionBtn_Click"/>
+                </StackPanel>
+
+                <TextBlock Text="Курс:"
+                            Grid.Row="3"
+                            VerticalAlignment="Top"
+                            Style="{StaticResource CardTextBlock}"/>
+                <StackPanel Grid.Row="3"
+                            Grid.Column="1">
+                    <TextBox Text="{Binding Course.Name, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
+                              Margin="0,5" 
+                              Style="{StaticResource Tbox}"
+                              IsReadOnly="True"
+                              IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button Content="Выбрать курс"
+                             x:Name="SelectCourseBtn"
+                             Style="{StaticResource MiniSecondaryBtn}"
+                             HorizontalAlignment="Right"
+                             IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"
+                             Click="SelectCourseBtn_Click"/>
+                </StackPanel>
+
+                <TextBlock Text="Оплачен:" 
+                            Grid.Row="4" 
+                            Style="{StaticResource CardTextBlock}"/>
+                <CheckBox IsChecked="{Binding IsPaid, UpdateSourceTrigger=PropertyChanged}" 
+                          Grid.Row="4" 
+                          Grid.Column="1" 
+                          Margin="0,5" 
+                          Background="{StaticResource InpBg}"
+                          BorderBrush="{StaticResource DarkPinkBg}"
+                          BorderThickness="1.5"
+                          Foreground="{StaticResource DarkPinkBg}"
+                          IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock Text="Статус:" 
+                            Grid.Row="5" 
+                            Style="{StaticResource CardTextBlock}"/>
+                <ComboBox SelectedItem="{Binding SubscriptionStatusStr, UpdateSourceTrigger=PropertyChanged}" 
+                          ItemsSource="{Binding SubscriptionStatuses, UpdateSourceTrigger=PropertyChanged}" 
+                          Style="{StaticResource ModernComboBox}"
+                          Grid.Row="5" 
+                          Grid.Column="1" 
+                          Margin="0,5" 
+                          IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Text="Начало:"
+                            Grid.Row="6" 
+                            Style="{StaticResource CardTextBlock}"/>
+                <DatePicker SelectedDate="{Binding StartDate, UpdateSourceTrigger=PropertyChanged}" 
+                             Grid.Row="6"
+                             Grid.Column="1" 
+                             Margin="0,5" 
+                             Style="{StaticResource DatePicker}"
+                             IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Text="Конец:"
+                            Grid.Row="7" 
+                            Style="{StaticResource CardTextBlock}"
+                           Visibility="{Binding IsFilter, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVis}}" />
+                <DatePicker SelectedDate="{Binding FinishDate, UpdateSourceTrigger=PropertyChanged}" 
+                             Grid.Row="7"
+                             Grid.Column="1" 
+                             Margin="0,5" 
+                             Style="{StaticResource DatePicker}"
+                             IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"
+                            Visibility="{Binding IsFilter, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVis}}" />
+            </Grid>
+        </StackPanel>
+
+        <DockPanel Grid.Row="2">
+            <Button x:Name="DelBtn" 
+                    Style="{StaticResource DangerBtn}" 
+                    HorizontalAlignment="Left"
+                    Content="Удалить"
+                    IsEnabled="{Binding IsDeletable, UpdateSourceTrigger=PropertyChanged}"
+                    Click="DelBtn_Click"/>
+            <Button x:Name="AcceptBtn" 
+                    Style="{StaticResource PrimaryBtn}" 
+                    HorizontalAlignment="Right"
+                    Content="Подтвердить"
+                    Click="AcceptBtn_Click"/>
+        </DockPanel>
+    </Grid>
+</Window>

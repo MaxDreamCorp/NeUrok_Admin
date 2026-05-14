@@ -67,10 +67,10 @@ namespace NeUrokAdmin.WPF.Views.Selectors
         private async void AddBtn_Click(object sender, RoutedEventArgs e)
         {
             var vm = new CourseCardViewModel(Enums.OperationType.Create);
-            var courseCard = _navigationService.GetWindow<CourseCard>();
-            courseCard.ViewModel = vm;
-            courseCard.ShowDialog();
-            if (courseCard.DialogResult == true)
+            var card = _navigationService.GetWindow<CourseCard>();
+            card.ViewModel = vm;
+            card.ShowDialog();
+            if (card.DialogResult == true)
                 await RefreeshList();
         }
 
@@ -91,14 +91,14 @@ namespace NeUrokAdmin.WPF.Views.Selectors
         {
             if (sender is ListBoxItem item && item.Content is CourseSelectorItemViewModel vm)
             {
-                var courseDto = vm.Course;
+                var dto = vm.Course;
 
-                var cardVm = new CourseCardViewModel(Enums.OperationType.Edit, courseDto);
+                var cardVm = new CourseCardViewModel(Enums.OperationType.Edit, dto);
 
-                var editCourseCard = _navigationService.GetWindow<CourseCard>();
-                editCourseCard.ViewModel = cardVm;
-                editCourseCard.ShowDialog();
-                if (editCourseCard.DialogResult == true)
+                var editCard = _navigationService.GetWindow<CourseCard>();
+                editCard.ViewModel = cardVm;
+                editCard.ShowDialog();
+                if (editCard.DialogResult == true)
                     await RefreeshList();
             }
         }
@@ -111,6 +111,25 @@ namespace NeUrokAdmin.WPF.Views.Selectors
             var newVM = new CoursesSelectorViewModel(allCourses, selectedCourses);
             ViewModel = newVM;
             DataContext = ViewModel;
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            if (!ViewModel.IsSingleton)
+                return;
+
+            if (sender is CheckBox checkBox && checkBox.DataContext is CourseSelectorItemViewModel vm)
+            {
+                var it = ViewModel.AllCourses.Find(ci => ci.Course.Id == vm.Course.Id);
+                if (it != null)
+                {
+                    foreach (var selItem in ViewModel.AllCourses)
+                    {
+                        if (selItem.Course.Id != it.Course.Id)
+                            selItem.IsSelected = false;
+                    }
+                }
+            }
         }
     }
 }

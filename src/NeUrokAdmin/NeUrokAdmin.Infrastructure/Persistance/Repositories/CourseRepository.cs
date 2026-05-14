@@ -41,6 +41,13 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
 
         public async Task RemoveAsync(Course course, CancellationToken cancellationToken = default)
         {
+            if (await _context.StudentSubscriptions.AnyAsync(x => x.CourseId == course.Id, cancellationToken))
+                throw new InvalidOperationException("Невозможно удалить курс, так как на него подписаны ученики");
+            if (await _context.Attendances.AnyAsync(x => x.CourseId == course.Id, cancellationToken))
+                throw new InvalidOperationException("Невозможно удалить курс, так как на него есть/были посещения");
+            if (await _context.Groups.AnyAsync(x => x.CourseId == course.Id, cancellationToken))
+                throw new InvalidOperationException("Невозможно удалить курс, так как на него есть/были группы");
+
             _context.Courses.Remove(course);
             await _context.SaveChangesAsync(cancellationToken);
         }

@@ -64,6 +64,7 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
                     result = await UpdateClient();
                     break;
                 case Enums.OperationType.Filter:
+                    result = true;
                     break;
                 default:
                     break;
@@ -135,7 +136,7 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
                 return false;
             }
         }
-        
+
         private async Task<bool> UpdateClient()
         {
             if (!_dialogService.AskQuetion("Вы уверены, что хотите сохранить изменения?"))
@@ -203,6 +204,21 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
                 return false;
             }
             return true;
+        }
+
+        private void SelectSearchingStatusesBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = new ClientStatusesSelectorViewModel(ViewModel.ClientStatusesDTO, ViewModel.SearchingStatuses.ToList());
+            var selectorWindow = _navigationService.GetWindow<ClientStatusesSelectorWindow>();
+            selectorWindow.ViewModel = vm;
+            selectorWindow.ClientStatusesSelected += SelectorWindow_ClientStatusesSelected;
+            selectorWindow.ShowDialog();
+        }
+
+        private void SelectorWindow_ClientStatusesSelected(object? sender, List<ClientStatusDTO> e)
+        {
+            ViewModel.SearchingStatuses = new(e);
+            ViewModel.SearchingStatusesDisplay = string.Join(", ", ViewModel.SearchingStatuses.Select(s => s.Status));
         }
     }
 }

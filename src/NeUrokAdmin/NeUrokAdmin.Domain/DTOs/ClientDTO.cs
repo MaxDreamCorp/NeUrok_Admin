@@ -5,7 +5,7 @@
         string ChildFullname,
         DateOnly? BirthDate,
         DateOnly RegistrationDate,
-        int Grade,
+        int? Grade,
         ClientStatusDTO Status,
         string ParentName,
         string Phone,

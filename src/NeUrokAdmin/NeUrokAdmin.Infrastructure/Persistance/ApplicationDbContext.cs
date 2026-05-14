@@ -38,7 +38,7 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<StudentSubscription> StudentSubscriptions { get; set; }
 
-    public virtual DbSet<Subscribtion> Subscribtions { get; set; }
+    public virtual DbSet<Subscription> Subscribtions { get; set; }
 
     public virtual DbSet<SubscriptlonStatus> SubscriptlonStatuses { get; set; }
 
@@ -80,8 +80,11 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.CourseId).HasColumnName("course_id");
             entity.Property(e => e.IsCompleted).HasColumnName("is_completed");
             entity.Property(e => e.Price)
-                .HasPrecision(10)
+                .HasPrecision(10, 2)
                 .HasColumnName("price");
+            entity.Property(e => e.TeacherShare)
+                .HasPrecision(10, 2)
+                .HasColumnName("teacher_share");
             entity.Property(e => e.TeacherId).HasColumnName("teacher_id");
 
             entity.HasOne(d => d.AttendanceStatus).WithMany(p => p.Attendances)
@@ -401,11 +404,11 @@ public partial class ApplicationDbContext : DbContext
                 .HasConstraintName("FK_student_subscription_subscription_status");
         });
 
-        modelBuilder.Entity<Subscribtion>(entity =>
+        modelBuilder.Entity<Subscription>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("subscribtions");
+            entity.ToTable("subscriptions");
 
             entity.HasIndex(e => e.ClassesTypeId, "FK_subscribtion_class_type_idx");
 
@@ -415,7 +418,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.ClassesAmount).HasColumnName("classes_amount");
             entity.Property(e => e.ClassesTypeId).HasColumnName("classes_type_id");
             entity.Property(e => e.Cost)
-                .HasPrecision(10)
+                .HasPrecision(10, 2)
                 .HasColumnName("cost");
             entity.Property(e => e.Name)
                 .HasMaxLength(200)
@@ -453,6 +456,9 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Fullname)
                 .HasMaxLength(255)
                 .HasColumnName("fullname");
+            entity.Property(e => e.IndividualLessonsShare)
+               .HasPrecision(10, 2)
+               .HasColumnName("individual_lessons_share");
             entity.Property(e => e.Notes)
                 .HasColumnType("text")
                 .HasColumnName("notes");

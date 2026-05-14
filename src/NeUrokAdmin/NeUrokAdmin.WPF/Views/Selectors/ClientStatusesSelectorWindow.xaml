@@ -1,0 +1,49 @@
+﻿<Window x:Class="NeUrokAdmin.WPF.Views.Selectors.ClientStatusesSelectorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NeUrokAdmin.WPF.Views.Selectors"
+        mc:Ignorable="d"
+                     Title="Статусы клиентов" 
+        Loaded="Window_Loaded"
+        MinHeight="250" 
+        MinWidth="300"
+        SizeToContent="WidthAndHeight">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0">
+            <Button x:Name="BackBtn"
+                    Style="{StaticResource SecondaryBtn}"
+                    Content="Назад"
+                    HorizontalAlignment="Left"
+                    Click="BackBtn_Click"/>
+           
+            <Button x:Name="SelectBtn"
+                    Style="{StaticResource PrimaryBtn}"
+                    Content="Выбрать"
+                    HorizontalAlignment="Right"
+                    Click="SelectBtn_Click"/>
+        </DockPanel>
+
+        <ListBox x:Name="List"
+                 Grid.Row="1"
+                 ItemsSource="{Binding AllClientStatuses}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <CheckBox IsChecked="{Binding IsSelected}"
+                              VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding ClientStatus.Status}" />
+                        </StackPanel>
+                    </CheckBox>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+    </Grid>
+</Window>

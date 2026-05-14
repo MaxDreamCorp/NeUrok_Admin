@@ -6,7 +6,7 @@ namespace NeUrokAdmin.Application.Features.ClientOperations.Commands
         string ChildFullname,
         DateOnly? BirthDate,
         DateOnly RegistrationDate,
-        int Grade,
+        int? Grade,
         int StatusId,
         string ParentName,
         string Phone,

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Globalization;
+using System.IO;
 using System.Windows;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,7 +17,6 @@ using NeUrokAdmin.WPF.Views.CardWindows;
 using NeUrokAdmin.WPF.Views.ModalWindows;
 using NeUrokAdmin.WPF.Views.Selectors;
 using NeUrokAdmin.WPF.Views.UserControls;
-using NeUrokAdmin.WPF.Views.ViewModels;
 
 namespace NeUrokAdmin.WPF
 {
@@ -60,25 +60,47 @@ namespace NeUrokAdmin.WPF
             services.AddTransient<LoginWindow>();
             services.AddTransient<RegistrationWindow>();
             services.AddTransient<ClientsView>();
+            services.AddTransient<GroupsView>();
+            services.AddTransient<CoursesView>();
+            services.AddTransient<TeachersView>();
+            services.AddTransient<SubscriptionView>();
+            services.AddTransient<StudentsView>();
 
             services.AddTransient<ClientCard>();
             services.AddTransient<CourseCard>();
+            services.AddTransient<GroupCard>();
+            services.AddTransient<TeacherCard>();
+            services.AddTransient<SubscriptionCard>();
+            services.AddTransient<StudentCard>();
+            services.AddTransient<StudentSubscriptionCard>();
 
             services.AddTransient<CoursesSelectorWindow>();
-
-            services.AddTransient<ClientViewViewModel>();
+            services.AddTransient<TeachersSelectorWindow>();
+            services.AddTransient<ClientStatusesSelectorWindow>();
+            services.AddTransient<ClassesTypesSelectorWindow>();
+            services.AddTransient<ClientsSelectorWindow>();
+            services.AddTransient<SubscriptionsSelectorWindow>();
+            services.AddTransient<StudentsSelectorWindow>();
 
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IClientRepository, ClientRepository>();
             services.AddTransient<IClientStatusRepository, ClientStatusRepository>();
             services.AddTransient<ICourseRepository, CourseRepository>();
-
+            services.AddTransient<IGroupRepository, GroupRepository>();
+            services.AddTransient<IGroupStatusRepository, GroupStatusRepository>();
+            services.AddTransient<ITeacherRepository, TeacherRepository>();
+            services.AddTransient<IClassesTypeRepository, ClassesTypeRepository>();
+            services.AddTransient<ISubscriptionRepository, SubscriptionRepository>();
+            services.AddTransient<ISubscriptionStatusRepository, SubscriptionStatusRepository>();
+            services.AddTransient<IStudentRepository, StudentRepository>();
+            services.AddTransient<IStudentSubscriptionRepository, StudentSubscriptionRepository>();
         }
 
         protected override async void OnStartup(StartupEventArgs e)
         {
             await _host.StartAsync();
 
+            CultureInfo.CurrentCulture = new CultureInfo("ru-RU");
             var loginWindow = _host.Services.GetRequiredService<LoginWindow>();
             loginWindow.Show();
 

@@ -23,6 +23,8 @@ public partial class Attendance
 
     public decimal? Price { get; set; }
 
+    public decimal? TeacherShare { get; set; }
+
     public virtual AttendanceStatus AttendanceStatus { get; set; } = null!;
 
     public virtual AttendanceType AttendanceType { get; set; } = null!;

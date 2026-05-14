@@ -11,12 +11,15 @@
 
   <ItemGroup>
     <None Remove="Resources\Icons\ClientIcon.png" />
+    <None Remove="Resources\Icons\CourseIcon.png" />
     <None Remove="Resources\Icons\CrossIcon.png" />
     <None Remove="Resources\Icons\FilterIcon.png" />
     <None Remove="Resources\Icons\GroupIcon.png" />
     <None Remove="Resources\Icons\LogoIco.ico" />
     <None Remove="Resources\Icons\LogoIcon.png" />
+    <None Remove="Resources\Icons\ManagementIcon.png" />
     <None Remove="Resources\Icons\StudyIcon.png" />
+    <None Remove="Resources\Icons\TeacherIcon.png" />
     <None Remove="Resources\Icons\TicketIcon.png" />
   </ItemGroup>
 
@@ -39,12 +42,15 @@
 
   <ItemGroup>
     <Resource Include="Resources\Icons\ClientIcon.png" />
+    <Resource Include="Resources\Icons\CourseIcon.png" />
     <Resource Include="Resources\Icons\CrossIcon.png" />
     <Resource Include="Resources\Icons\FilterIcon.png" />
     <Resource Include="Resources\Icons\GroupIcon.png" />
     <Resource Include="Resources\Icons\LogoIco.ico" />
     <Resource Include="Resources\Icons\LogoIcon.png" />
+    <Resource Include="Resources\Icons\ManagementIcon.png" />
     <Resource Include="Resources\Icons\StudyIcon.png" />
+    <Resource Include="Resources\Icons\TeacherIcon.png" />
     <Resource Include="Resources\Icons\TicketIcon.png" />
   </ItemGroup>
 
