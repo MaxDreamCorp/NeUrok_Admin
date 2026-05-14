@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using MediatR;
 using NeUrokAdmin.Application.Features.StudentOperations.Queries;
+using NeUrokAdmin.Domain.DTOs;
 using NeUrokAdmin.WPF.Services;
 using NeUrokAdmin.WPF.Views.CardWindows;
 using NeUrokAdmin.WPF.Views.ViewModels.Cards;
@@ -59,9 +60,21 @@ namespace NeUrokAdmin.WPF.Views.UserControls
 
         }
 
-        private void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private async void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            if (sender is DataGrid dataGrid && dataGrid.SelectedItem is StudentDTO student)
+            {
+                var cardVM = new StudentCardViewModel(Enums.OperationType.Edit, student);
+                var card = _navigationService.GetWindow<StudentCard>();
+                card.ViewModel = cardVM;
+                card.ShowDialog();
+                if (card.DialogResult == true)
+                {
+                    await PrintAll();
+                    //await Refilter();
+                    //QuickSearch();
+                }
+            }
         }
 
         private async Task PrintAll()

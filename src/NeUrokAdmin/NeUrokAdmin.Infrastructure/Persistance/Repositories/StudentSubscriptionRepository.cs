@@ -59,7 +59,7 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
             if (existingStudentSubscription == null)
                 throw new Exception("Данной записи не существует");
 
-            existingStudentSubscription.SubscriptionId = studentSubscription.Id;
+            existingStudentSubscription.SubscriptionId = studentSubscription.SubscriptionId;
             existingStudentSubscription.IsPaid = studentSubscription.IsPaid;
             existingStudentSubscription.CourseId = studentSubscription.CourseId;
             existingStudentSubscription.SubscriptlonStatusId = studentSubscription.SubscriptlonStatusId;

@@ -80,7 +80,7 @@ namespace NeUrokAdmin.Application.Features.StudentOperations.Handlers.Queries
                 result.Add(new StudentDTO(
                     student.Id,
                     clientDto,
-                    subscriptionsDtos));
+                    subscriptionsDtos.OrderBy(ss => ss.SubscriptionStatus.Id).ToList()));
             }
 
             return result;

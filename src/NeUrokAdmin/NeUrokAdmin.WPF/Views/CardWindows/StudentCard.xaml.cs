@@ -57,7 +57,7 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
                 case Enums.OperationType.Read:
                     break;
                 case Enums.OperationType.Edit:
-                    //result = await UpdateClient();
+                    result = await UpdateStudent();
                     break;
                 case Enums.OperationType.Filter:
                     result = true;
@@ -170,6 +170,41 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
 
             var cmd = new CreateStudentCommand(
                 dto.Client.Id,
+                dto.StudentSubscriptions);
+
+            try
+            {
+                await _mediator.Send(cmd);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _dialogService.ShowError(ex.Message);
+                return false;
+            }
+        }
+
+        private async Task<bool> UpdateStudent()
+        {
+            if (!_dialogService.AskQuetion("Вы уверены, что хотите изменить ученика?"))
+                return false;
+
+            if (!CheckFields())
+                return false;
+
+            StudentDTO? dto;
+            try
+            {
+                dto = ViewModel.GetStudentDTO();
+            }
+            catch (Exception ex)
+            {
+                _dialogService.ShowError(ex.Message);
+                return false;
+            }
+
+            var cmd = new UpdateStudentCommand(
+                dto.Id,
                 dto.StudentSubscriptions);
 
             try
