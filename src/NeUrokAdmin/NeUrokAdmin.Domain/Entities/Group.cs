@@ -25,4 +25,20 @@ public partial class Group
     public virtual Teacher Teacher { get; set; } = null!;
 
     public virtual ICollection<Student> Students { get; set; } = new List<Student>();
+
+    private Group() { }
+
+    public static Group Create(int id, string name, int courseId, int teacherId, int groupStatusId, string weekDays, TimeOnly time)
+    {
+        return new Group
+        {
+            Id = id,
+            Name = name,
+            CourseId = courseId,
+            TeacherId = teacherId,
+            GroupStatusId = groupStatusId,
+            WeekDays = weekDays,
+            Time = time
+        };
+    }
 }

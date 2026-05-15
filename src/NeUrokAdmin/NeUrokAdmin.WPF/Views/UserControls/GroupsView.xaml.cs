@@ -32,12 +32,13 @@ namespace NeUrokAdmin.WPF.Views.UserControls
 
         }
 
-        private void AddBtn_Click(object sender, RoutedEventArgs e)
+        private async void AddBtn_Click(object sender, RoutedEventArgs e)
         {
             var vm = new GroupCardViewModel(Enums.OperationType.Create);
             var groupCard = _navigationService.GetWindow<GroupCard>();
             groupCard.ViewModel = vm;
             groupCard.ShowDialog();
+            await Clear();
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)

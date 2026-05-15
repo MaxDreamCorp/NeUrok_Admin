@@ -68,5 +68,16 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
 
             await _context.SaveChangesAsync(cancellationToken);
         }
+
+        public async Task UpdateFinishDateAsync(int id, DateOnly finishDate, CancellationToken cancellationToken = default)
+        {
+            var existingStudentSubscription = await _context.StudentSubscriptions.FindAsync(id, cancellationToken);
+            if (existingStudentSubscription == null)
+                throw new Exception("Данной записи не существует");
+
+            existingStudentSubscription.SubscriptionFinishDate = finishDate;
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
     }
 }

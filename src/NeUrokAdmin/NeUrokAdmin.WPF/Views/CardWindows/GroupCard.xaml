@@ -113,7 +113,6 @@
                             Grid.Row="4" 
                             Style="{StaticResource CardTextBlock}"/>
                 <ComboBox ItemsSource="{Binding Statuses}" 
-                          DisplayMemberPath="Status"
                           SelectedItem="{Binding SelectedStatus}"
                           Grid.Row="4" 
                           Grid.Column="1" 

@@ -60,8 +60,20 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
         [ObservableProperty]
         private string _headerText = null!;
 
+        public List<GroupStatusDTO> GroupStatusDTOs
+        {
+            get => _groupStatusDTOs;
+            set
+            {
+                _groupStatusDTOs = value;
+                Statuses = new(value.Select(s => s.Status).ToList());
+            }
+        }
+
+        private List<GroupStatusDTO> _groupStatusDTOs = new List<GroupStatusDTO>();
+
         [ObservableProperty]
-        private ObservableCollection<GroupStatusDTO> _statuses = new();
+        private List<string> _statuses = new();
 
         [ObservableProperty]
         private List<string> _hours = Enumerable.Range(7, 23).Select(i => i.ToString("D2")).ToList();
@@ -117,11 +129,32 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
                 _selectedStatus = groupDTO.GroupStatus.Status;
                 _weekDays = groupDTO.WeekDays;
                 _time = groupDTO.Time;
-                if (groupDTO.Students != null) 
                 _students = new(groupDTO.Students);
             }
 
             OperationType = operationType;
+        }
+
+        public GroupDTO GetGroupDTO()
+        {
+            if (string.IsNullOrEmpty(TimeHours) || string.IsNullOrEmpty(TimeMinutes))
+                throw new ArgumentException(nameof(Time));
+
+            Time = new(int.Parse(TimeHours), int.Parse(TimeMinutes));
+
+            return new GroupDTO(
+                Id: Id ?? 0,
+                Name: Name,
+                Course: Course ?? throw new InvalidOperationException("Не выбран курс"),
+                Teacher: Teacher ?? throw new InvalidOperationException("Не выбран преподаватель"),
+                GroupStatus: GroupStatusDTOs.FirstOrDefault(s => s.Status == SelectedStatus)
+                    ?? throw new InvalidOperationException("Не выбран статус группы"),
+                WeekDays: WeekDays,
+                Time: Time ?? throw new InvalidOperationException("Не выбрано время"),
+                Dates: SelectedDates,
+                Students: Students.ToList()
+    );
+
         }
     }
 }

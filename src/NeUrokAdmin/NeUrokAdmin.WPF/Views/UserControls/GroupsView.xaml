@@ -70,7 +70,7 @@
                 <DataGridTextColumn Header="Курс" 
                                     Binding="{Binding Course.Name}" 
                                     Width="*"/>
-                <DataGridTextColumn Header="Учитель" 
+                <DataGridTextColumn Header="Педагог" 
                                     Binding="{Binding Teacher.Fullname}" 
                                     Width="*"/>
                 <DataGridTextColumn Header="Статус" 

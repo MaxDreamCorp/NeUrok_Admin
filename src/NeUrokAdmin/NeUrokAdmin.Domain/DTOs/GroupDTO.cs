@@ -8,5 +8,6 @@
         GroupStatusDTO GroupStatus,
         string WeekDays,
         TimeOnly Time,
-        List<StudentDTO>? Students = null);
+        List<DateTime> Dates,
+        List<StudentDTO> Students);
 }

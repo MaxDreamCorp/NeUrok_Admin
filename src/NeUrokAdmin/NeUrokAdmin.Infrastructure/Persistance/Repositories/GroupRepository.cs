@@ -25,6 +25,8 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
                 .Include(g => g.Course)
                 .Include(g => g.Teacher)
                 .Include(g => g.GroupStatus)
+                .Include(g => g.GroupDates)
+                .Include(g => g.Students)
                 .ToListAsync(cancellationToken);
         }
 
@@ -34,7 +36,15 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
                 .Include(g => g.Course)
                 .Include(g => g.Teacher)
                 .Include(g => g.GroupStatus)
+                .Include(g => g.GroupDates)
+                .Include(g => g.Students)
                 .FirstOrDefaultAsync(g => g.Id == id, cancellationToken);
+        }
+
+        public async Task<List<GroupDate>> GetGroupDatesAsync(int groupId, CancellationToken cancellationToken = default)
+        {
+            return await _context.GroupDates.Where(gd => gd.GroupId == groupId)
+                .ToListAsync(cancellationToken);
         }
 
         public async Task<int> GetNextIdAsync(CancellationToken cancellationToken = default)
@@ -46,6 +56,31 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
         public async Task RemoveAsync(Group group, CancellationToken cancellationToken = default)
         {
             _context.Groups.Remove(group);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task SetStudentsAsync(int groupId, List<Student> students, CancellationToken cancellationToken = default)
+        {
+            var group = await _context.Groups
+        .Include(g => g.Students)
+        .FirstOrDefaultAsync(g => g.Id == groupId, cancellationToken);
+
+            if (group == null)
+                throw new KeyNotFoundException($"Группа с ID {groupId} не найдена.");
+
+            var toRemove = group.Students.Where(s => !students.Any(newS => newS.Id == s.Id)).ToList();
+            foreach (var student in toRemove)
+                group.Students.Remove(student);
+
+            foreach (var student in students)
+            {
+                if (!group.Students.Any(s => s.Id == student.Id))
+                {
+                    _context.Students.Attach(student);
+                    group.Students.Add(student);
+                }
+            }
+
             await _context.SaveChangesAsync(cancellationToken);
         }
 
