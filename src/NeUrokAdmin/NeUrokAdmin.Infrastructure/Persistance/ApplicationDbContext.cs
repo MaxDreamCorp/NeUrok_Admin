@@ -66,6 +66,8 @@ public partial class ApplicationDbContext : DbContext
 
             entity.HasIndex(e => e.CourseId, "FK_attendance_course_idx");
 
+            entity.HasIndex(e => e.GroupId, "FK_attendance_group_idx");
+
             entity.HasIndex(e => e.TeacherId, "FK_attendance_teacher_idx");
 
             entity.Property(e => e.Id)
@@ -76,14 +78,15 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.ClassTypeId).HasColumnName("class_type_id");
             entity.Property(e => e.ClientId).HasColumnName("client_id");
             entity.Property(e => e.CourseId).HasColumnName("course_id");
+            entity.Property(e => e.GroupId).HasColumnName("group_id");
             entity.Property(e => e.IsCompleted).HasColumnName("is_completed");
             entity.Property(e => e.Price)
                 .HasPrecision(10, 2)
                 .HasColumnName("price");
+            entity.Property(e => e.TeacherId).HasColumnName("teacher_id");
             entity.Property(e => e.TeacherShare)
                 .HasPrecision(10, 2)
                 .HasColumnName("teacher_share");
-            entity.Property(e => e.TeacherId).HasColumnName("teacher_id");
 
             entity.HasOne(d => d.AttendanceStatus).WithMany(p => p.Attendances)
                 .HasForeignKey(d => d.AttendanceStatusId)
@@ -109,6 +112,11 @@ public partial class ApplicationDbContext : DbContext
                 .HasForeignKey(d => d.CourseId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_attendance_course");
+
+            entity.HasOne(d => d.Group).WithMany(p => p.Attendances)
+                .HasForeignKey(d => d.GroupId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("FK_attendance_group");
 
             entity.HasOne(d => d.Teacher).WithMany(p => p.Attendances)
                 .HasForeignKey(d => d.TeacherId)

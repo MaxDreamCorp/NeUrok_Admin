@@ -26,6 +26,8 @@ public partial class Group
 
     public virtual ICollection<Student> Students { get; set; } = new List<Student>();
 
+    public virtual ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();
+
     private Group() { }
 
     public static Group Create(int id, string name, int courseId, int teacherId, int groupStatusId, string weekDays, TimeOnly time)

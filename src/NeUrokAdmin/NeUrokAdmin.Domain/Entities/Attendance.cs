@@ -15,6 +15,8 @@ public partial class Attendance
 
     public int TeacherId { get; set; }
 
+    public int? GroupId { get; set; }
+
     public sbyte IsCompleted { get; set; }
 
     public int AttendanceStatusId { get; set; }
@@ -34,6 +36,8 @@ public partial class Attendance
     public virtual Client? Client { get; set; }
 
     public virtual Course Course { get; set; } = null!;
+
+    public virtual Group? Group { get; set; }
 
     public virtual Teacher Teacher { get; set; } = null!;
 }
