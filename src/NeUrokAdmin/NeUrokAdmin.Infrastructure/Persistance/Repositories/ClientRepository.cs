@@ -163,5 +163,20 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
 
             await _context.SaveChangesAsync(cancellationToken);
         }
+
+        public async Task UpdateStatusAsync(int id, int statusId, CancellationToken cancellationToken = default)
+        {
+            var client = await GetByIdAsync(id, cancellationToken);
+            if (client == null)
+                throw new ArgumentException();
+
+            var status = await _context.ClientStatuses.FindAsync(statusId, cancellationToken);
+            if (status == null)
+                throw new ArgumentException();
+
+            client.StatusId = statusId;
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
     }
 }

@@ -15,6 +15,7 @@ namespace NeUrokAdmin.Application.Features.GroupOperation.Handlers.Commands
         private readonly ITeacherRepository _teacherRepository;
         private readonly IGroupStatusRepository _groupStatusRepository;
         private readonly IStudentRepository _studentRepository;
+        private readonly IClientRepository _clientRepository;
 
         public CreateGroupCommandHandler(IGroupRepository groupRepository,
                                          IGroupDateRepository groupDateRepository,
@@ -22,7 +23,8 @@ namespace NeUrokAdmin.Application.Features.GroupOperation.Handlers.Commands
                                          ICourseRepository courseRepository,
                                          ITeacherRepository teacherRepository,
                                          IGroupStatusRepository groupStatusRepository,
-                                         IStudentRepository studentRepository)
+                                         IStudentRepository studentRepository,
+                                         IClientRepository clientRepository)
         {
             _groupRepository = groupRepository;
             _groupDateRepository = groupDateRepository;
@@ -31,6 +33,7 @@ namespace NeUrokAdmin.Application.Features.GroupOperation.Handlers.Commands
             _teacherRepository = teacherRepository;
             _groupStatusRepository = groupStatusRepository;
             _studentRepository = studentRepository;
+            _clientRepository = clientRepository;
         }
 
         public async Task<int> Handle(CreateGroupCommand request, CancellationToken cancellationToken)
@@ -86,6 +89,10 @@ namespace NeUrokAdmin.Application.Features.GroupOperation.Handlers.Commands
                 if (subscriptionDto == null)
                     continue;
                 await _studentSubscriptionRepository.UpdateFinishDateAsync(subscriptionDto.Id, DateOnly.FromDateTime(request.Dates.Max()));
+                if (group.GroupStatusId <= (int)GroupStatusEnum.Recruited)
+                    await _clientRepository.UpdateStatusAsync(student.ClientId, (int)ClientStatusEnum.Enrolled);
+                else if (group.GroupStatusId == (int)GroupStatusEnum.Active)
+                    await _clientRepository.UpdateStatusAsync(student.ClientId, (int)ClientStatusEnum.Learning);
             }
             await _groupRepository.SetStudentsAsync(group.Id, students, cancellationToken);
 

@@ -27,7 +27,7 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
         public async Task<int> GetNextIdAsync(CancellationToken cancellationToken = default)
         {
             return await _context.GroupDates.AnyAsync(cancellationToken) ?
-                await _context.GroupDates.MaxAsync(g => g.Id, cancellationToken) : 1;
+                await _context.GroupDates.MaxAsync(g => g.Id, cancellationToken) + 1: 1;
         }
 
         public async Task RemoveAsync(GroupDate groupDate, CancellationToken cancellationToken = default)
