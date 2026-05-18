@@ -78,6 +78,9 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.ClassTypeId).HasColumnName("class_type_id");
             entity.Property(e => e.ClientId).HasColumnName("client_id");
             entity.Property(e => e.CourseId).HasColumnName("course_id");
+            entity.Property(e => e.Datetime)
+              .HasColumnType("datetime")
+              .HasColumnName("datetime");
             entity.Property(e => e.GroupId).HasColumnName("group_id");
             entity.Property(e => e.IsCompleted).HasColumnName("is_completed");
             entity.Property(e => e.Price)
@@ -90,7 +93,7 @@ public partial class ApplicationDbContext : DbContext
 
             entity.HasOne(d => d.AttendanceStatus).WithMany(p => p.Attendances)
                 .HasForeignKey(d => d.AttendanceStatusId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_attendance_attendance_status");
 
             entity.HasOne(d => d.AttendanceType).WithMany(p => p.Attendances)

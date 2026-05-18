@@ -11,5 +11,5 @@ namespace NeUrokAdmin.Application.Features.GroupOperation.Commands
         string WeekDays,
         TimeOnly Time,
         List<DateTime> Dates,
-        List<StudentDTO> Students) : IRequest;
+        List<StudentDTO> Students) : IRequest<int>;
 }

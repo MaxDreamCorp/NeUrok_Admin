@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using MediatR;
+using NeUrokAdmin.Application.Features.AttendanceOperations.Commands;
 using NeUrokAdmin.Application.Features.CourseOperations.Queries;
 using NeUrokAdmin.Application.Features.GroupOperation.Commands;
 using NeUrokAdmin.Application.Features.GroupOperation.Queries;
@@ -251,7 +252,8 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
                     dto.Dates,
                     dto.Students);
 
-                await _mediator.Send(cmd);
+                var groupId = await _mediator.Send(cmd);
+                await _mediator.Send(new CreateAttendancesForGroupCommand(groupId, (int)ClassesTypeEnum.Group)); // TODO: select classes type
                 return true;
             }
             catch (Exception ex)

@@ -76,7 +76,7 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
         private List<string> _statuses = new();
 
         [ObservableProperty]
-        private List<string> _hours = Enumerable.Range(7, 23).Select(i => i.ToString("D2")).ToList();
+        private List<string> _hours = Enumerable.Range(7, 17).Select(i => i.ToString("D2")).ToList();
 
         [ObservableProperty]
         private List<string> _minutes = Enumerable.Range(0, 59).Where(i => i % 5 == 0).Select(i => i.ToString("D2")).ToList();

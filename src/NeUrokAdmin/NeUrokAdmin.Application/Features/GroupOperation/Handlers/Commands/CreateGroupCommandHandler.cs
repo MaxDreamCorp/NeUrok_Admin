@@ -6,7 +6,7 @@ using NeUrokAdmin.Domain.Interfaces.Repositories;
 
 namespace NeUrokAdmin.Application.Features.GroupOperation.Handlers.Commands
 {
-    public class CreateGroupCommandHandler : IRequestHandler<CreateGroupCommand>
+    public class CreateGroupCommandHandler : IRequestHandler<CreateGroupCommand, int>
     {
         private readonly IGroupRepository _groupRepository;
         private readonly IGroupDateRepository _groupDateRepository;
@@ -33,7 +33,7 @@ namespace NeUrokAdmin.Application.Features.GroupOperation.Handlers.Commands
             _studentRepository = studentRepository;
         }
 
-        public async Task Handle(CreateGroupCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(CreateGroupCommand request, CancellationToken cancellationToken)
         {
             var course = await _courseRepository.GetByIdAsync(request.CourseId, cancellationToken);
             if (course == null)
@@ -47,8 +47,9 @@ namespace NeUrokAdmin.Application.Features.GroupOperation.Handlers.Commands
             if (status == null)
                 throw new ArgumentNullException("Такого статуса группы не существует");
 
+            int groupId = await _groupRepository.GetNextIdAsync(cancellationToken);
             var group = Group.Create(
-                await _groupRepository.GetNextIdAsync(cancellationToken),
+                groupId,
                 request.Name,
                 course.Id,
                 teacher.Id,
@@ -87,6 +88,8 @@ namespace NeUrokAdmin.Application.Features.GroupOperation.Handlers.Commands
                 await _studentSubscriptionRepository.UpdateFinishDateAsync(subscriptionDto.Id, DateOnly.FromDateTime(request.Dates.Max()));
             }
             await _groupRepository.SetStudentsAsync(group.Id, students, cancellationToken);
+
+            return group.Id;
         }
     }
 }

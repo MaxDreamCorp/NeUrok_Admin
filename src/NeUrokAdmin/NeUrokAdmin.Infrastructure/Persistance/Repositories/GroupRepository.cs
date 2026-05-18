@@ -50,7 +50,7 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
         public async Task<int> GetNextIdAsync(CancellationToken cancellationToken = default)
         {
             return await _context.Groups.AnyAsync(cancellationToken) ?
-                await _context.Groups.MaxAsync(g => g.Id, cancellationToken) : 1;
+                await _context.Groups.MaxAsync(g => g.Id, cancellationToken) + 1 : 1;
         }
 
         public async Task RemoveAsync(Group group, CancellationToken cancellationToken = default)
