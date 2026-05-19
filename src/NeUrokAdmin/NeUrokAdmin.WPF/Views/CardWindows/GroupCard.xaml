@@ -127,6 +127,7 @@
                             Grid.Column="1">
                     <StackPanel Orientation="Horizontal">
                         <Calendar SelectionMode="MultipleRange"
+                                  x:Name="DatesCalendar"
                               SelectedDatesChanged="Calendar_SelectedDatesChanged"
                               IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
                         <ScrollViewer Margin="5"

@@ -15,8 +15,20 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
 
         public async Task AddAsync(Group group, CancellationToken cancellationToken = default)
         {
-            await _context.Groups.AddAsync(group, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
+                group.Id = await GetNextIdAsync(cancellationToken);
+
+                var trackedEntity = _context.Groups.Local.FirstOrDefault(g => g.Id == group.Id);
+
+                if (trackedEntity != null)
+                {
+                    _context.Entry(trackedEntity).State = EntityState.Detached;
+                }
+
+                if (await _context.Groups.AnyAsync(g => g.Id == group.Id, cancellationToken))
+                    throw new Exception("Такой ID уже реально есть в самой БД!");
+
+                await _context.Groups.AddAsync(group, cancellationToken);
+                await _context.SaveChangesAsync(cancellationToken);
         }
 
         public async Task<List<Group>> GetAllAsync(CancellationToken cancellationToken = default)

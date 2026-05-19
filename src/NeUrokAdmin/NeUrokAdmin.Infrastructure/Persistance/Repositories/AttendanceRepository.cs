@@ -15,6 +15,18 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
 
         public async Task AddAsync(Attendance attendance, CancellationToken cancellationToken = default)
         {
+            attendance.Id = await GetNextIdAsync(cancellationToken);
+
+            var trackedEntity = _context.Attendances.Local.FirstOrDefault(g => g.Id == attendance.Id);
+
+            if (trackedEntity != null)
+            {
+                _context.Entry(trackedEntity).State = EntityState.Detached;
+            }
+
+            if (await _context.Attendances.AnyAsync(g => g.Id == attendance.Id, cancellationToken))
+                throw new Exception("Такой ID уже реально есть в самой БД!");
+
             await _context.Attendances.AddAsync(attendance, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
         }
@@ -96,6 +108,40 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
             existingAttendance.TeacherShare = attendance.TeacherShare;
 
             await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<List<DateTime>> GetDatesWithCompletedAttendanceAsync(int groupId, List<DateTime> datesToCheck, CancellationToken cancellationToken)
+        {
+            return await _context.Attendances
+                .Where(a => a.GroupId == groupId
+                         && datesToCheck.Contains(a.Datetime)
+                         && a.IsCompleted == 1)
+                .Select(a => a.Datetime)
+                .Distinct()
+                .ToListAsync(cancellationToken);
+        }
+
+        public async Task RemoveByGroupDateAsync(int groupId, DateTime dateTime, CancellationToken cancellationToken = default)
+        {
+            var attendences = await _context.Attendances
+                .Where(gd => gd.GroupId == groupId &&
+                                     gd.Datetime == dateTime)
+                .ToListAsync(cancellationToken);
+
+            foreach (var item in attendences)
+            {
+                await RemoveAsync(item, cancellationToken);
+            }
+        }
+
+        public async Task RemoveFutureAttendanceForStudentsAsync(int groupId, List<int> clientIds, CancellationToken cancellationToken = default)
+        {
+            await _context.Attendances
+        .Where(a => a.GroupId == groupId &&
+                    a.Datetime >= DateTime.Now &&
+                    a.ClientId.HasValue &&
+                    clientIds.Contains(a.ClientId.Value))
+        .ExecuteDeleteAsync(cancellationToken);
         }
     }
 }

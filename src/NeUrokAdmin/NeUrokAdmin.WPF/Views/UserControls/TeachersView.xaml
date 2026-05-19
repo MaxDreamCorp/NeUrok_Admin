@@ -52,7 +52,7 @@
                                     Binding="{Binding Fullname}" 
                                     Width="2*"/>
                 <DataGridTextColumn Header="Доля за инд. занятия" 
-                                    Binding="{Binding IndividualLessonsShare}" 
+                                    Binding="{Binding IndividualLessons}"
                                     Width="*"/>
 
                 <DataGridTextColumn Header="Заметки" 

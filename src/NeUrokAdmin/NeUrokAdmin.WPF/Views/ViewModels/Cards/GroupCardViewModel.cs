@@ -129,6 +129,12 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
                 _selectedStatus = groupDTO.GroupStatus.Status;
                 _weekDays = groupDTO.WeekDays;
                 _time = groupDTO.Time;
+                _timeHours = groupDTO.Time.Hour.ToString("00");
+                _timeMinutes = groupDTO.Time.Minute.ToString("00");
+                SelectedDates = groupDTO.Dates;
+                _classesDates = string.Join(", ", SelectedDates
+                    .Order().Select(d =>
+                    $"Занятие {SelectedDates.IndexOf(d) + 1}: {d.ToShortDateString()}"));
                 _students = new(groupDTO.Students);
             }
 

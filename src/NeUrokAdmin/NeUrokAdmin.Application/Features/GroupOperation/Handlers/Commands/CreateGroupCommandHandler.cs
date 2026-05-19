@@ -50,9 +50,9 @@ namespace NeUrokAdmin.Application.Features.GroupOperation.Handlers.Commands
             if (status == null)
                 throw new ArgumentNullException("Такого статуса группы не существует");
 
-            int groupId = await _groupRepository.GetNextIdAsync(cancellationToken);
+
             var group = Group.Create(
-                groupId,
+                0,
                 request.Name,
                 course.Id,
                 teacher.Id,

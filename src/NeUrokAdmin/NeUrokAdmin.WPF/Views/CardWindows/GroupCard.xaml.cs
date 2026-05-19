@@ -42,6 +42,8 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
 
             var statuses = await _mediator.Send(new GetAllGroupStatusesQuery());
             ViewModel.GroupStatusDTOs = new(statuses);
+            foreach (var date in ViewModel.SelectedDates)
+                DatesCalendar.SelectedDates.Add(date);
         }
 
         private void BackBtn_Click(object sender, RoutedEventArgs e)
@@ -65,7 +67,7 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
                 case Enums.OperationType.Read:
                     break;
                 case Enums.OperationType.Edit:
-                    //result = await UpdateGroup();
+                    result = await UpdateGroup();
                     break;
                 case Enums.OperationType.Filter:
                     result = true;
@@ -207,25 +209,10 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
                 _dialogService.ShowWarning("Статус не может быть пустым");
                 return false;
             }
-            if (!ViewModel.ClassesDates.Any())
-            {
-                _dialogService.ShowWarning("Даты занятий не выбраны");
-                return false;
-            }
-            if (string.IsNullOrEmpty(ViewModel.WeekDays))
-            {
-                _dialogService.ShowWarning("Дни недели не может быть пустыми");
-                return false;
-            }
             if (string.IsNullOrEmpty(ViewModel.TimeHours) || string.IsNullOrEmpty(ViewModel.TimeMinutes))
             {
-                _dialogService.ShowWarning("Время не может быть пустым");
-                return false;
-            }
-            if (!ViewModel.Students.Any())
-            {
-                _dialogService.ShowWarning("Ученики занятий не выбраны");
-                return false;
+                ViewModel.TimeHours = "00";
+                ViewModel.TimeMinutes = "00";
             }
             return true;
         }
@@ -254,6 +241,39 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
 
                 var groupId = await _mediator.Send(cmd);
                 await _mediator.Send(new CreateAttendancesForGroupCommand(groupId, (int)ClassesTypeEnum.Group)); // TODO: select classes type
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _dialogService.ShowError(ex.Message);
+                return false;
+            }
+        }
+
+        private async Task<bool> UpdateGroup()
+        {
+            if (!_dialogService.AskQuetion("Вы уверены, что хотите изменить группу?"))
+                return false;
+
+            if (!CheckFields())
+                return false;
+
+            try
+            {
+                GroupDTO dto = ViewModel.GetGroupDTO();
+
+                var cmd = new UpdateGroupCommand(
+                    dto.Id,
+                    dto.Name,
+                    dto.Course.Id,
+                    dto.Teacher.Id,
+                    dto.GroupStatus.Id,
+                    dto.WeekDays,
+                    dto.Time,
+                    dto.Dates,
+                    dto.Students);
+
+                await _mediator.Send(cmd);
                 return true;
             }
             catch (Exception ex)
