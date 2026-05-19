@@ -71,6 +71,9 @@
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="50"/>
                                             <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
 
                                         <TextBlock Grid.Column="0" Text="{Binding Student.Id, StringFormat='ID: {0}'}" 
@@ -78,6 +81,19 @@
 
                                         <TextBlock Grid.Column="1" Text="{Binding Student.Client.ChildFullname}" 
                                            FontWeight="Bold" FontSize="14" VerticalAlignment="Center"/>
+
+                                        <TextBlock Grid.Column="2" 
+                                                   Text="{Binding Student.ActiveSubscriptionsCount, StringFormat='Активных абонементов: {0}'}" 
+                                             VerticalAlignment="Center" Margin="5 0"/> 
+
+                                        <TextBlock Grid.Column="3" 
+                                                   Text="{Binding Student.PaidCount, StringFormat='Оплачено: {0}'}" 
+                                             VerticalAlignment="Center" Margin="5 0"/> 
+
+                                        <TextBlock Grid.Column="4" 
+                                                   Text="{Binding Student.NotPaidCount, StringFormat='Не оплачено: {0}'}" 
+                                             VerticalAlignment="Center" Margin="5 0"/> 
+
                                     </Grid>
                                 </CheckBox>
                             </Expander.Header>

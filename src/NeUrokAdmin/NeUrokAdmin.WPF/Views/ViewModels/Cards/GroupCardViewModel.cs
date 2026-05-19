@@ -135,7 +135,7 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
                 _classesDates = string.Join(", ", SelectedDates
                     .Order().Select(d =>
                     $"Занятие {SelectedDates.IndexOf(d) + 1}: {d.ToShortDateString()}"));
-                _students = new(groupDTO.Students);
+                Students = new(groupDTO.Students);
             }
 
             OperationType = operationType;

@@ -55,10 +55,20 @@
                   MouseDoubleClick="DataGrid_MouseDoubleClick">
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
+                <DataGridTextColumn Header="ID"
+                                    Binding="{Binding Id}"
+                                    Width="Auto"/>
                 <DataGridTextColumn Header="ФИО студента" 
                             Binding="{Binding Client.ChildFullname}" 
-                            Width="*"/>
+                            Width="Auto"/>
+                <DataGridTextColumn Header="Активных абонементов"
+                                    Binding="{Binding ActiveSubscriptionsCount}"/>
+                <DataGridTextColumn Header="Оплачено"
+                                    Binding="{Binding PaidCount}"
+                                    Width="Auto"/>
+                <DataGridTextColumn Header="Не оплачено"
+                                    Binding="{Binding NotPaidCount}"
+                                    Width="Auto"/>
             </DataGrid.Columns>
 
             <DataGrid.RowDetailsTemplate>
