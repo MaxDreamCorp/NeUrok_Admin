@@ -122,5 +122,10 @@ namespace NeUrokAdmin.WPF.Views.UserControls
                 new(ViewModel.FilteredGroups);
         }
 
+        private void DatesCalendar_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
+
     }
 }

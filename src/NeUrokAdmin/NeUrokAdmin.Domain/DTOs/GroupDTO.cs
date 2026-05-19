@@ -9,5 +9,9 @@
         string WeekDays,
         TimeOnly Time,
         List<DateTime> Dates,
-        List<StudentDTO> Students);
+        List<StudentDTO> Students)
+    {
+        public int StudentCount { get => Students.Count; }
+        public int ClassesCount { get => Dates.Count; }
+    }
 }
