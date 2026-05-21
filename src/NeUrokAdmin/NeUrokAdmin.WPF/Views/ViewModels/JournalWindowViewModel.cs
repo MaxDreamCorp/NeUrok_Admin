@@ -15,7 +15,7 @@ namespace NeUrokAdmin.WPF.Views.ViewModels
         public JournalWindowViewModel(GroupDTO group, List<StudentAttendancesDTO> studentAttendances)
         {
             _group = group;
-            Dates = group.Dates;
+            Dates = group.Dates.Order().ToList();
             StudentAttendances = studentAttendances;
         }
     }

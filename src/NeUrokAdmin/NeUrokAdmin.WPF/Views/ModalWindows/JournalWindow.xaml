@@ -6,8 +6,7 @@
         xmlns:local="clr-namespace:NeUrokAdmin.WPF.Views.ModalWindows"
         mc:Ignorable="d"
         Title="Журнал" 
-        MinHeight="450" 
-        MinWidth="800"
+        
         Loaded="Window_Loaded"
         SizeToContent="WidthAndHeight">
     <Grid >
@@ -101,9 +100,9 @@
                 </Grid>
             </Border>
 
-            <Border Background="White" CornerRadius="8" Margin="10,5,10,10">
+            <Border Background="White" BorderBrush="Black" BorderThickness="1,1,0,0" SnapsToDevicePixels="True" Margin="10,5,10,10">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                    <Grid x:Name="JournalGrid" Background="White" ShowGridLines="True"/>
+                    <Grid x:Name="JournalGrid" Background="White"   />
                 </ScrollViewer>
             </Border>
 
