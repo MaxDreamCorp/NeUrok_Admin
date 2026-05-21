@@ -1,4 +1,4 @@
-﻿namespace NeUrokAdmin.Domain
+﻿namespace NeUrokAdmin.Domain.DTOs
 {
     public record AttendanceStatusDTO(
         int Id,

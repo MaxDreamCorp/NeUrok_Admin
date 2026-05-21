@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NeUrokAdmin.Application.Features.Authorization.Commands;
+using NeUrokAdmin.Application.Middleware;
 using NeUrokAdmin.Domain.Interfaces;
 using NeUrokAdmin.Domain.Interfaces.Repositories;
 using NeUrokAdmin.Infrastructure.Persistance;
@@ -59,6 +60,8 @@ namespace NeUrokAdmin.WPF
             services.AddTransient<MainWindow>();
             services.AddTransient<LoginWindow>();
             services.AddTransient<RegistrationWindow>();
+            services.AddTransient<JournalWindow>();
+
             services.AddTransient<ClientsView>();
             services.AddTransient<GroupsView>();
             services.AddTransient<CoursesView>();
@@ -79,6 +82,7 @@ namespace NeUrokAdmin.WPF
             services.AddTransient<ClientsSelectorWindow>();
             services.AddTransient<StudentsSelectorWindow>();
 
+            services.AddTransient<GettingService>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IClientRepository, ClientRepository>();
             services.AddTransient<IClientStatusRepository, ClientStatusRepository>();

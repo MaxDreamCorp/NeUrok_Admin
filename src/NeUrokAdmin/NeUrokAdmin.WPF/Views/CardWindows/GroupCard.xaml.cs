@@ -11,7 +11,9 @@ using NeUrokAdmin.Domain.DTOs;
 using NeUrokAdmin.Domain.Enums;
 using NeUrokAdmin.WPF.Interfaces;
 using NeUrokAdmin.WPF.Services;
+using NeUrokAdmin.WPF.Views.ModalWindows;
 using NeUrokAdmin.WPF.Views.Selectors;
+using NeUrokAdmin.WPF.Views.ViewModels;
 using NeUrokAdmin.WPF.Views.ViewModels.Cards;
 using NeUrokAdmin.WPF.Views.ViewModels.Selectors;
 
@@ -283,9 +285,17 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
             }
         }
 
-        private void OpenJournalBtn_Click(object sender, RoutedEventArgs e)
+        private async void OpenJournalBtn_Click(object sender, RoutedEventArgs e)
         {
+            if (!ViewModel.Id.HasValue) return;
 
+            var group = await _mediator.Send(new GetGroupByIdQuery(ViewModel.Id.Value));
+            var attendances = await _mediator.Send(new GetGroupStudentsAttendancesCommand(group.Id));
+
+            var vm = new JournalWindowViewModel(group, attendances);
+            var journalWindow = _navigationService.GetWindow<JournalWindow>();
+            journalWindow.ViewModel = vm;
+            journalWindow.ShowDialog();
         }
     }
 }

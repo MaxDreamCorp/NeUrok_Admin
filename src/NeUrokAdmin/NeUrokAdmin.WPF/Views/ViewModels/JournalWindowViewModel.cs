@@ -12,10 +12,10 @@ namespace NeUrokAdmin.WPF.Views.ViewModels
 
         public List<StudentAttendancesDTO> StudentAttendances { get; init; }
 
-        public JournalWindowViewModel(GroupDTO group, List<DateTime> dates, List<StudentAttendancesDTO> studentAttendances)
+        public JournalWindowViewModel(GroupDTO group, List<StudentAttendancesDTO> studentAttendances)
         {
             _group = group;
-            Dates = dates;
+            Dates = group.Dates;
             StudentAttendances = studentAttendances;
         }
     }

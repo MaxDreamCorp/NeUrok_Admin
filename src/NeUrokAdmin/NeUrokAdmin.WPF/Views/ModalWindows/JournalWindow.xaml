@@ -8,6 +8,7 @@
         Title="Журнал" 
         MinHeight="450" 
         MinWidth="800"
+        Loaded="Window_Loaded"
         SizeToContent="WidthAndHeight">
     <Grid >
 
