@@ -47,6 +47,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
 
                 </Grid.RowDefinitions>
 
@@ -269,6 +270,16 @@
                                 Height="24" />  
                     </StackPanel>
                 </StackPanel>
+
+                <Button x:Name="OpenJournalBtn"
+                        Content="Открыть журнал"
+                        Style="{StaticResource PrimaryBtn}"
+                        Grid.Row="9"
+                        Grid.ColumnSpan="2"
+                        Margin="10"
+                        Width="200"
+                        Click="OpenJournalBtn_Click"
+                        Visibility="{Binding IsEditing, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVis}}" />
             </Grid>
         </StackPanel>
 

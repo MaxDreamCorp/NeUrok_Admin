@@ -31,6 +31,7 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
                     case OperationType.Edit:
                         IsFilter = false;
                         IsEditable = true;
+                        IsEditing = true;
                         IsDeletable = true;
                         HeaderText = $"Группа \"{Name}\"";
                         break;
@@ -56,6 +57,9 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
 
         [ObservableProperty]
         private bool _isFilter;
+
+        [ObservableProperty]
+        private bool _isEditing;
 
         [ObservableProperty]
         private string _headerText = null!;

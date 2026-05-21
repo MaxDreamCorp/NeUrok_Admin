@@ -282,5 +282,10 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
                 return false;
             }
         }
+
+        private void OpenJournalBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
