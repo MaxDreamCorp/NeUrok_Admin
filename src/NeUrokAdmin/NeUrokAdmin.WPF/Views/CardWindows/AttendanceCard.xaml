@@ -155,7 +155,7 @@
                 <TextBlock Text="Статус:" 
                            Grid.Row="7"
                            Style="{StaticResource CardTextBlock}"/>
-                <ComboBox SelectedItem="{Binding Status.Status, UpdateSourceTrigger=PropertyChanged}" 
+                <ComboBox SelectedItem="{Binding Status, UpdateSourceTrigger=PropertyChanged}" 
                             ItemsSource="{Binding AttendanceStatuses, UpdateSourceTrigger=PropertyChanged}" 
                             Style="{StaticResource ModernComboBox}"
                             Grid.Row="7" 

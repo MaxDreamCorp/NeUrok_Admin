@@ -10,11 +10,11 @@ namespace NeUrokAdmin.Domain.DTOs
         ClassesTypeDTO ClassesType,
         TeacherDTO Teacher,
         int? GroupId,
-        bool IsComplited,
-        AttendanceStatusDTO? AttendanceStatus,
-        AttendanceTypeDTO AttendanceType,
-        decimal? Price,
-        decimal? TeacherShare)
+            bool IsComplited,
+            AttendanceStatusDTO? AttendanceStatus,
+            AttendanceTypeDTO AttendanceType,
+            decimal? Price,
+            decimal? TeacherShare)
     {
         public string Mark
         {

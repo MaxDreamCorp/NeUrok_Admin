@@ -62,8 +62,15 @@ namespace NeUrokAdmin.WPF.Views.UserControls
                 var vm = new AttendanceCardViewModel(ViewModel.Group, ViewModel.Student, ViewModel.Attendance, studentSubscription);
                 var window = _navigationService.GetWindow<AttendanceCard>();
                 window.ViewModel = vm;
+                window.AttendanceChanged += Window_AttendanceChanged;
                 window.ShowDialog();
             }
+        }
+
+        private void Window_AttendanceChanged(object? sender, Domain.DTOs.AttendanceDTO e)
+        {
+            ViewModel = new JournalCellViewModel(e, ViewModel.Student, ViewModel.Group);
+            DataContext = ViewModel;
         }
     }
 }

@@ -11,6 +11,6 @@
             <TextBlock Text="{Binding Attendance.Mark}"
                        Margin="3"
                   FontWeight="DemiBold"
-                  FontSize="12"/>
+                  FontSize="20"/>
         </Button>
 </UserControl>

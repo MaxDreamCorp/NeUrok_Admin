@@ -47,7 +47,7 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
         private bool _isCompleted;
 
         [ObservableProperty]
-        private AttendanceStatusDTO? _status;
+        private string? _status;
 
         [ObservableProperty]
         private AttendanceTypeDTO _type;
@@ -70,7 +70,7 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
             _classesType = attendance.ClassesType;
             _teacher = attendance.Teacher;
             _isCompleted = attendance.IsComplited;
-            _status = attendance.AttendanceStatus;
+            _status = attendance.AttendanceStatus?.Status ?? null;
             _type = attendance.AttendanceType;
             _price = attendance.Price ??
                 (studentSubscription.Cost / studentSubscription.ClassesAmount);
@@ -101,7 +101,7 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
                 Teacher,
                 Group?.Id ?? null,
                 IsCompleted,
-                Status,
+                AttendanceStatusesDTO.FirstOrDefault(s => s.Status == Status),
                 Type,
                 Price,
                 TeacherShare);
