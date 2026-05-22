@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using NeUrokAdmin.Domain.DTOs;
+using NeUrokAdmin.WPF.Views.UserControls;
 
 namespace NeUrokAdmin.WPF.Views.ViewModels
 {

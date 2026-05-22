@@ -5,6 +5,7 @@
     <SolidColorBrush x:Key="VeryDarkPinkBg" Color="#FF71225A"/>
     <SolidColorBrush x:Key="DangerColor" Color="#FFB93434"/>
     <SolidColorBrush x:Key="LightPinkBg" Color="#ff65c3"/>
+    <SolidColorBrush x:Key="FewerPalePink" Color="#FFDA8CBC"/>
     <SolidColorBrush x:Key="PalePink" Color="#FFFFDDF2"/>
     <SolidColorBrush x:Key="LightYellow" Color="#ffff19"/>
     <SolidColorBrush x:Key="InpBg" Color="#FFF1F1F1"/>
@@ -349,4 +350,38 @@
         <Setter Property="ColumnHeaderStyle" Value="{StaticResource CustomColumnHeaderStyle}"/>
         <Setter Property="RowStyle" Value="{StaticResource CustomRowStyle}"/>
     </Style>
+
+        <Style x:Key="JournalCellButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+        <Setter Property="Width" Value="40" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="Cursor" Value="Hand" />
+
+        <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="TargetBorder" 
+                            Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="TargetBorder" Property="Background" Value="#ffddf2"/>
+                            </Trigger>
+
+                            <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="TargetBorder" Property="Background" Value="#FFDA8CBC"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 </ResourceDictionary>

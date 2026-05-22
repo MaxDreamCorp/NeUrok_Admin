@@ -62,6 +62,8 @@ namespace NeUrokAdmin.WPF
             services.AddTransient<RegistrationWindow>();
             services.AddTransient<JournalWindow>();
 
+            services.AddTransient<JournalCell>();
+
             services.AddTransient<ClientsView>();
             services.AddTransient<GroupsView>();
             services.AddTransient<CoursesView>();

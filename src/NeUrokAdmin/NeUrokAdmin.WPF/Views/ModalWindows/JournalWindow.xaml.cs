@@ -2,7 +2,9 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 using NeUrokAdmin.WPF.Services;
+using NeUrokAdmin.WPF.Views.UserControls;
 using NeUrokAdmin.WPF.Views.ViewModels;
+using NeUrokAdmin.WPF.Views.ViewModels.Controls;
 
 namespace NeUrokAdmin.WPF.Views.ModalWindows
 {
@@ -157,13 +159,26 @@ namespace NeUrokAdmin.WPF.Views.ModalWindows
                 TextBlock tb = new TextBlock()
                 {
                     Text = item.Student.Client.ChildFullname,
-                    Padding = new Thickness(2, 4, 2, 4),
+                    Padding = new Thickness(3),
+                    VerticalAlignment = VerticalAlignment.Center,
                     FontSize = 16,
                     FontWeight = FontWeights.Bold,
                 };
                 bd.Child = tb;
                 JournalGrid.Children.Add(bd);
                 Grid.SetRow(bd, i + 3);
+
+                for (global::System.Int32 j = 0; j < item.Attendances.Count; j++)
+                {
+                    var attendance = item.Attendances[j];
+                    var vm = new JournalCellViewModel(attendance, item.Student, item.Group);
+                    var cell = _navigationService.GetUserControl<JournalCell>();
+                    cell.ViewModel = vm;
+                    cell.Load();
+                    JournalGrid.Children.Add(cell);
+                    Grid.SetRow(cell, i + 3);
+                    Grid.SetColumn(cell, j + 1);
+                }
             }
         }
     }
