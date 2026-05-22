@@ -118,6 +118,9 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
         [ObservableProperty]
         private TimeOnly? _time;
 
+
+        private List<StudentDTO> _studentDTOs = new List<StudentDTO>();
+
         [ObservableProperty]
         private ObservableCollection<StudentDTO> _students = new();
 
@@ -139,6 +142,7 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
                 _classesDates = string.Join(", ", SelectedDates
                     .Order().Select(d =>
                     $"Занятие {SelectedDates.IndexOf(d) + 1}: {d.ToShortDateString()}"));
+                _studentDTOs = groupDTO.Students;
                 Students = new(groupDTO.Students);
             }
 

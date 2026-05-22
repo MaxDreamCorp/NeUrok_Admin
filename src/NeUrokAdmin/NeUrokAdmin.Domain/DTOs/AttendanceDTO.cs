@@ -3,6 +3,7 @@
 namespace NeUrokAdmin.Domain.DTOs
 {
     public record AttendanceDTO(
+        int Id,
         int ClientId,
         DateTime Datetime,
         CourseDTO Course,

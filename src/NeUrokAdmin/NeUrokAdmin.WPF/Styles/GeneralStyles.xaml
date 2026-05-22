@@ -91,6 +91,15 @@
         <Setter Property="FontSize" Value="14" />
     </Style>
 
+    <Style x:Key="TblockBorder" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource InpBg}" />
+        <Setter Property="BorderBrush" Value="{StaticResource DarkPinkBg}" />
+        <Setter Property="BorderThickness" Value="1.5" />
+        <Setter Property="Padding" Value="5 2" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+    </Style>
+
     <Style x:Key="CardTextBlock" TargetType="TextBlock">
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="VerticalAlignment" Value="Center" />

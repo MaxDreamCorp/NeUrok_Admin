@@ -7,7 +7,7 @@
              mc:Ignorable="d" >
         <Button x:Name="MC" 
                 Style="{StaticResource JournalCellButtonStyle}"
-                Click="Button_Click">
+                MouseDoubleClick="MC_MouseDoubleClick">
             <TextBlock Text="{Binding Attendance.Mark}"
                        Margin="3"
                   FontWeight="DemiBold"

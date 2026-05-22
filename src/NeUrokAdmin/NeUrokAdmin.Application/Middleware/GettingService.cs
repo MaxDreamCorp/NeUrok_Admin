@@ -22,12 +22,9 @@ namespace NeUrokAdmin.Application.Middleware
                 throw new Exception("У ученика отсутствует сущность клиента");
 
             List<StudentSubscriptionDTO> subscriptionsDtos = new List<StudentSubscriptionDTO>();
-            foreach (var sSubscription in student.StudentSubscriptions)
+            var subscriptions = await _studentSubscriptionRepository.GetByStudentIdAsync(student.Id, cancellationToken);
+            foreach (var studentSubscription in subscriptions)
             {
-                var studentSubscription = await _studentSubscriptionRepository.GetByIdAsync(sSubscription.Id, cancellationToken);
-                if (studentSubscription == null)
-                    throw new Exception("У данного ученика нет данного активного абонемента");
-
                 subscriptionsDtos.Add(new(
                     studentSubscription.Id,
                     student.Id,
@@ -78,24 +75,24 @@ namespace NeUrokAdmin.Application.Middleware
             foreach (var student in group.Students)
                 students.Add(await GetStudentDTOFromStudentAsync(student, cancellationToken));
 
-           return new GroupDTO(
-            group.Id,
-            group.Name,
-            new(
-                group.Course.Id,
-                group.Course.Name),
-            new(
-                group.Teacher.Id,
-                group.Teacher.Fullname,
-                group.Teacher.IndividualLessonsShare,
-                group.Teacher.Notes),
-            new(
-                group.GroupStatus.Id,
-                group.GroupStatus.Status),
-            group.WeekDays,
-            group.Time,
-            group.GroupDates.Select(gd => gd.Datetime).ToList(),
-            students);
+            return new GroupDTO(
+             group.Id,
+             group.Name,
+             new(
+                 group.Course.Id,
+                 group.Course.Name),
+             new(
+                 group.Teacher.Id,
+                 group.Teacher.Fullname,
+                 group.Teacher.IndividualLessonsShare,
+                 group.Teacher.Notes),
+             new(
+                 group.GroupStatus.Id,
+                 group.GroupStatus.Status),
+             group.WeekDays,
+             group.Time,
+             group.GroupDates.Select(gd => gd.Datetime).ToList(),
+             students);
         }
     }
 }

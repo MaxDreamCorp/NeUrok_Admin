@@ -76,6 +76,7 @@ namespace NeUrokAdmin.WPF
             services.AddTransient<TeacherCard>();
             services.AddTransient<StudentCard>();
             services.AddTransient<StudentSubscriptionCard>();
+            services.AddTransient<AttendanceCard>();
 
             services.AddTransient<CoursesSelectorWindow>();
             services.AddTransient<TeachersSelectorWindow>();

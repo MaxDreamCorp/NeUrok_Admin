@@ -1,10 +1,10 @@
 ﻿using MediatR;
-using NeUrokAdmin.Application.Features.GroupOperation.Commands;
+using NeUrokAdmin.Application.Features.GroupOperation.Queries;
 using NeUrokAdmin.Application.Middleware;
 using NeUrokAdmin.Domain.DTOs;
 using NeUrokAdmin.Domain.Interfaces.Repositories;
 
-namespace NeUrokAdmin.Application.Features.GroupOperation.Handlers.Commands
+namespace NeUrokAdmin.Application.Features.GroupOperation.Handlers.Queries
 {
     public class GetGroupStudentsAttendancesCommandHandler : IRequestHandler<GetGroupStudentsAttendancesCommand, List<StudentAttendancesDTO>>
     {
@@ -38,12 +38,13 @@ namespace NeUrokAdmin.Application.Features.GroupOperation.Handlers.Commands
                     studentDto,
                     groupDto,
                     studentAttendance.Select(sa => new AttendanceDTO(
+                        sa.Id,
                         student.ClientId,
                         sa.Datetime,
                         new(
                             sa.Course.Id,
                             sa.Course.Name),
-                        new (
+                        new(
                             sa.ClassType.Id,
                             sa.ClassType.Type),
                         new(
