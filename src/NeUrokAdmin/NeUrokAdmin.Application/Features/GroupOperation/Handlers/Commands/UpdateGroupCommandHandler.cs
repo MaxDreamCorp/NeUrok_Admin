@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using MediatR;
+﻿using MediatR;
 using NeUrokAdmin.Application.Features.GroupOperation.Commands;
 using NeUrokAdmin.Domain.DTOs;
 using NeUrokAdmin.Domain.Entities;
@@ -58,8 +56,17 @@ namespace NeUrokAdmin.Application.Features.GroupOperation.Handlers.Commands
 
 
             group.Name = request.Name;
-            group.CourseId = course.Id;
-            group.TeacherId = teacher.Id;
+            if (group.CourseId != course.Id)
+            {
+                await SyncCourseAsync(group, course, cancellationToken);
+                group.CourseId = course.Id;
+            }
+            if (group.TeacherId != teacher.Id)
+            {
+                await SyncTeacherAsync(group, teacher, cancellationToken);
+                group.TeacherId = teacher.Id;
+            }
+
             group.GroupStatusId = status.Id;
             group.WeekDays = request.WeekDays;
             group.Time = request.Time;
@@ -68,6 +75,26 @@ namespace NeUrokAdmin.Application.Features.GroupOperation.Handlers.Commands
             var updatedStudents = await SyncStudentsAsync(group, request.Students, request.Dates.Max(), cancellationToken);
 
             await SyncGroupDatesAsync(group, request.Dates, updatedStudents, cancellationToken);
+        }
+
+        private async Task SyncTeacherAsync(Group group, Teacher teacher, CancellationToken cancellationToken = default)
+        {
+            var attendances = await _attendanceRepository.GetByGroupIdAsync(group.Id, cancellationToken);
+            foreach (var attendance in attendances)
+            {
+                attendance.TeacherId = teacher.Id;
+                await _attendanceRepository.UpdateAsync(attendance, cancellationToken);
+            }
+        }
+
+        private async Task SyncCourseAsync(Group group, Course course, CancellationToken cancellationToken = default)
+        {
+            var attendances = await _attendanceRepository.GetByGroupIdAsync(group.Id, cancellationToken);
+            foreach (var attendance in attendances)
+            {
+                attendance.CourseId = course.Id;
+                await _attendanceRepository.UpdateAsync(attendance, cancellationToken);
+            }
         }
 
         private async Task SyncGroupDatesAsync(Group group, List<DateTime> newDates, List<Student> currentStudents, CancellationToken cancellationToken)
