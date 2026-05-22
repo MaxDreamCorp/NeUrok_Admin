@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using MediatR;
+using NeUrokAdmin.Application.Features.AttendanceOperations.Queries;
 using NeUrokAdmin.WPF.Views.ViewModels.Cards;
 
 namespace NeUrokAdmin.WPF.Views.CardWindows
@@ -10,14 +12,20 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
     {
         public AttendanceCardViewModel ViewModel { get; set; } = null!;
 
-        public AttendanceCard()
+        private readonly IMediator _mediator;
+
+        public AttendanceCard(IMediator mediator)
         {
             InitializeComponent();
+            _mediator = mediator;
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             DataContext = ViewModel;
+
+            var statuses = await _mediator.Send(new GetAttendanceStatusesQuery());
+            ViewModel.AttendanceStatusesDTO = statuses;
         }
 
         private void AcceptBtn_Click(object sender, RoutedEventArgs e)
@@ -27,7 +35,7 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
 
         private void BackBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            Close();
         }
     }
 }
