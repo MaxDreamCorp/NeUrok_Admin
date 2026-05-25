@@ -14,7 +14,9 @@ namespace NeUrokAdmin.Domain.DTOs
             AttendanceStatusDTO? AttendanceStatus,
             AttendanceTypeDTO AttendanceType,
             decimal? Price,
-            decimal? TeacherShare)
+            decimal? TeacherShare,
+            string? AbsentCause,
+            string? Notes)
     {
         public string Mark
         {

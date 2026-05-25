@@ -51,6 +51,8 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <TextBlock Text="Ученик:" 
@@ -150,35 +152,68 @@
                           Margin="0,5" 
                           Background="{StaticResource InpBg}"
                           BorderBrush="{StaticResource DarkPinkBg}"
-                          BorderThickness="1.5"/>
+                          BorderThickness="1.5"
+                          Checked="CheckBox_Checked"
+                          Unchecked="CheckBox_Unchecked"/>
 
                 <TextBlock Text="Статус:" 
                            Grid.Row="7"
                            Style="{StaticResource CardTextBlock}"/>
                 <ComboBox SelectedItem="{Binding Status, UpdateSourceTrigger=PropertyChanged}" 
                             ItemsSource="{Binding AttendanceStatuses, UpdateSourceTrigger=PropertyChanged}" 
+                          SelectionChanged="ComboBox_SelectionChanged"
                             Style="{StaticResource ModernComboBox}"
                             Grid.Row="7" 
                             Grid.Column="1" 
                             Margin="0,5" />
 
+                <TextBlock Text="Причина:"
+                           Visibility="Collapsed"
+                           x:Name="CauseLb"
+                           VerticalAlignment="Top"
+                           Grid.Row="8"
+                           Style="{StaticResource CardTextBlock}"/>
+                <TextBox Text="{Binding AbsentCause, TargetNullValue=''}" 
+                         x:Name="CauseTxt"
+                         Visibility="Collapsed" 
+                         Style="{StaticResource Tbox}"
+                         Grid.Row="8"
+                         Grid.Column="1"
+                         Margin="0 5"
+                         MinHeight="60" 
+                         TextWrapping="Wrap" 
+                         AcceptsReturn="True"/> 
+
                 <TextBlock Text="Цена занятия:" 
-            Grid.Row="8" 
+            Grid.Row="9" 
             Style="{StaticResource CardTextBlock}"/>
                 <TextBox Text="{Binding Price, StringFormat='{}{0:N2}', TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
-          Grid.Row="8" 
+          Grid.Row="9" 
           Grid.Column="1" 
           Margin="0,5" 
           Style="{StaticResource Tbox}"/>
 
                 <TextBlock Text="Доля преподавателю:" 
-            Grid.Row="9" 
+            Grid.Row="10" 
             Style="{StaticResource CardTextBlock}"/>
                 <TextBox Text="{Binding TeacherShare, StringFormat='{}{0:N2}', TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
-          Grid.Row="9" 
+          Grid.Row="10" 
           Grid.Column="1" 
           Margin="0,5" 
           Style="{StaticResource Tbox}"/>
+
+                <TextBlock Text="Заметки:"
+                           VerticalAlignment="Top"
+                           Grid.Row="11"
+                           Style="{StaticResource CardTextBlock}"/>
+                <TextBox Text="{Binding Notes, TargetNullValue=''}" 
+                         Style="{StaticResource Tbox}"
+                         Grid.Row="11"
+                         Grid.Column="1"
+                         Margin="0 5"
+                         MinHeight="60" 
+                         TextWrapping="Wrap" 
+                         AcceptsReturn="True"/> 
             </Grid>
         </StackPanel>
 

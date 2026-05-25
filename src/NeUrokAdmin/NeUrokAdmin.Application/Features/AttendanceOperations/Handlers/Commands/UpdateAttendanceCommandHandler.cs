@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using NeUrokAdmin.Application.Features.AttendanceOperations.Commands;
+using NeUrokAdmin.Domain.Entities;
 using NeUrokAdmin.Domain.Interfaces.Repositories;
 
 namespace NeUrokAdmin.Application.Features.AttendanceOperations.Handlers.Commands
@@ -21,23 +22,39 @@ namespace NeUrokAdmin.Application.Features.AttendanceOperations.Handlers.Command
             if (attendance == null) throw new KeyNotFoundException("Посещение не найдена");
 
             var attendanceStatus = await _attendanceStatusRepository.GetByIdAsync(request.AttendanceStatusId, cancellationToken);
-            if (attendanceStatus == null) throw new ArgumentNullException("Такого статуса не существует");
+            if (attendanceStatus == null && request.AttendanceStatusId != 0) throw new ArgumentNullException("Такого статуса не существует");
 
-            if (request.IsComplited)
+            if (request.IsComplited && attendanceStatus != null)
             {
                 attendance.IsCompleted = 1;
                 attendance.AttendanceStatusId = attendanceStatus.Id;
                 attendance.Price = request.Price;
                 attendance.TeacherShare = request.TeacherShare;
+                attendance.AbsentCause = request.AbsentCause;
+                attendance.Notes = request.Notes;
+                await _attendanceRepository.UpdateAsync(attendance, cancellationToken);
             }
             else
             {
-                attendance.IsCompleted = 0;
-                attendance.AttendanceStatusId = null;
-                attendance.Price = null;
-                attendance.TeacherShare = null;
+                //await _attendanceRepository.RemoveAsync(attendance, cancellationToken);
+                var newAttendance = Attendance.Create(
+                    attendance.Id,
+                    attendance.ClientId,
+                    attendance.Datetime,
+                    attendance.CourseId,
+                    attendance.ClassTypeId,
+                    attendance.TeacherId,
+                    attendance.GroupId,
+                    0,
+                    null,
+                    attendance.AttendanceTypeId,
+                    null,
+                    null,
+                    null,
+                    attendance.Notes);
+                await _attendanceRepository.UpdateAsync(newAttendance, cancellationToken);
             }
-            await _attendanceRepository.UpdateAsync(attendance, cancellationToken);
+
         }
     }
 }

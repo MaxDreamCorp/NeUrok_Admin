@@ -7,5 +7,7 @@ namespace NeUrokAdmin.Application.Features.AttendanceOperations.Commands
         bool IsComplited,
         int AttendanceStatusId,
         decimal Price,
-        decimal TeacherShare) : IRequest;
+        decimal TeacherShare,
+        string? AbsentCause,
+        string? Notes) : IRequest;
 }

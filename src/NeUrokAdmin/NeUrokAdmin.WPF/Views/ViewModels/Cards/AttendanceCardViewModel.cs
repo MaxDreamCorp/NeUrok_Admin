@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using NeUrokAdmin.Domain.DTOs;
-using NeUrokAdmin.Domain.Enums;
 
 namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
 {
@@ -19,6 +18,8 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
             }
         }
         private List<AttendanceStatusDTO> _attendanceStatusesDTO = new();
+
+        public StudentSubscriptionDTO StudentSubscription { get; set; }
 
         [ObservableProperty]
         private bool _isGroup;
@@ -58,6 +59,12 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
         [ObservableProperty]
         private decimal? _teacherShare;
 
+        [ObservableProperty]
+        private string? _absentCause;
+
+        [ObservableProperty]
+        private string? _notes;
+
         public AttendanceCardViewModel(GroupDTO? group, StudentDTO student, AttendanceDTO attendance, StudentSubscriptionDTO studentSubscription)
         {
             _student = student;
@@ -72,22 +79,12 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
             _isCompleted = attendance.IsComplited;
             _status = attendance.AttendanceStatus?.Status ?? null;
             _type = attendance.AttendanceType;
-            _price = attendance.Price ??
-                (studentSubscription.Cost / studentSubscription.ClassesAmount);
-            if (attendance.TeacherShare.HasValue)
-                _teacherShare = attendance.TeacherShare.Value;
-            else
-            {
-                if (studentSubscription.ClassesType.Id == (int)ClassesTypeEnum.Individual)
-                    _teacherShare = attendance.Teacher.IndividualLessonsShare;
-                else
-                {
-                    if (attendance.Teacher.Id == 1)
-                        _teacherShare = _price;
-                    else
-                        _teacherShare = _price * 0.6m;
-                }
-            }
+            _absentCause = attendance.AbsentCause;
+            _notes = attendance.Notes;
+            _price = attendance.Price;
+            _teacherShare = attendance.TeacherShare;
+            StudentSubscription = studentSubscription;
+
         }
 
         public AttendanceDTO GetAttendanceDTO()
@@ -104,7 +101,9 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
                 AttendanceStatusesDTO.FirstOrDefault(s => s.Status == Status),
                 Type,
                 Price,
-                TeacherShare);
+                TeacherShare,
+                string.IsNullOrEmpty(AbsentCause) ? null : AbsentCause,
+                string.IsNullOrEmpty(Notes) ? null : Notes);
         }
     }
 }

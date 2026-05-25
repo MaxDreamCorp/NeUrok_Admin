@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using NeUrokAdmin.Domain.DTOs;
 using NeUrokAdmin.WPF.Services;
 using NeUrokAdmin.WPF.Views.UserControls;
 using NeUrokAdmin.WPF.Views.ViewModels;
@@ -149,7 +150,10 @@ namespace NeUrokAdmin.WPF.Views.ModalWindows
 
             for (int i = 0; i < ViewModel.StudentAttendances.Count; i++)
             {
-                var item = ViewModel.StudentAttendances[i];
+                var item = new StudentAttendancesDTO(
+                    ViewModel.StudentAttendances[i].Student,
+                    ViewModel.StudentAttendances[i].Group,
+                    ViewModel.StudentAttendances[i].Attendances.OrderBy(a => a.Datetime).ToList());
 
                 Border bd = new Border()
                 {

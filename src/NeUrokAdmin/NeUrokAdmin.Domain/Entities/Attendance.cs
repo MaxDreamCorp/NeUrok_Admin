@@ -22,11 +22,15 @@ public partial class Attendance
 
     public int? AttendanceStatusId { get; set; }
 
+    public string? AbsentCause { get; set; }
+
     public int AttendanceTypeId { get; set; }
 
     public decimal? Price { get; set; }
 
     public decimal? TeacherShare { get; set; }
+
+    public string? Notes { get; set; }
 
     public virtual AttendanceStatus? AttendanceStatus { get; set; } = null!;
 
@@ -55,7 +59,9 @@ public partial class Attendance
                           int? attendanceStatusId,
                           int attendanceTypeId,
                           decimal? price,
-                          decimal? teacherShare)
+                          decimal? teacherShare,
+                          string? absentCause,
+                          string? notes)
     {
         return new Attendance
         {
@@ -70,7 +76,9 @@ public partial class Attendance
             AttendanceStatusId = attendanceStatusId,
             AttendanceTypeId = attendanceTypeId,
             Price = price,
-            TeacherShare = teacherShare
+            TeacherShare = teacherShare,
+            AbsentCause = absentCause,
+            Notes = notes
         };
     }
 }

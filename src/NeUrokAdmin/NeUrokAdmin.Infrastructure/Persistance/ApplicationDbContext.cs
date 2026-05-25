@@ -73,9 +73,15 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("id");
-            entity.Property(e => e.AttendanceStatusId).HasColumnName("attendance_status_id");
+            entity.Property(e => e.AttendanceStatusId).HasColumnName("attendance_status_id")
+                .HasColumnType("int")
+                .IsRequired(false);
             entity.Property(e => e.AttendanceTypeId).HasColumnName("attendance_type_id");
             entity.Property(e => e.ClassTypeId).HasColumnName("class_type_id");
+            entity.Property(e => e.AbsentCause)
+             .HasColumnType("text")
+             .HasColumnName("absent_cause")
+             .IsRequired(false);
             entity.Property(e => e.ClientId).HasColumnName("client_id");
             entity.Property(e => e.CourseId).HasColumnName("course_id");
             entity.Property(e => e.Datetime)
@@ -84,12 +90,18 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.GroupId).HasColumnName("group_id");
             entity.Property(e => e.IsCompleted).HasColumnName("is_completed");
             entity.Property(e => e.Price)
-                .HasPrecision(10, 2)
-                .HasColumnName("price");
+                .HasColumnType("decimal(10,2)")
+                .HasColumnName("price")
+                .IsRequired(false);
             entity.Property(e => e.TeacherId).HasColumnName("teacher_id");
             entity.Property(e => e.TeacherShare)
-                .HasPrecision(10, 2)
-                .HasColumnName("teacher_share");
+                .HasColumnType("decimal(10,2)")
+                .HasColumnName("teacher_share")
+                .IsRequired(false);
+            entity.Property(e => e.Notes)
+                .HasColumnType("text")
+                .HasColumnName("notes")
+                .IsRequired(false);
 
             entity.HasOne(d => d.AttendanceStatus).WithMany(p => p.Attendances)
                 .HasForeignKey(d => d.AttendanceStatusId)

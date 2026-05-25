@@ -29,6 +29,8 @@ namespace NeUrokAdmin.WPF.Views.UserControls
                     MC.Background = new SolidColorBrush(Colors.Coral);
                 else if (value.Attendance.Mark == "у")
                     MC.Background = new SolidColorBrush(Colors.LightBlue);
+                else
+                    MC.Background = new SolidColorBrush(Colors.White);
             }
         }
 

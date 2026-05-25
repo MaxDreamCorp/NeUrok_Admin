@@ -92,20 +92,32 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
 
         public async Task UpdateAsync(Attendance attendance, CancellationToken cancellationToken = default)
         {
-            var existingAttendance = await GetByIdAsync(attendance.Id, cancellationToken);
-            if (existingAttendance == null)
-                throw new ArgumentNullException("Данной записи не существует");
+            //var existingAttendance = await GetByIdAsync(attendance.Id, cancellationToken);
+            //if (existingAttendance == null)
+            //    throw new ArgumentNullException("Данной записи не существует");
 
-            existingAttendance.ClientId = attendance.ClientId;
-            existingAttendance.CourseId = attendance.CourseId;
-            existingAttendance.ClassTypeId = attendance.ClassTypeId;
-            existingAttendance.TeacherId = attendance.TeacherId;
-            existingAttendance.GroupId = attendance.GroupId;
-            existingAttendance.IsCompleted = attendance.IsCompleted;
-            existingAttendance.AttendanceStatusId = attendance.AttendanceStatusId;
-            existingAttendance.AttendanceTypeId = attendance.AttendanceTypeId;
-            existingAttendance.Price = attendance.Price;
-            existingAttendance.TeacherShare = attendance.TeacherShare;
+            //existingAttendance.ClientId = attendance.ClientId;
+            //existingAttendance.CourseId = attendance.CourseId;
+            //existingAttendance.ClassTypeId = attendance.ClassTypeId;
+            //existingAttendance.TeacherId = attendance.TeacherId;
+            //existingAttendance.GroupId = attendance.GroupId;
+            //existingAttendance.IsCompleted = attendance.IsCompleted;
+            //existingAttendance.AttendanceStatusId = attendance.AttendanceStatusId;
+            //existingAttendance.AttendanceTypeId = attendance.AttendanceTypeId;
+            //existingAttendance.Price = attendance.Price;
+            //existingAttendance.TeacherShare = attendance.TeacherShare;
+            //existingAttendance.AbsentCause = attendance.AbsentCause;
+            //existingAttendance.Notes = attendance.Notes;
+            var trackedEntity = _context.Attendances.Local.FirstOrDefault(g => g.Id == attendance.Id);
+
+            if (trackedEntity != null)
+            {
+                _context.Entry(trackedEntity).State = EntityState.Detached;
+            }
+
+            _context.Attendances.Attach(attendance);
+
+            _context.Entry(attendance).State = EntityState.Modified;
 
             await _context.SaveChangesAsync(cancellationToken);
         }

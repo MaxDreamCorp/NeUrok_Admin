@@ -62,7 +62,9 @@ namespace NeUrokAdmin.Application.Features.GroupOperation.Handlers.Queries
                             sa.AttendanceType.Id,
                             sa.AttendanceType.Type),
                         sa.Price,
-                        sa.TeacherShare))
+                        sa.TeacherShare,
+                        sa.AbsentCause,
+                        sa.Notes))
                     .ToList()));
             }
             return result;

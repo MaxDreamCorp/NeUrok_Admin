@@ -46,6 +46,8 @@ namespace NeUrokAdmin.Application.Features.AttendanceOperations.Handlers.Command
                         null,
                         (int)AttendanceTypeEnum.Standart,
                         null,
+                        null,
+                        null,
                         null);
                     await _attendanceRepository.AddAsync(attendance, cancellationToken);
                     id++;
