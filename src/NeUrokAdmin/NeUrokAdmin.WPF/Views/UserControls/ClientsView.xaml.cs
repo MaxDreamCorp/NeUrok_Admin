@@ -1,7 +1,9 @@
 ﻿using System.Windows.Controls;
 using MediatR;
+using NeUrokAdmin.Application.Features.ClientOperations.Commands;
 using NeUrokAdmin.Application.Features.ClientOperations.Queries;
 using NeUrokAdmin.Domain.DTOs;
+using NeUrokAdmin.WPF.Interfaces;
 using NeUrokAdmin.WPF.Services;
 using NeUrokAdmin.WPF.Views.CardWindows;
 using NeUrokAdmin.WPF.Views.ViewModels;
@@ -16,15 +18,17 @@ namespace NeUrokAdmin.WPF.Views.UserControls
     {
         private readonly NavigationService _navigationService;
         private readonly IMediator _mediator;
+        private readonly IDialogService _dialogService;
         public ClientsViewViewModel ViewModel { get; set; } = null!;
         private ClientCardViewModel _filterVM;
 
-        public ClientsView(NavigationService navigationService, IMediator mediator)
+        public ClientsView(NavigationService navigationService, IMediator mediator, IDialogService dialogService)
         {
             InitializeComponent();
             _navigationService = navigationService;
             _mediator = mediator;
             _filterVM = new ClientCardViewModel(Enums.OperationType.Filter);
+            _dialogService = dialogService;
         }
 
         private void UserControl_Loaded(object sender, System.Windows.RoutedEventArgs e)
@@ -35,7 +39,10 @@ namespace NeUrokAdmin.WPF.Views.UserControls
         public async Task LoadData()
         {
             DataContext = ViewModel;
+            Properties.Settings.Default.UpdateYear = 2025;
+            Properties.Settings.Default.Save();
             await Clear();
+            await UpdateGrades();
         }
 
         private async void DataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -157,6 +164,25 @@ namespace NeUrokAdmin.WPF.Views.UserControls
                 (c.Notes != null && c.Notes.ToLower().Contains(searchText)) ||
                 (c.AdditionalPhones != null && c.AdditionalPhones.ToLower().Contains(searchText)))
                 .ToList());
+        }
+
+        private async Task UpdateGrades()
+        {
+            if (DateTime.Today < new DateTime(DateTime.Today.Year, 9, 1))
+                return;
+
+            if (Properties.Settings.Default.UpdateYear >= DateTime.Today.Year)
+                return;
+
+            if (!_dialogService.AskQuetion("Обновить классы?"))
+                return;
+
+            await _mediator.Send(new UpdateGradesCommand());
+
+            Properties.Settings.Default.UpdateYear = DateTime.Today.Year;
+            Properties.Settings.Default.Save();
+
+            await PrintAll();
         }
     }
 }
