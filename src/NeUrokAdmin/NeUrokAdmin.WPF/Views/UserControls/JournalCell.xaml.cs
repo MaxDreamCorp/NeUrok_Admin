@@ -1,6 +1,5 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Media;
-using NeUrokAdmin.Domain.Enums;
 using NeUrokAdmin.WPF.Interfaces;
 using NeUrokAdmin.WPF.Services;
 using NeUrokAdmin.WPF.Views.CardWindows;
@@ -48,30 +47,16 @@ namespace NeUrokAdmin.WPF.Views.UserControls
 
         private void MC_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (ViewModel.Group != null)
-            {
-                var studentSubscription = ViewModel.Student.StudentSubscriptions.FirstOrDefault(ss =>
-                        ss.Course.Id == ViewModel.Group.Course.Id &&
-                        (ss.ClassesType.Id == (int)ClassesTypeEnum.Group || ss.ClassesType.Id == (int)ClassesTypeEnum.Intensive) &&
-                        ss.SubscriptionStatus.Id == (int)SubscriptionStatusEnum.Active);
-
-                if (studentSubscription == null)
-                {
-                    _dialogService.ShowWarning("Не удалось найти подходящий абонемент у ученика");
-                    return;
-                }
-
-                var vm = new AttendanceCardViewModel(ViewModel.Group, ViewModel.Student, ViewModel.Attendance, studentSubscription);
-                var window = _navigationService.GetWindow<AttendanceCard>();
-                window.ViewModel = vm;
-                window.AttendanceChanged += Window_AttendanceChanged;
-                window.ShowDialog();
-            }
+            var vm = new AttendanceCardViewModel(ViewModel.Group, ViewModel.Student, ViewModel.Attendance, ViewModel.StudentSubscription);
+            var window = _navigationService.GetWindow<AttendanceCard>();
+            window.ViewModel = vm;
+            window.AttendanceChanged += Window_AttendanceChanged;
+            window.ShowDialog();
         }
 
         private void Window_AttendanceChanged(object? sender, Domain.DTOs.AttendanceDTO e)
         {
-            ViewModel = new JournalCellViewModel(e, ViewModel.Student, ViewModel.Group);
+            ViewModel = new JournalCellViewModel(e, ViewModel.Student, ViewModel.StudentSubscription, ViewModel.Group);
             DataContext = ViewModel;
         }
     }

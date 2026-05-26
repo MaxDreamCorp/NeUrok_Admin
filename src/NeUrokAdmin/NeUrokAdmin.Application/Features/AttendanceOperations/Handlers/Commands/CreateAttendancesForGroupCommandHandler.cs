@@ -31,12 +31,12 @@ namespace NeUrokAdmin.Application.Features.AttendanceOperations.Handlers.Command
 
             foreach (var groupDate in group.GroupDates)
             {
-                foreach (var student in group.Students)
+                foreach (var groupStudent in group.GroupStudents)
                 {
                     int id = await _attendanceRepository.GetNextIdAsync(cancellationToken);
                     var attendance = Attendance.Create(
                         id,
-                        student.ClientId,
+                        groupStudent.Student.ClientId,
                         groupDate.Datetime,
                         group.CourseId,
                         classesType.Id,

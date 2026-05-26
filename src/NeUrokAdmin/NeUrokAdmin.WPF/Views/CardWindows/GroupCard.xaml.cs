@@ -171,22 +171,26 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
             if (ViewModel.Course == null)
                 return;
 
-            List<StudentDTO> result = new List<StudentDTO>();
+            List<StudentDTO> students = new List<StudentDTO>();
+            List<StudentSubscriptionDTO> subscriptions = new List<StudentSubscriptionDTO>();
             foreach (var studentDTO in e)
             {
-                if (!studentDTO.StudentSubscriptions.Any(ss =>
+                var sub = studentDTO.StudentSubscriptions.FirstOrDefault(ss =>
                     ss.Course.Id == ViewModel.Course.Id &&
                     (ss.ClassesType.Id == (int)ClassesTypeEnum.Group || ss.ClassesType.Id == (int)ClassesTypeEnum.Intensive) &&
-                    ss.SubscriptionStatus.Id == (int)SubscriptionStatusEnum.Active))
+                    ss.SubscriptionStatus.Id == (int)SubscriptionStatusEnum.Active);
+                if (sub == null)
                 {
                     _dialogService.ShowWarning($"Ни один из групповых абонементов ученика {studentDTO.Client.ChildFullname} не выписан на \"{ViewModel.Course.Name}\"");
                     continue;
                 }
 
-                result.Add(studentDTO);
+                students.Add(studentDTO);
+                subscriptions.Add(sub);
             }
 
-            ViewModel.Students = new(result);
+            ViewModel.Students = new(students);
+            ViewModel.SubscriptionDTOs = subscriptions;
         }
 
         private bool CheckFields()
@@ -239,7 +243,7 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
                     dto.WeekDays,
                     dto.Time,
                     dto.Dates,
-                    dto.Students);
+                    dto.StudentAndSubscription);
 
                 var groupId = await _mediator.Send(cmd);
                 await _mediator.Send(new CreateAttendancesForGroupCommand(groupId, (int)ClassesTypeEnum.Group)); // TODO: select classes type
@@ -273,7 +277,7 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
                     dto.WeekDays,
                     dto.Time,
                     dto.Dates,
-                    dto.Students);
+                    dto.StudentAndSubscription);
 
                 await _mediator.Send(cmd);
                 return true;

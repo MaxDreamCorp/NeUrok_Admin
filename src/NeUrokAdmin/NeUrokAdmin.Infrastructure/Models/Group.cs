@@ -1,4 +1,7 @@
-﻿namespace NeUrokAdmin.Domain.Entities;
+﻿using System;
+using System.Collections.Generic;
+
+namespace NeUrokAdmin.Infrastructure.Models;
 
 public partial class Group
 {
@@ -16,31 +19,15 @@ public partial class Group
 
     public TimeOnly Time { get; set; }
 
+    public virtual ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();
+
     public virtual Course Course { get; set; } = null!;
 
     public virtual ICollection<GroupDate> GroupDates { get; set; } = new List<GroupDate>();
 
     public virtual GroupStatus GroupStatus { get; set; } = null!;
 
-    public virtual Teacher Teacher { get; set; } = null!;
-
     public virtual ICollection<GroupStudent> GroupStudents { get; set; } = new List<GroupStudent>();
 
-    public virtual ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();
-
-    private Group() { }
-
-    public static Group Create(int id, string name, int courseId, int teacherId, int groupStatusId, string weekDays, TimeOnly time)
-    {
-        return new Group
-        {
-            Id = id,
-            Name = name,
-            CourseId = courseId,
-            TeacherId = teacherId,
-            GroupStatusId = groupStatusId,
-            WeekDays = weekDays,
-            Time = time
-        };
-    }
+    public virtual Teacher Teacher { get; set; } = null!;
 }

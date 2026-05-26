@@ -152,6 +152,7 @@ namespace NeUrokAdmin.WPF.Views.ModalWindows
             {
                 var item = new StudentAttendancesDTO(
                     ViewModel.StudentAttendances[i].Student,
+                    ViewModel.StudentAttendances[i].StudentSubscription,
                     ViewModel.StudentAttendances[i].Group,
                     ViewModel.StudentAttendances[i].Attendances.OrderBy(a => a.Datetime).ToList());
 
@@ -175,7 +176,7 @@ namespace NeUrokAdmin.WPF.Views.ModalWindows
                 for (global::System.Int32 j = 0; j < item.Attendances.Count; j++)
                 {
                     var attendance = item.Attendances[j];
-                    var vm = new JournalCellViewModel(attendance, item.Student, item.Group);
+                    var vm = new JournalCellViewModel(attendance, item.Student, item.StudentSubscription, item.Group);
                     var cell = _navigationService.GetUserControl<JournalCell>();
                     cell.ViewModel = vm;
                     cell.Load();

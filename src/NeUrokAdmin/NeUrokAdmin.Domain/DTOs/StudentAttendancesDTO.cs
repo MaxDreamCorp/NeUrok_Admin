@@ -2,7 +2,8 @@
 {
     public record StudentAttendancesDTO(
         StudentDTO Student,
-        GroupDTO Group,
+        StudentSubscriptionDTO StudentSubscription,
+        GroupDTO? Group,
         List<AttendanceDTO> Attendances);
 }
 

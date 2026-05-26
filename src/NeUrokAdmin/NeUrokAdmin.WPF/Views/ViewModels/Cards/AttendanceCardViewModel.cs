@@ -19,7 +19,7 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
         }
         private List<AttendanceStatusDTO> _attendanceStatusesDTO = new();
 
-        public StudentSubscriptionDTO StudentSubscription { get; set; }
+        public StudentSubscriptionDTO StudentSubscription { get; init; }
 
         [ObservableProperty]
         private bool _isGroup;

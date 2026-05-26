@@ -1,19 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NeUrokAdmin.Domain.Entities;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
-namespace NeUrokAdmin.Infrastructure.Persistance;
+namespace NeUrokAdmin.Infrastructure.Models;
 
-public partial class ApplicationDbContext : DbContext
+public partial class NeUrokAdminDbContext : DbContext
 {
-    public ApplicationDbContext()
+    public NeUrokAdminDbContext()
     {
     }
 
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+    public NeUrokAdminDbContext(DbContextOptions<NeUrokAdminDbContext> options)
         : base(options)
     {
     }
-
 
     public virtual DbSet<Attendance> Attendances { get; set; }
 
@@ -47,12 +48,15 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseMySql("server=localhost;user=root;password=0122;database=ne_urok_admin_db", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.36-mysql"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
-          .UseCollation("utf8mb4_0900_ai_ci")
-          .HasCharSet("utf8mb4");
+            .UseCollation("utf8mb4_0900_ai_ci")
+            .HasCharSet("utf8mb4");
 
         modelBuilder.Entity<Attendance>(entity =>
         {

@@ -12,13 +12,15 @@ namespace NeUrokAdmin.Application.Features.GroupOperation.Handlers.Queries
         private readonly IAttendanceRepository _attendanceRepository;
         private readonly IClientRepository _clientRepository;
         private readonly GettingService _gettingService;
+        private readonly IStudentSubscriptionRepository _studentSubscriptionRepository;
 
-        public GetGroupStudentsAttendancesCommandHandler(IGroupRepository groupRepository, IAttendanceRepository attendanceRepository, IClientRepository clientRepository, GettingService gettingService)
+        public GetGroupStudentsAttendancesCommandHandler(IGroupRepository groupRepository, IAttendanceRepository attendanceRepository, IClientRepository clientRepository, GettingService gettingService, IStudentSubscriptionRepository studentSubscriptionRepository)
         {
             _groupRepository = groupRepository;
             _attendanceRepository = attendanceRepository;
             _clientRepository = clientRepository;
             _gettingService = gettingService;
+            _studentSubscriptionRepository = studentSubscriptionRepository;
         }
 
         public async Task<List<StudentAttendancesDTO>> Handle(GetGroupStudentsAttendancesCommand request, CancellationToken cancellationToken)
@@ -28,18 +30,23 @@ namespace NeUrokAdmin.Application.Features.GroupOperation.Handlers.Queries
 
             var groupDto = await _gettingService.GetGroupDTOFromGroupAsync(group, cancellationToken);
             List<StudentAttendancesDTO> result = new();
-            foreach (var student in group.Students)
+            foreach (var groupStudent in group.GroupStudents)
             {
-                var studentAttendance = await _attendanceRepository.GetByGroupAndClientIdAsync(group.Id, student.ClientId, cancellationToken);
+                var studentAttendance = await _attendanceRepository.GetByGroupAndClientIdAsync(group.Id, groupStudent.Student.ClientId, cancellationToken);
 
-                var studentDto = await _gettingService.GetStudentDTOFromStudentAsync(student, cancellationToken);
+                var studentDto = await _gettingService.GetStudentDTOFromStudentAsync(groupStudent.Student, cancellationToken);
+
+                var subscription = await _studentSubscriptionRepository.GetByIdAsync(groupStudent.ActiveSubscriptionId, cancellationToken );
+                if (subscription == null) continue;
+                var subscriptionDto = _gettingService.GetStudentSubscriptionDTOFromStudentSubscription(subscription);
 
                 result.Add(new(
                     studentDto,
+                    subscriptionDto,
                     groupDto,
                     studentAttendance.Select(sa => new AttendanceDTO(
                         sa.Id,
-                        student.ClientId,
+                        groupStudent.Student.ClientId,
                         sa.Datetime,
                         new(
                             sa.Course.Id,

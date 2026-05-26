@@ -9,7 +9,7 @@ namespace NeUrokAdmin.Domain.Interfaces.Repositories
         Task UpdateAsync(Group group, CancellationToken cancellationToken = default);
         Task<int> GetNextIdAsync(CancellationToken cancellationToken = default);
         Task<Group?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
-        Task SetStudentsAsync(int groupId, List<Student> students, CancellationToken cancellationToken = default);
+        Task SetStudentsAsync(int groupId, Dictionary<Student, StudentSubscription> students, CancellationToken cancellationToken = default);
         Task<List<GroupDate>> GetGroupDatesAsync(int groupId, CancellationToken cancellationToken = default);
         Task<List<Group>> GetAllAsync(CancellationToken cancellationToken = default);
     }

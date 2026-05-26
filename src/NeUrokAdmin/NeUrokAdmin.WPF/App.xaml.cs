@@ -101,6 +101,7 @@ namespace NeUrokAdmin.WPF
             services.AddTransient<IAttendanceRepository, AttendanceRepository>();
             services.AddTransient<IAttendanceStatusRepository, AttendanceStatusRepository>();
             services.AddTransient<IAttendanceTypeRepository, AttendanceTypeRepository>();
+            services.AddTransient<IGroupStudentRepository, GroupStudentRepository>();
         }
 
         protected override async void OnStartup(StartupEventArgs e)

@@ -73,28 +73,26 @@ namespace NeUrokAdmin.Application.Features.GroupOperation.Handlers.Commands
                 groupDateId++;
             }
 
-            List<Student> students = new List<Student>();
-            foreach (var studentDto in request.Students)
+            Dictionary<Student, StudentSubscription> studentsSubs = new();
+            foreach (var pair in request.StudentsAndSubs)
             {
-                var student = await _studentRepository.GetByIdAsync(studentDto.Id, cancellationToken);
+                var student = await _studentRepository.GetByIdAsync(pair.Key.Id, cancellationToken);
                 if (student == null)
                     continue;
 
-                students.Add(student);
-
-                var subscriptionDto = studentDto.StudentSubscriptions.FirstOrDefault(ss =>
-                    ss.Course.Id == group.CourseId &&
-                    (ss.ClassesType.Id == (int)ClassesTypeEnum.Group || ss.ClassesType.Id == (int)ClassesTypeEnum.Intensive) &&
-                    ss.SubscriptionStatus.Id == (int)SubscriptionStatusEnum.Active);
-                if (subscriptionDto == null)
+                var sub = await _studentSubscriptionRepository.GetByIdAsync(pair.Value.Id, cancellationToken);
+                if (sub == null)
                     continue;
-                await _studentSubscriptionRepository.UpdateFinishDateAsync(subscriptionDto.Id, DateOnly.FromDateTime(request.Dates.Max()));
+
+                studentsSubs.Add(student, sub);
+
+                await _studentSubscriptionRepository.UpdateFinishDateAsync(sub.Id, DateOnly.FromDateTime(request.Dates.Max()));
                 if (group.GroupStatusId <= (int)GroupStatusEnum.Recruited)
                     await _clientRepository.UpdateStatusAsync(student.ClientId, (int)ClientStatusEnum.Enrolled);
                 else if (group.GroupStatusId == (int)GroupStatusEnum.Active)
                     await _clientRepository.UpdateStatusAsync(student.ClientId, (int)ClientStatusEnum.Learning);
             }
-            await _groupRepository.SetStudentsAsync(group.Id, students, cancellationToken);
+            await _groupRepository.SetStudentsAsync(group.Id, studentsSubs, cancellationToken);
 
             return group.Id;
         }
