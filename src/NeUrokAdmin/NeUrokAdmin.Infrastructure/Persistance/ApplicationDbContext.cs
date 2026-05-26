@@ -38,8 +38,6 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<StudentSubscription> StudentSubscriptions { get; set; }
 
-    public virtual DbSet<Subscription> Subscribtions { get; set; }
-
     public virtual DbSet<SubscriptlonStatus> SubscriptlonStatuses { get; set; }
 
     public virtual DbSet<Teacher> Teachers { get; set; }
@@ -68,28 +66,46 @@ public partial class ApplicationDbContext : DbContext
 
             entity.HasIndex(e => e.CourseId, "FK_attendance_course_idx");
 
+            entity.HasIndex(e => e.GroupId, "FK_attendance_group_idx");
+
             entity.HasIndex(e => e.TeacherId, "FK_attendance_teacher_idx");
 
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("id");
-            entity.Property(e => e.AttendanceStatusId).HasColumnName("attendance_status_id");
+            entity.Property(e => e.AttendanceStatusId).HasColumnName("attendance_status_id")
+                .HasColumnType("int")
+                .IsRequired(false);
             entity.Property(e => e.AttendanceTypeId).HasColumnName("attendance_type_id");
             entity.Property(e => e.ClassTypeId).HasColumnName("class_type_id");
+            entity.Property(e => e.AbsentCause)
+             .HasColumnType("text")
+             .HasColumnName("absent_cause")
+             .IsRequired(false);
             entity.Property(e => e.ClientId).HasColumnName("client_id");
             entity.Property(e => e.CourseId).HasColumnName("course_id");
+            entity.Property(e => e.Datetime)
+              .HasColumnType("datetime")
+              .HasColumnName("datetime");
+            entity.Property(e => e.GroupId).HasColumnName("group_id");
             entity.Property(e => e.IsCompleted).HasColumnName("is_completed");
             entity.Property(e => e.Price)
-                .HasPrecision(10, 2)
-                .HasColumnName("price");
-            entity.Property(e => e.TeacherShare)
-                .HasPrecision(10, 2)
-                .HasColumnName("teacher_share");
+                .HasColumnType("decimal(10,2)")
+                .HasColumnName("price")
+                .IsRequired(false);
             entity.Property(e => e.TeacherId).HasColumnName("teacher_id");
+            entity.Property(e => e.TeacherShare)
+                .HasColumnType("decimal(10,2)")
+                .HasColumnName("teacher_share")
+                .IsRequired(false);
+            entity.Property(e => e.Notes)
+                .HasColumnType("text")
+                .HasColumnName("notes")
+                .IsRequired(false);
 
             entity.HasOne(d => d.AttendanceStatus).WithMany(p => p.Attendances)
                 .HasForeignKey(d => d.AttendanceStatusId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_attendance_attendance_status");
 
             entity.HasOne(d => d.AttendanceType).WithMany(p => p.Attendances)
@@ -111,6 +127,11 @@ public partial class ApplicationDbContext : DbContext
                 .HasForeignKey(d => d.CourseId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_attendance_course");
+
+            entity.HasOne(d => d.Group).WithMany(p => p.Attendances)
+                .HasForeignKey(d => d.GroupId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("FK_attendance_group");
 
             entity.HasOne(d => d.Teacher).WithMany(p => p.Attendances)
                 .HasForeignKey(d => d.TeacherId)
@@ -370,7 +391,7 @@ public partial class ApplicationDbContext : DbContext
 
             entity.HasIndex(e => e.StudentId, "FK_student_subscription_student_idx");
 
-            entity.HasIndex(e => e.SubscriptionId, "FK_student_subscription_subscription_idx");
+            entity.HasIndex(e => e.ClassesTypeId, "FK_student_subscription_class_type_idx");
 
             entity.HasIndex(e => e.SubscriptlonStatusId, "FK_student_subscription_subscription_status_idx");
 
@@ -381,9 +402,18 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.IsPaid).HasColumnName("is_paid");
             entity.Property(e => e.StudentId).HasColumnName("student_id");
             entity.Property(e => e.SubscriptionFinishDate).HasColumnName("subscription_finish_date");
-            entity.Property(e => e.SubscriptionId).HasColumnName("subscription_id");
             entity.Property(e => e.SubscriptionStartDate).HasColumnName("subscription_start_date");
             entity.Property(e => e.SubscriptlonStatusId).HasColumnName("subscriptlon_status_id");
+            entity.Property(e => e.ClassesAmount).HasColumnName("classes_amount");
+            entity.Property(e => e.ClassesTypeId).HasColumnName("classes_type_id");
+            entity.Property(e => e.Cost)
+                .HasPrecision(10, 2)
+                .HasColumnName("cost");
+
+            entity.HasOne(d => d.ClassesType).WithMany(p => p.StudentSubscribtions)
+                .HasForeignKey(d => d.ClassesTypeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_subscribtion_class_type");
 
             entity.HasOne(d => d.Course).WithMany(p => p.StudentSubscriptions)
                 .HasForeignKey(d => d.CourseId)
@@ -394,40 +424,10 @@ public partial class ApplicationDbContext : DbContext
                 .HasForeignKey(d => d.StudentId)
                 .HasConstraintName("FK_student_subscription_student");
 
-            entity.HasOne(d => d.Subscription).WithMany(p => p.StudentSubscriptions)
-                .HasForeignKey(d => d.SubscriptionId)
-                .HasConstraintName("FK_student_subscription_subscription");
-
             entity.HasOne(d => d.SubscriptlonStatus).WithMany(p => p.StudentSubscriptions)
                 .HasForeignKey(d => d.SubscriptlonStatusId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_student_subscription_subscription_status");
-        });
-
-        modelBuilder.Entity<Subscription>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("subscriptions");
-
-            entity.HasIndex(e => e.ClassesTypeId, "FK_subscribtion_class_type_idx");
-
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
-            entity.Property(e => e.ClassesAmount).HasColumnName("classes_amount");
-            entity.Property(e => e.ClassesTypeId).HasColumnName("classes_type_id");
-            entity.Property(e => e.Cost)
-                .HasPrecision(10, 2)
-                .HasColumnName("cost");
-            entity.Property(e => e.Name)
-                .HasMaxLength(200)
-                .HasColumnName("name");
-
-            entity.HasOne(d => d.ClassesType).WithMany(p => p.Subscribtions)
-                .HasForeignKey(d => d.ClassesTypeId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_subscribtion_class_type");
         });
 
         modelBuilder.Entity<SubscriptlonStatus>(entity =>

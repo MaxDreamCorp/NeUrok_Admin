@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using MediatR;
 using NeUrokAdmin.Application.Features.CourseOperations.Queries;
-using NeUrokAdmin.Application.Features.SubscriptionOperations.Queries;
+using NeUrokAdmin.Application.Features.StudentSubscriptionOperations.Queries;
 using NeUrokAdmin.Domain.DTOs;
 using NeUrokAdmin.WPF.Interfaces;
 using NeUrokAdmin.WPF.Services;
@@ -36,23 +36,13 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             DataContext = ViewModel;
+            ViewModel.ClassesTypesDTO = await _mediator.Send(new GetAllClassesTypesQuery());
             ViewModel.SubscriptionStatusesDTO = await _mediator.Send(new GetAllSubscriptionStatusesQuery());
         }
 
         private void BackBtn_Click(object sender, RoutedEventArgs e)
         {
             Close();
-        }
-
-        private async void SelectSubscriptionBtn_Click(object sender, RoutedEventArgs e)
-        {
-            var allSubscriptions = await _mediator.Send(new GetAllSubscriptionsQuery());
-
-            var vm = new SubscriptionsSelectorViewModel(allSubscriptions, ViewModel.Subscription);
-            var selectorWindow = _navigationService.GetWindow<SubscriptionsSelectorWindow>();
-            selectorWindow.ViewModel = vm;
-            selectorWindow.SubscriptionsSelected += SelectorWindow_SubscriptionsSelected;
-            selectorWindow.ShowDialog();
         }
 
         private async void SelectCourseBtn_Click(object sender, RoutedEventArgs e)
@@ -70,12 +60,6 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
         {
             if (e.Count > 0)
                 ViewModel.Course = e[0];
-        }
-
-        private void SelectorWindow_SubscriptionsSelected(object? sender, List<SubscriptionDTO> e)
-        {
-            if (e.Any())
-                ViewModel.Subscription = e.First();
         }
 
         private void DelBtn_Click(object sender, RoutedEventArgs e)
@@ -110,14 +94,24 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
                 _dialogService.ShowWarning("Ученик не может быть пустым");
                 return false;
             }
-            if (ViewModel.Subscription == null)
+            if (string.IsNullOrEmpty(ViewModel.ClassesType))
             {
-                _dialogService.ShowWarning("Абонемент не может быть пустым");
+                _dialogService.ShowWarning("Тип занятий не может быть пустым");
+                return false;
+            }
+            if (ViewModel.Cost == null)
+            {
+                _dialogService.ShowWarning("Стоимость не может быть пустой");
                 return false;
             }
             if (ViewModel.Course == null)
             {
                 _dialogService.ShowWarning("Курс не может быть пустым");
+                return false;
+            }
+            if (ViewModel.ClassesAmount == null)
+            {
+                _dialogService.ShowWarning("Кол-во занятий не может быть пустым");
                 return false;
             }
             if (string.IsNullOrEmpty(ViewModel.SubscriptionStatusStr))

@@ -58,6 +58,20 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
         }
 
         [ObservableProperty]
+        private List<string> _classesTypes = new();
+
+        public List<ClassesTypeDTO> ClassesTypesDTO
+        {
+            get => _classesTypesDTO;
+            set
+            {
+                SetProperty(ref _classesTypesDTO, value);
+                ClassesTypes = value.Select(cs => cs.Type).ToList();
+            }
+        }
+        private List<ClassesTypeDTO> _classesTypesDTO = new();
+
+        [ObservableProperty]
         private bool _isDeletable;
 
         [ObservableProperty]
@@ -80,7 +94,13 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
         private string _studentFullname = string.Empty;
 
         [ObservableProperty]
-        private SubscriptionDTO? _subscription;
+        private string _classesType = string.Empty;
+
+        [ObservableProperty]
+        private decimal? _cost;
+
+        [ObservableProperty]
+        private int? _classesAmount;
 
         [ObservableProperty]
         private bool _isPaid;
@@ -108,7 +128,9 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
             if (studentSubscription != null)
             {
                 _id = studentSubscription.Id;
-                _subscription = studentSubscription.Subscription;
+                _classesType = studentSubscription.ClassesType.Type;
+                _cost = studentSubscription.Cost;
+                _classesAmount = studentSubscription.ClassesAmount;
                 _subscriptionStatus = studentSubscription.SubscriptionStatus;
                 _subscriptionStatusStr = studentSubscription.SubscriptionStatus.Status;
                 _isPaid = studentSubscription.IsPaid;
@@ -122,24 +144,24 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
 
         public StudentSubscriptionDTO GetStudentSubscriptionDTO()
         {
-            if (Subscription == null)
-                throw new ArgumentNullException(nameof(Subscription));
-            if (!StartDate.HasValue)
-                throw new ArgumentNullException(nameof(StartDate));
+            if (ClassesAmount == null || StartDate == null)
+                throw new ArgumentNullException();
 
             if (!FinishDate.HasValue)
-                FinishDate = StartDate.Value.AddDays(Subscription.ClassesAmount);
+                FinishDate = StartDate.Value.AddDays(ClassesAmount.Value);
 
             return new StudentSubscriptionDTO(
-                Id ?? 0,
-                0,
-                Subscription,
-                IsPaid,
-                Course ?? throw new ArgumentNullException(nameof(Course)),
-                _subscriptionStatusesDTO.Find(ss => ss.Status == SubscriptionStatusStr) ?? throw new ArgumentNullException(nameof(SubscriptionStatusStr)),
-                DateOnly.FromDateTime(StartDate.Value),
-                FinishDate.HasValue ? DateOnly.FromDateTime(FinishDate.Value) : throw new ArgumentNullException(nameof(FinishDate))
-                );
+                 Id ?? 0,
+                 0,
+                 ClassesTypesDTO.Find(ct => ct.Type == ClassesType) ?? throw new ArgumentNullException(nameof(ClassesType)),
+                 Cost ?? throw new ArgumentNullException(nameof(Cost)),
+                 ClassesAmount ?? throw new ArgumentNullException(nameof(ClassesAmount)),
+                 IsPaid,
+                 Course ?? throw new ArgumentNullException(nameof(Course)),
+                 _subscriptionStatusesDTO.Find(ss => ss.Status == SubscriptionStatusStr) ?? throw new ArgumentNullException(nameof(SubscriptionStatusStr)),
+                 StartDate.HasValue ? DateOnly.FromDateTime(StartDate.Value) : throw new ArgumentNullException(nameof(StartDate)),
+                 FinishDate.HasValue ? DateOnly.FromDateTime(FinishDate.Value) : throw new ArgumentNullException(nameof(FinishDate))
+                 );
         }
     }
 }

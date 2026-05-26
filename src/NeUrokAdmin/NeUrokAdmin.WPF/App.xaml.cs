@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NeUrokAdmin.Application.Features.Authorization.Commands;
+using NeUrokAdmin.Application.Middleware;
 using NeUrokAdmin.Domain.Interfaces;
 using NeUrokAdmin.Domain.Interfaces.Repositories;
 using NeUrokAdmin.Infrastructure.Persistance;
@@ -59,29 +60,32 @@ namespace NeUrokAdmin.WPF
             services.AddTransient<MainWindow>();
             services.AddTransient<LoginWindow>();
             services.AddTransient<RegistrationWindow>();
+            services.AddTransient<JournalWindow>();
+
+            services.AddTransient<JournalCell>();
+
             services.AddTransient<ClientsView>();
             services.AddTransient<GroupsView>();
             services.AddTransient<CoursesView>();
             services.AddTransient<TeachersView>();
-            services.AddTransient<SubscriptionView>();
             services.AddTransient<StudentsView>();
 
             services.AddTransient<ClientCard>();
             services.AddTransient<CourseCard>();
             services.AddTransient<GroupCard>();
             services.AddTransient<TeacherCard>();
-            services.AddTransient<SubscriptionCard>();
             services.AddTransient<StudentCard>();
             services.AddTransient<StudentSubscriptionCard>();
+            services.AddTransient<AttendanceCard>();
 
             services.AddTransient<CoursesSelectorWindow>();
             services.AddTransient<TeachersSelectorWindow>();
             services.AddTransient<ClientStatusesSelectorWindow>();
             services.AddTransient<ClassesTypesSelectorWindow>();
             services.AddTransient<ClientsSelectorWindow>();
-            services.AddTransient<SubscriptionsSelectorWindow>();
             services.AddTransient<StudentsSelectorWindow>();
 
+            services.AddTransient<GettingService>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IClientRepository, ClientRepository>();
             services.AddTransient<IClientStatusRepository, ClientStatusRepository>();
@@ -90,10 +94,13 @@ namespace NeUrokAdmin.WPF
             services.AddTransient<IGroupStatusRepository, GroupStatusRepository>();
             services.AddTransient<ITeacherRepository, TeacherRepository>();
             services.AddTransient<IClassesTypeRepository, ClassesTypeRepository>();
-            services.AddTransient<ISubscriptionRepository, SubscriptionRepository>();
             services.AddTransient<ISubscriptionStatusRepository, SubscriptionStatusRepository>();
             services.AddTransient<IStudentRepository, StudentRepository>();
             services.AddTransient<IStudentSubscriptionRepository, StudentSubscriptionRepository>();
+            services.AddTransient<IGroupDateRepository, GroupDateRepository>();
+            services.AddTransient<IAttendanceRepository, AttendanceRepository>();
+            services.AddTransient<IAttendanceStatusRepository, AttendanceStatusRepository>();
+            services.AddTransient<IAttendanceTypeRepository, AttendanceTypeRepository>();
         }
 
         protected override async void OnStartup(StartupEventArgs e)

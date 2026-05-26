@@ -46,6 +46,8 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
 
                 </Grid.RowDefinitions>
 
@@ -71,24 +73,17 @@
                          IsReadOnly="True"/>
 
 
-                <TextBlock Text="Абонемент:"
-                       Grid.Row="2"
-                           VerticalAlignment="Top"
-                       Style="{StaticResource CardTextBlock}"/>
-                <StackPanel Grid.Row="2"
-                            Grid.Column="1">
-                    <TextBox Text="{Binding Subscription.Name, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" 
-                             Margin="0,5" 
-                             Style="{StaticResource Tbox}"
-                             IsReadOnly="True"
-                             IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Button Content="Выбрать абонемент"
-                            x:Name="SelectSubscriptionBtn"
-                            Style="{StaticResource MiniSecondaryBtn}"
-                            HorizontalAlignment="Right"
-                            IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"
-                            Click="SelectSubscriptionBtn_Click"/>
-                </StackPanel>
+                <TextBlock Text="Тип занятий:" 
+              Grid.Row="2" 
+              Style="{StaticResource CardTextBlock}"/>
+                <ComboBox SelectedItem="{Binding ClassesType, UpdateSourceTrigger=PropertyChanged}" 
+             ItemsSource="{Binding ClassesTypes, UpdateSourceTrigger=PropertyChanged}" 
+             Style="{StaticResource ModernComboBox}"
+             Grid.Row="2" 
+             Grid.Column="1" 
+             Margin="0,5" 
+             IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
+
 
                 <TextBlock Text="Курс:"
                             Grid.Row="3"
@@ -109,11 +104,30 @@
                              Click="SelectCourseBtn_Click"/>
                 </StackPanel>
 
+                <TextBlock Text="Стоимость:" 
+            Grid.Row="4" 
+            Style="{StaticResource CardTextBlock}"/>
+                <TextBox Text="{Binding Cost, StringFormat='{}{0:N2}', UpdateSourceTrigger=PropertyChanged}" 
+          Grid.Row="4" 
+          Grid.Column="1" 
+          Margin="0,5" 
+          Style="{StaticResource Tbox}"/>
+
+                <TextBlock Text="Кол-во занятий:" 
+            Grid.Row="5" 
+            Style="{StaticResource CardTextBlock}"/>
+                <TextBox Text="{Binding ClassesAmount, UpdateSourceTrigger=PropertyChanged}" 
+          Grid.Row="5" 
+          Grid.Column="1" 
+          Margin="0,5" 
+          Style="{StaticResource Tbox}"/>
+
+
                 <TextBlock Text="Оплачен:" 
-                            Grid.Row="4" 
+                            Grid.Row="6" 
                             Style="{StaticResource CardTextBlock}"/>
                 <CheckBox IsChecked="{Binding IsPaid, UpdateSourceTrigger=PropertyChanged}" 
-                          Grid.Row="4" 
+                          Grid.Row="6" 
                           Grid.Column="1" 
                           Margin="0,5" 
                           Background="{StaticResource InpBg}"
@@ -123,32 +137,32 @@
                           IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}" />
 
                 <TextBlock Text="Статус:" 
-                            Grid.Row="5" 
+                            Grid.Row="7" 
                             Style="{StaticResource CardTextBlock}"/>
                 <ComboBox SelectedItem="{Binding SubscriptionStatusStr, UpdateSourceTrigger=PropertyChanged}" 
                           ItemsSource="{Binding SubscriptionStatuses, UpdateSourceTrigger=PropertyChanged}" 
                           Style="{StaticResource ModernComboBox}"
-                          Grid.Row="5" 
+                          Grid.Row="7" 
                           Grid.Column="1" 
                           Margin="0,5" 
                           IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <TextBlock Text="Начало:"
-                            Grid.Row="6" 
+                            Grid.Row="8" 
                             Style="{StaticResource CardTextBlock}"/>
                 <DatePicker SelectedDate="{Binding StartDate, UpdateSourceTrigger=PropertyChanged}" 
-                             Grid.Row="6"
+                             Grid.Row="8"
                              Grid.Column="1" 
                              Margin="0,5" 
                              Style="{StaticResource DatePicker}"
                              IsEnabled="{Binding IsEditable, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <TextBlock Text="Конец:"
-                            Grid.Row="7" 
+                            Grid.Row="9" 
                             Style="{StaticResource CardTextBlock}"
                            Visibility="{Binding IsFilter, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVis}}" />
                 <DatePicker SelectedDate="{Binding FinishDate, UpdateSourceTrigger=PropertyChanged}" 
-                             Grid.Row="7"
+                             Grid.Row="9"
                              Grid.Column="1" 
                              Margin="0,5" 
                              Style="{StaticResource DatePicker}"

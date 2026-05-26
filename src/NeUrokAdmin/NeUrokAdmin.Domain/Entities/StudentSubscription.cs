@@ -6,7 +6,13 @@ public partial class StudentSubscription
 
     public int StudentId { get; set; }
 
-    public int SubscriptionId { get; set; }
+    public int ClassesTypeId { get; set; }
+
+    public decimal Cost { get; set; }
+
+    public int ClassesAmount { get; set; }
+
+    public virtual ClassType ClassesType { get; set; } = null!;
 
     public sbyte IsPaid { get; set; }
 
@@ -22,15 +28,15 @@ public partial class StudentSubscription
 
     public virtual Student Student { get; set; } = null!;
 
-    public virtual Subscription Subscription { get; set; } = null!;
-
     public virtual SubscriptlonStatus SubscriptlonStatus { get; set; } = null!;
 
     private StudentSubscription() { }
 
     public static StudentSubscription Create(int id,
                                              int studentId,
-                                             int subscriptionId,
+                                             int classesTypeId,
+                                             decimal cost,
+                                             int classesAmount,
                                              sbyte isPaid,
                                              int courseId,
                                              int subscriptlonStatusId,
@@ -41,7 +47,9 @@ public partial class StudentSubscription
         {
             Id = id,
             StudentId = studentId,
-            SubscriptionId = subscriptionId,
+            ClassesTypeId = classesTypeId,
+            Cost = cost,
+            ClassesAmount = classesAmount,
             IsPaid = isPaid,
             CourseId = courseId,
             SubscriptlonStatusId = subscriptlonStatusId,

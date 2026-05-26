@@ -22,8 +22,7 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
         public async Task<StudentSubscription?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
             return await _context.StudentSubscriptions
-                .Include(ss => ss.Subscription)
-                    .ThenInclude(s => s.ClassesType)
+                .Include(ss => ss.ClassesType)
                 .Include(ss => ss.Course)
                 .Include(ss => ss.SubscriptlonStatus)
                 .FirstOrDefaultAsync(ss => ss.Id == id);
@@ -32,8 +31,7 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
         public async Task<List<StudentSubscription>> GetByStudentIdAsync(int studentId, CancellationToken cancellationToken = default)
         {
             return await _context.StudentSubscriptions
-                .Include(ss => ss.Subscription)
-                    .ThenInclude(s => s.ClassesType)
+                .Include(ss => ss.ClassesType)
                 .Include(ss => ss.Course)
                 .Include(ss => ss.SubscriptlonStatus)
                 .Where(ss => ss.StudentId == studentId)
@@ -59,12 +57,25 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
             if (existingStudentSubscription == null)
                 throw new Exception("Данной записи не существует");
 
-            existingStudentSubscription.SubscriptionId = studentSubscription.SubscriptionId;
+            existingStudentSubscription.ClassesTypeId = studentSubscription.ClassesTypeId;
+            existingStudentSubscription.Cost = studentSubscription.Cost;
+            existingStudentSubscription.ClassesAmount = studentSubscription.ClassesAmount;
             existingStudentSubscription.IsPaid = studentSubscription.IsPaid;
             existingStudentSubscription.CourseId = studentSubscription.CourseId;
             existingStudentSubscription.SubscriptlonStatusId = studentSubscription.SubscriptlonStatusId;
             existingStudentSubscription.SubscriptionStartDate = studentSubscription.SubscriptionStartDate;
             existingStudentSubscription.SubscriptionFinishDate = studentSubscription.SubscriptionFinishDate;
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task UpdateFinishDateAsync(int id, DateOnly finishDate, CancellationToken cancellationToken = default)
+        {
+            var existingStudentSubscription = await _context.StudentSubscriptions.FindAsync(id, cancellationToken);
+            if (existingStudentSubscription == null)
+                throw new Exception("Данной записи не существует");
+
+            existingStudentSubscription.SubscriptionFinishDate = finishDate;
 
             await _context.SaveChangesAsync(cancellationToken);
         }

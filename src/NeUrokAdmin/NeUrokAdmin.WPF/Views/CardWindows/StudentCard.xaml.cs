@@ -4,6 +4,7 @@ using MediatR;
 using NeUrokAdmin.Application.Features.ClientOperations.Queries;
 using NeUrokAdmin.Application.Features.StudentOperations.Commands;
 using NeUrokAdmin.Domain.DTOs;
+using NeUrokAdmin.Domain.Enums;
 using NeUrokAdmin.WPF.Interfaces;
 using NeUrokAdmin.WPF.Services;
 using NeUrokAdmin.WPF.Views.Selectors;
@@ -34,6 +35,8 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             DataContext = ViewModel;
+            if (ViewModel.OperationType == Enums.OperationType.Edit)
+                SelectClientBtn.IsEnabled = false;
         }
 
         private void BackBtn_Click(object sender, RoutedEventArgs e)
@@ -77,7 +80,7 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
         {
             var allClients = await _mediator.Send(new GetAllClientsQuery());
 
-            var vm = new ClientsSelectorViewModel(allClients, ViewModel.Client);
+            var vm = new ClientsSelectorViewModel(allClients.Where(c => c.Status.Id != (int)ClientStatusEnum.Blacklisted).ToList(), ViewModel.Client);
             var selectorWindow = _navigationService.GetWindow<ClientsSelectorWindow>();
             selectorWindow.ViewModel = vm;
             selectorWindow.ClientsSelected += SelectorWindow_ClientsSelected;

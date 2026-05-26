@@ -67,30 +67,31 @@
                                     Binding="{Binding ChildFullname}" 
                                     ElementStyle="{StaticResource WrapStyle}" 
                                     Width="2*"/>
-                <DataGridTextColumn Header="Дата рождения" 
+                <DataGridTextColumn Header="Дата рожд." 
                                     Binding="{Binding BirthDate, StringFormat=\{0:dd.MM.yyyy\}}" 
-                                    Width="*"/>
+                                    Width="85"/>
                 <DataGridTextColumn Header="Класс" 
                                     Binding="{Binding Grade}" 
-                                    Width="60"/>
+                                    Width="Auto"/>
                 <DataGridTextColumn Header="Статус" 
                                     Binding="{Binding Status.Status}" 
-                                    Width="*"/>
+                                    Width="Auto"/>
                 <DataGridTextColumn Header="Родитель" 
                                     Binding="{Binding ParentName}" 
-                                    ElementStyle="{StaticResource WrapStyle}" 
-                                    Width="1.5*"/>
+                                    Width="*"
+                                    ElementStyle="{StaticResource WrapStyle}"/>
                 <DataGridTextColumn Header="Телефон" 
                                     Binding="{Binding Phone}" 
                                     ElementStyle="{StaticResource WrapStyle}" 
-                                    Width="*"/>
+                                    Width="Auto"/>
                 <DataGridTextColumn Header="Желаемые курсы" 
                                     Binding="{Binding WishedCoursesDisplay}" 
                                     ElementStyle="{StaticResource WrapStyle}" 
-                                    Width="2*"/>
-                <DataGridTextColumn Header="Дата регистрации" 
+                                    Width="2*"
+                                    MinWidth="125"/>
+                <DataGridTextColumn Header="Дата рег." 
                                     Binding="{Binding RegistrationDate, StringFormat=\{0:dd.MM.yyyy\}}" 
-                                    Width="*"/>
+                                    Width="80"/>
                 <DataGridTextColumn Header="Заметки" 
                                     Binding="{Binding Notes}" 
                                     ElementStyle="{StaticResource WrapStyle}"
@@ -98,7 +99,8 @@
                 <DataGridTextColumn Header="Доп. телефоны" 
                                     Binding="{Binding AdditionalPhones}" 
                                     ElementStyle="{StaticResource WrapStyle}" 
-                                    Width="2*"/>
+                                    Width="Auto"
+                                    MinWidth="120"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

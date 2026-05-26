@@ -14,4 +14,9 @@
     <ProjectReference Include="..\NeUrokAdmin.Domain\NeUrokAdmin.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\StudentSubscriptionOperations\Commands\" />
+    <Folder Include="Features\StudentSubscriptionOperations\Handlers\Commands\" />
+  </ItemGroup>
+
 </Project>

@@ -8,5 +8,10 @@
         GroupStatusDTO GroupStatus,
         string WeekDays,
         TimeOnly Time,
-        List<StudentDTO>? Students = null);
+        List<DateTime> Dates,
+        List<StudentDTO> Students)
+    {
+        public int StudentCount { get => Students.Count; }
+        public int ClassesCount { get => Dates.Count; }
+    }
 }

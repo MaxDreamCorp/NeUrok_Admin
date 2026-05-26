@@ -6,7 +6,6 @@ using NeUrokAdmin.Application.Features.StudentOperations.Queries;
 using NeUrokAdmin.Domain.DTOs;
 using NeUrokAdmin.WPF.Services;
 using NeUrokAdmin.WPF.Views.CardWindows;
-using NeUrokAdmin.WPF.Views.ViewModels;
 using NeUrokAdmin.WPF.Views.ViewModels.Cards;
 using NeUrokAdmin.WPF.Views.ViewModels.Selectors;
 using NeUrokAdmin.WPF.Views.ViewModels.Selectors.SelectorItems;
@@ -45,7 +44,7 @@ namespace NeUrokAdmin.WPF.Views.Selectors
         {
             CopyFilterSelectedToAllStudents();
 
-            var searchText = QuickSearchInp.Text.ToLower();
+            var searchText = ViewModel.QuickSearchText.ToLower();
             if (string.IsNullOrEmpty(searchText))
             {
                 ViewModel.FilteredStudents = ViewModel.AllStudents;
@@ -57,7 +56,9 @@ namespace NeUrokAdmin.WPF.Views.Selectors
                .Where(s =>
                 s.Student.Id.ToString().Contains(searchText) ||
                 s.Student.Client.ChildFullname.ToLower().Contains(searchText) ||
-                s.Student.StudentSubscriptions.Any(ss => ss.Subscription.Name.ToLower().Contains(searchText)) ||
+                s.Student.StudentSubscriptions.Any(ss => ss.ClassesType.Type.ToLower().Contains(searchText)) ||
+                s.Student.StudentSubscriptions.Any(ss => ss.Cost.ToString().Contains(searchText)) ||
+                s.Student.StudentSubscriptions.Any(ss => ss.ClassesAmount.ToString().Contains(searchText)) ||
                 s.Student.StudentSubscriptions.Any(ss => ss.Course.Name.ToLower().Contains(searchText)) ||
                 s.Student.StudentSubscriptions.Any(ss => ss.SubscriptionStatus.Status.ToLower().Contains(searchText)) ||
                 s.Student.StudentSubscriptions.Any(ss => ss.StartDate.ToDateTime(TimeOnly.MinValue).ToString("dd.MM.yyyy").Contains(searchText)) ||

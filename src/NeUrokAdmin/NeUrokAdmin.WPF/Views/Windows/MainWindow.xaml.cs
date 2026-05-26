@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using MediatR;
+using NeUrokAdmin.WPF.Interfaces;
 using NeUrokAdmin.WPF.Services;
 using NeUrokAdmin.WPF.Views.UserControls;
 using NeUrokAdmin.WPF.Views.ViewModels;
@@ -14,7 +16,7 @@ namespace NeUrokAdmin.WPF
         private readonly NavigationService _navigationService;
         private readonly MainWindowViewModel _viewModel;
 
-        public MainWindow(NavigationService navigationService)
+        public MainWindow(NavigationService navigationService, IMediator mediator, IDialogService dialogService)
         {
             InitializeComponent();
             _viewModel = new MainWindowViewModel();
@@ -80,14 +82,8 @@ namespace NeUrokAdmin.WPF
                 await teachersView.LoadData();
                 MainConteiner.Content = teachersView;
             }
-            else if (e.Type == Enums.TabType.Subscriptions)
-            {
-                var vm = new SubscriptionViewViewModel();
-                var subscriptionView = _navigationService.GetUserControl<SubscriptionView>();
-                subscriptionView.ViewModel = vm;
-                await subscriptionView.LoadData();
-                MainConteiner.Content = subscriptionView;
-            }
         }
+
+
     }
 }

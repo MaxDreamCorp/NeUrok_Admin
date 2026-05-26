@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace NeUrokAdmin.Domain.Entities;
+﻿namespace NeUrokAdmin.Domain.Entities;
 
 public partial class ClassType
 {
@@ -11,5 +8,5 @@ public partial class ClassType
 
     public virtual ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();
 
-    public virtual ICollection<Subscription> Subscribtions { get; set; } = new List<Subscription>();
+    public virtual ICollection<StudentSubscription> StudentSubscribtions { get; set; } = new List<StudentSubscription>();
 }

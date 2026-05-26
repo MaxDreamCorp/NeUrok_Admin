@@ -31,6 +31,7 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
                     case OperationType.Edit:
                         IsFilter = false;
                         IsEditable = true;
+                        IsEditing = true;
                         IsDeletable = true;
                         HeaderText = $"Группа \"{Name}\"";
                         break;
@@ -58,13 +59,28 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
         private bool _isFilter;
 
         [ObservableProperty]
+        private bool _isEditing;
+
+        [ObservableProperty]
         private string _headerText = null!;
 
-        [ObservableProperty]
-        private ObservableCollection<GroupStatusDTO> _statuses = new();
+        public List<GroupStatusDTO> GroupStatusDTOs
+        {
+            get => _groupStatusDTOs;
+            set
+            {
+                _groupStatusDTOs = value;
+                Statuses = new(value.Select(s => s.Status).ToList());
+            }
+        }
+
+        private List<GroupStatusDTO> _groupStatusDTOs = new List<GroupStatusDTO>();
 
         [ObservableProperty]
-        private List<string> _hours = Enumerable.Range(7, 23).Select(i => i.ToString("D2")).ToList();
+        private List<string> _statuses = new();
+
+        [ObservableProperty]
+        private List<string> _hours = Enumerable.Range(7, 17).Select(i => i.ToString("D2")).ToList();
 
         [ObservableProperty]
         private List<string> _minutes = Enumerable.Range(0, 59).Where(i => i % 5 == 0).Select(i => i.ToString("D2")).ToList();
@@ -102,6 +118,9 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
         [ObservableProperty]
         private TimeOnly? _time;
 
+
+        private List<StudentDTO> _studentDTOs = new List<StudentDTO>();
+
         [ObservableProperty]
         private ObservableCollection<StudentDTO> _students = new();
 
@@ -117,11 +136,39 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
                 _selectedStatus = groupDTO.GroupStatus.Status;
                 _weekDays = groupDTO.WeekDays;
                 _time = groupDTO.Time;
-                if (groupDTO.Students != null) 
-                _students = new(groupDTO.Students);
+                _timeHours = groupDTO.Time.Hour.ToString("00");
+                _timeMinutes = groupDTO.Time.Minute.ToString("00");
+                SelectedDates = groupDTO.Dates;
+                _classesDates = string.Join(", ", SelectedDates
+                    .Order().Select(d =>
+                    $"Занятие {SelectedDates.IndexOf(d) + 1}: {d.ToShortDateString()}"));
+                _studentDTOs = groupDTO.Students;
+                Students = new(groupDTO.Students);
             }
 
             OperationType = operationType;
+        }
+
+        public GroupDTO GetGroupDTO()
+        {
+            if (string.IsNullOrEmpty(TimeHours) || string.IsNullOrEmpty(TimeMinutes))
+                throw new ArgumentException(nameof(Time));
+
+            Time = new(int.Parse(TimeHours), int.Parse(TimeMinutes));
+
+            return new GroupDTO(
+                Id: Id ?? 0,
+                Name: Name,
+                Course: Course ?? throw new InvalidOperationException("Не выбран курс"),
+                Teacher: Teacher ?? throw new InvalidOperationException("Не выбран преподаватель"),
+                GroupStatus: GroupStatusDTOs.FirstOrDefault(s => s.Status == SelectedStatus)
+                    ?? throw new InvalidOperationException("Не выбран статус группы"),
+                WeekDays: WeekDays,
+                Time: Time ?? throw new InvalidOperationException("Не выбрано время"),
+                Dates: SelectedDates,
+                Students: Students.ToList()
+    );
+
         }
     }
 }

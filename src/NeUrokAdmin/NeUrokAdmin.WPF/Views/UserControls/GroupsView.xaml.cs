@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using MediatR;
 using NeUrokAdmin.Application.Features.GroupOperation.Queries;
+using NeUrokAdmin.Domain.DTOs;
 using NeUrokAdmin.WPF.Services;
 using NeUrokAdmin.WPF.Views.CardWindows;
 using NeUrokAdmin.WPF.Views.ViewModels;
@@ -32,12 +33,13 @@ namespace NeUrokAdmin.WPF.Views.UserControls
 
         }
 
-        private void AddBtn_Click(object sender, RoutedEventArgs e)
+        private async void AddBtn_Click(object sender, RoutedEventArgs e)
         {
             var vm = new GroupCardViewModel(Enums.OperationType.Create);
             var groupCard = _navigationService.GetWindow<GroupCard>();
             groupCard.ViewModel = vm;
             groupCard.ShowDialog();
+            await Clear();
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -55,9 +57,21 @@ namespace NeUrokAdmin.WPF.Views.UserControls
 
         }
 
-        private void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private async void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            if (sender is DataGrid dataGrid && dataGrid.SelectedItem is GroupDTO group)
+            {
+                var cardVM = new GroupCardViewModel(Enums.OperationType.Edit, group);
+                var card = _navigationService.GetWindow<GroupCard>();
+                card.ViewModel = cardVM;
+                card.ShowDialog();
+                if (card.DialogResult == true)
+                {
+                    await PrintAll();
+                    //await Refilter();
+                    QuickSearch();
+                }
+            }
         }
 
         public async Task LoadData()
@@ -106,6 +120,11 @@ namespace NeUrokAdmin.WPF.Views.UserControls
             ViewModel.DisplayedGroups = ViewModel.FilteredGroups == null ?
                 new(ViewModel.AllGroups) :
                 new(ViewModel.FilteredGroups);
+        }
+
+        private void DatesCalendar_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
         }
 
     }

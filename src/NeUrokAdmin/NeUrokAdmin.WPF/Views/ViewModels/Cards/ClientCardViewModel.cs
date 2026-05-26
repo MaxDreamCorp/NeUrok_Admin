@@ -86,7 +86,7 @@ namespace NeUrokAdmin.WPF.Views.ViewModels
         private List<int> _months = Enumerable.Range(1, 12).ToList();
 
         [ObservableProperty]
-        private List<int> _years = Enumerable.Range(2000, DateTime.UtcNow.Year - 2000).Reverse().ToList();
+        private List<int> _years = Enumerable.Range(2000, DateTime.Now.Year - 2000).Reverse().ToList();
 
         [ObservableProperty]
         private List<int> _grades = Enumerable.Range(-6, 17).ToList();
