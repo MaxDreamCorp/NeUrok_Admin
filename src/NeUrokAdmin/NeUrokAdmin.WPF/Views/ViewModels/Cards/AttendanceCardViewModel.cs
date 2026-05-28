@@ -19,12 +19,20 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
         }
         private List<AttendanceStatusDTO> _attendanceStatusesDTO = new();
 
+        [ObservableProperty]
+        private List<string> _hours = Enumerable.Range(7, 17).Select(i => i.ToString("D2")).ToList();
+
+        [ObservableProperty]
+        private List<string> _minutes = Enumerable.Range(0, 59).Where(i => i % 5 == 0).Select(i => i.ToString("D2")).ToList();
+
         public StudentSubscriptionDTO StudentSubscription { get; init; }
+
+        public bool IsWorkingOff { get; set; }
 
         [ObservableProperty]
         private bool _isGroup;
 
-        private int _id;
+        public int Id { get; set; }
 
         [ObservableProperty]
         private StudentDTO _student;
@@ -65,13 +73,23 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
         [ObservableProperty]
         private string? _notes;
 
+
+        [ObservableProperty]
+        private DateTime? _newDatetime;
+
+        [ObservableProperty]
+        private string _timeHours = string.Empty;
+
+        [ObservableProperty]
+        private string _timeMinutes = string.Empty;
+
         public AttendanceCardViewModel(GroupDTO? group, StudentDTO student, AttendanceDTO attendance, StudentSubscriptionDTO studentSubscription)
         {
             _student = student;
             _group = group;
             _isGroup = group != null;
 
-            _id = attendance.Id;
+            Id = attendance.Id;
             _datetime = attendance.Datetime;
             _course = attendance.Course;
             _classesType = attendance.ClassesType;
@@ -83,6 +101,7 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
             _notes = attendance.Notes;
             _price = attendance.Price;
             _teacherShare = attendance.TeacherShare;
+            IsWorkingOff = attendance.IsWorkingOff;
             StudentSubscription = studentSubscription;
 
         }
@@ -90,7 +109,7 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
         public AttendanceDTO GetAttendanceDTO()
         {
             return new AttendanceDTO(
-                _id,
+                Id,
                 Student.Client.Id,
                 Datetime,
                 Course,

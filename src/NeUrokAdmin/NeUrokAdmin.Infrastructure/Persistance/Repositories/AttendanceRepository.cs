@@ -155,5 +155,15 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
                     clientIds.Contains(a.ClientId.Value))
         .ExecuteDeleteAsync(cancellationToken);
         }
+
+        public async Task<Attendance?> GetNextClientGroupAsync(int groupId, int clientId, DateOnly date, CancellationToken cancellationToken = default)
+        {
+            return await _context.Attendances
+                .FirstOrDefaultAsync(a =>
+                    a.GroupId == groupId && 
+                    a.ClientId == clientId &&
+                    a.Datetime > new DateTime(date, TimeOnly.MaxValue),
+                    cancellationToken);
+        }
     }
 }

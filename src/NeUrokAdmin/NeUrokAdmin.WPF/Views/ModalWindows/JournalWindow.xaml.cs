@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using MediatR;
+using NeUrokAdmin.Application.Features.GroupOperation.Queries;
 using NeUrokAdmin.Domain.DTOs;
 using NeUrokAdmin.WPF.Services;
 using NeUrokAdmin.WPF.Views.UserControls;
@@ -17,11 +19,13 @@ namespace NeUrokAdmin.WPF.Views.ModalWindows
         public JournalWindowViewModel ViewModel { get; set; } = null!;
 
         private readonly NavigationService _navigationService;
+        private readonly IMediator _mediator;
 
-        public JournalWindow(NavigationService navigationService)
+        public JournalWindow(NavigationService navigationService, IMediator mediator)
         {
             InitializeComponent();
             _navigationService = navigationService;
+            _mediator = mediator;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -36,6 +40,7 @@ namespace NeUrokAdmin.WPF.Views.ModalWindows
             JournalGrid.Children.Clear();
             JournalGrid.ColumnDefinitions.Clear();
             JournalGrid.RowDefinitions.Clear();
+            
             for (int i = 0; i <= ViewModel.Dates.Count; i++)
             {
                 ColumnDefinition cd = new ColumnDefinition()
@@ -179,12 +184,27 @@ namespace NeUrokAdmin.WPF.Views.ModalWindows
                     var vm = new JournalCellViewModel(attendance, item.Student, item.StudentSubscription, item.Group);
                     var cell = _navigationService.GetUserControl<JournalCell>();
                     cell.ViewModel = vm;
+                    cell.AttendancesNeedsToUpdate += Cell_AttendancesNeedsToUpdate;
                     cell.Load();
                     JournalGrid.Children.Add(cell);
                     Grid.SetRow(cell, i + 3);
                     Grid.SetColumn(cell, j + 1);
                 }
             }
+        }
+
+        private async void Cell_AttendancesNeedsToUpdate()
+        {
+            await UpdateAttendances();
+            BuildJournal();
+        }
+
+        private async Task UpdateAttendances()
+        {
+            var group = await _mediator.Send(new GetGroupByIdQuery(ViewModel.Group.Id));
+            var attendances = await _mediator.Send(new GetGroupStudentsAttendancesCommand(ViewModel.Group.Id));
+
+            ViewModel = new(group, attendances);
         }
     }
 }

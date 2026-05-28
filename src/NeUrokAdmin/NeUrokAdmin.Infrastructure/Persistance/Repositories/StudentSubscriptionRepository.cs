@@ -28,6 +28,16 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
                 .FirstOrDefaultAsync(ss => ss.Id == id);
         }
 
+        public async Task<StudentSubscription?> GetByStudentCourseAndDateAsync(int studentId, int courseId, DateOnly date, CancellationToken cancellationToken = default)
+        {
+            return await _context.StudentSubscriptions
+                .FirstOrDefaultAsync(ss =>
+                    ss.StudentId == studentId &&
+                    ss.CourseId == courseId &&
+                    (ss.SubscriptionStartDate <= date && date <= ss.SubscriptionFinishDate),
+                    cancellationToken);
+        }
+
         public async Task<List<StudentSubscription>> GetByStudentIdAsync(int studentId, CancellationToken cancellationToken = default)
         {
             return await _context.StudentSubscriptions
@@ -76,6 +86,17 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
                 throw new Exception("Данной записи не существует");
 
             existingStudentSubscription.SubscriptionFinishDate = finishDate;
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task UpdateStartDateAsync(int id, DateOnly startDate, CancellationToken cancellationToken = default)
+        {
+            var existingStudentSubscription = await _context.StudentSubscriptions.FindAsync(id, cancellationToken);
+            if (existingStudentSubscription == null)
+                throw new Exception("Данной записи не существует");
+
+            existingStudentSubscription.SubscriptionStartDate = startDate;
 
             await _context.SaveChangesAsync(cancellationToken);
         }

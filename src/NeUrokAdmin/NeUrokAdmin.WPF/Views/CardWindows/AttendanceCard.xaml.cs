@@ -21,6 +21,8 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
         private readonly IMediator _mediator;
         private readonly IDialogService _dialogService;
 
+        private bool _isCreating;
+
         public AttendanceCard(IMediator mediator, IDialogService dialogService)
         {
             InitializeComponent();
@@ -34,14 +36,62 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
 
             var statuses = await _mediator.Send(new GetAttendanceStatusesQuery());
             ViewModel.AttendanceStatusesDTO = statuses;
+
+            bool isExcused = (ViewModel.Status == ViewModel.AttendanceStatusesDTO
+                                  .Find(s => s.Id == (int)AttendanceStatusEnum.Excused)?.Status);
+            CreateWorkOffBtn.Visibility = isExcused ?
+                Visibility.Visible :
+                Visibility.Collapsed;
         }
 
         private async void AcceptBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (!CheckFields()) return;
+            if (ViewModel.IsWorkingOff && _isCreating)
+                await CreateAsync();
+            else
+                await UpdateAsync();
+        }
+
+        private void BackBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private async Task CreateAsync()
+        {
+            if (!CheckFieldsOnWOCreating() || ViewModel.NewDatetime == null)
+                return;
 
             var dto = ViewModel.GetAttendanceDTO();
 
+            var newDt = new DateTime(DateOnly.FromDateTime(ViewModel.NewDatetime.Value), 
+                new(int.Parse(ViewModel.TimeHours), int.Parse(ViewModel.TimeMinutes)));
+            var cmd = new CreateWorkingOffAttendanceCommand(
+                ViewModel.Student.Id,
+                ViewModel.Datetime,
+                newDt,
+                dto.Course.Id,
+                dto.ClassesType.Id,
+                dto.Teacher.Id,
+                dto.GroupId);
+
+            try
+            {
+                await _mediator.Send(cmd);
+                AttendanceChanged?.Invoke(this, dto);
+                Close();
+            }
+            catch (Exception ex)
+            {
+                _dialogService.ShowError(ex.Message);
+            }
+        }
+
+        private async Task UpdateAsync()
+        {
+            if (!CheckFields()) return;
+
+            var dto = ViewModel.GetAttendanceDTO();
 
             var cmd = new UpdateAttendanceCommand(
                 dto.Id,
@@ -64,11 +114,6 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
             }
         }
 
-        private void BackBtn_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
         private bool CheckFields()
         {
             if (ViewModel.IsCompleted)
@@ -89,6 +134,26 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
                     _dialogService.ShowWarning("Доля преподавателю не выбрана");
                     return false;
                 }
+            }
+            return true;
+        }
+
+        private bool CheckFieldsOnWOCreating()
+        {
+            if (ViewModel.NewDatetime == null)
+            {
+                _dialogService.ShowWarning("Дата не может быть пустым");
+                return false;
+            }
+            else if (ViewModel.NewDatetime.HasValue && ViewModel.NewDatetime <= ViewModel.Datetime)
+            {
+                _dialogService.ShowWarning("Дата не может быть раньше исходного занятия");
+                return false;
+            }
+            if (string.IsNullOrEmpty(ViewModel.TimeHours) || string.IsNullOrEmpty(ViewModel.TimeMinutes))
+            {
+                _dialogService.ShowWarning("Время не может быть пустым");
+                return false;
             }
             return true;
         }
@@ -117,6 +182,12 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
             }
             if (ViewModel.Price.HasValue) return;
 
+            if (ViewModel.IsWorkingOff)
+            {
+                ViewModel.Price = 0;
+                ViewModel.TeacherShare = 0;
+                return;
+            }
             ViewModel.Price = ViewModel.StudentSubscription.Cost / ViewModel.StudentSubscription.ClassesAmount;
 
             if (ViewModel.TeacherShare == null)
@@ -139,6 +210,25 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
             ViewModel.TeacherShare = null;
             ViewModel.Status = null;
             ViewModel.AbsentCause = null;
+        }
+
+        private async void CreateWorkOffBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var workingOffType = await _mediator.Send(new GetAttendanceTypeByIdQuery((int)AttendanceTypeEnum.WorkingOff));
+            if (workingOffType == null) return;
+
+            _isCreating = true;
+            ViewModel.IsWorkingOff = true;
+            ViewModel.Id = 0;
+
+            ViewModel.Type = workingOffType;
+
+            DatetimeTextBox.Visibility = Visibility.Collapsed;
+            WorkingOffSetTimePanel.Visibility = Visibility.Visible;
+
+            ViewModel.IsCompleted = false;
+
+            CreateWorkOffBtn.Visibility = Visibility.Collapsed;
         }
     }
 }

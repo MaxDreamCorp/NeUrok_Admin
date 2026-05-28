@@ -13,6 +13,7 @@ namespace NeUrokAdmin.WPF.Views.UserControls
     /// </summary>
     public partial class JournalCell : UserControl
     {
+        public event Action? AttendancesNeedsToUpdate;
         private readonly NavigationService _navigationService;
         private readonly IDialogService _dialogService;
 
@@ -56,8 +57,15 @@ namespace NeUrokAdmin.WPF.Views.UserControls
 
         private void Window_AttendanceChanged(object? sender, Domain.DTOs.AttendanceDTO e)
         {
-            ViewModel = new JournalCellViewModel(e, ViewModel.Student, ViewModel.StudentSubscription, ViewModel.Group);
-            DataContext = ViewModel;
+            if (e.IsWorkingOff)
+            {
+                AttendancesNeedsToUpdate?.Invoke();
+            }
+            else
+            {
+                ViewModel = new JournalCellViewModel(e, ViewModel.Student, ViewModel.StudentSubscription, ViewModel.Group);
+                DataContext = ViewModel;
+            }
         }
     }
 }

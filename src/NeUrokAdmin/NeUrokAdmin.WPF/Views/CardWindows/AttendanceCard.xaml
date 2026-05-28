@@ -86,11 +86,38 @@
                         <TextBlock Text="Дата и время:" 
                                    Style="{StaticResource CardTextBlock}" Margin="0,5,55,5"/>
                         <Border Style="{StaticResource TblockBorder}"
+                                x:Name="DatetimeTextBox"
                                 Margin="0,5" >
                             <TextBlock Text="{Binding Datetime, StringFormat=\{0:dd.MM.yyyy HH:mm\}}" 
                                        MinWidth="105"
           FontSize="14"/>
                         </Border>
+                        <StackPanel x:Name="WorkingOffSetTimePanel"
+                                    Visibility="Collapsed">
+                        <DatePicker SelectedDate="{Binding NewDatetime, UpdateSourceTrigger=PropertyChanged}" 
+          
+             Margin="0,5" 
+             Style="{StaticResource DatePicker}"/>
+                            <StackPanel Grid.Row="7"
+            Grid.Column="1"
+            Orientation="Horizontal">
+                                <ComboBox SelectedItem="{Binding TimeHours, UpdateSourceTrigger=PropertyChanged}"
+              ItemsSource="{Binding Hours}"
+              IsEditable="True"
+              Width="40"
+              StaysOpenOnEdit="True"/>
+                                <TextBlock Text=":"
+               VerticalAlignment="Center"
+               FontSize="18"
+               FontWeight="Bold"
+               Margin="3 0"/>
+                                <ComboBox SelectedItem="{Binding TimeMinutes, UpdateSourceTrigger=PropertyChanged}"
+              ItemsSource="{Binding Minutes}"
+              IsEditable="True"
+              Width="40"
+              StaysOpenOnEdit="True"/>
+                            </StackPanel>
+                        </StackPanel>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal"
@@ -98,10 +125,10 @@
                         <TextBlock Text="Вид занятий:" 
                                    Style="{StaticResource CardTextBlock}"/>
                         <Border Style="{StaticResource TblockBorder}"
-                                Margin="0,5" >
+                                                                Margin="0,5" >
                             <TextBlock Text="{Binding ClassesType.Type}" 
                                        MinWidth="105"
-          FontSize="14"/>
+          FontSize="14" VerticalAlignment="Center"/>
                         </Border>
                     </StackPanel>
                 </DockPanel>
@@ -218,12 +245,20 @@
         </StackPanel>
 
         <DockPanel Grid.Row="2">
-            
-            <Button x:Name="AcceptBtn" 
+            <StackPanel HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+                <Button x:Name="CreateWorkOffBtn" 
+                    Style="{StaticResource SecondaryBtn}" 
+                    HorizontalAlignment="Right"
+                        Margin="0 0 10 0"
+                    Content="Создать отработку"
+                    Click="CreateWorkOffBtn_Click"/>
+                <Button x:Name="AcceptBtn" 
                     Style="{StaticResource PrimaryBtn}" 
                     HorizontalAlignment="Right"
                     Content="Подтвердить"
                     Click="AcceptBtn_Click"/>
+            </StackPanel>
         </DockPanel>
     </Grid>
 </Window>
