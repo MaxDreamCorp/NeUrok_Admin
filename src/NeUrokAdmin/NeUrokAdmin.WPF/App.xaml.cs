@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NeUrokAdmin.Application.Features.Authorization.Commands;
+using NeUrokAdmin.Application.Interfaces;
 using NeUrokAdmin.Application.Middleware;
 using NeUrokAdmin.Domain.Interfaces;
 using NeUrokAdmin.Domain.Interfaces.Repositories;
@@ -56,6 +57,7 @@ namespace NeUrokAdmin.WPF
             services.AddSingleton<IHasher, SHA512Hasher>();
             services.AddSingleton(provider => new NavigationService(provider));
             services.AddSingleton<IDialogService, WindowsDialogService>();
+            services.AddSingleton<INotificationService, NotificationService>();
 
             services.AddTransient<MainWindow>();
             services.AddTransient<LoginWindow>();

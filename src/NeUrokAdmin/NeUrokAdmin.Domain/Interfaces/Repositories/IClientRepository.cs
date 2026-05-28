@@ -13,6 +13,7 @@ namespace NeUrokAdmin.Domain.Interfaces.Repositories
         Task<int> GetNextIdAsync(CancellationToken cancellationToken = default);
         Task<Client?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
         Task<List<Client>> GetAllAsync(CancellationToken cancellationToken = default);
+        Task<List<Client>> GetByBirthDayAsync(DateOnly date, CancellationToken cancellationToken = default);
         Task<List<Client>> SearchAsync(ClientSearchDTO request, CancellationToken cancellationToken = default);
     }
 }

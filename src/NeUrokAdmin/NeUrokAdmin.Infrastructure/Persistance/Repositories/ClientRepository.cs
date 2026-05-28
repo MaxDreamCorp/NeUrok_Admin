@@ -28,6 +28,15 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
                 .ToListAsync(cancellationToken);
         }
 
+        public async Task<List<Client>> GetByBirthDayAsync(DateOnly date, CancellationToken cancellationToken = default)
+        {
+            return await _context.Clients
+                .Where(c => c.BirthDate.HasValue &&
+                c.BirthDate.Value.Day == date.Day &&
+                c.BirthDate.Value.Month == date.Month)
+                .ToListAsync(cancellationToken);
+        }
+
         public async Task<Client?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
             return await _context.Clients

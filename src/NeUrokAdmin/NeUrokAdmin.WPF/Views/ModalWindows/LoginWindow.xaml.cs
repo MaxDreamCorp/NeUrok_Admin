@@ -2,8 +2,11 @@
 using System.Windows.Controls;
 using MediatR;
 using NeUrokAdmin.Application.Features.Authorization.Commands;
+using NeUrokAdmin.Application.Features.ClientOperations.Queries;
+using NeUrokAdmin.Application.Interfaces;
 using NeUrokAdmin.WPF.Interfaces;
 using NeUrokAdmin.WPF.Services;
+using NeUrokAdmin.WPF.Views.ViewModels;
 
 namespace NeUrokAdmin.WPF.Views.ModalWindows
 {
@@ -12,11 +15,13 @@ namespace NeUrokAdmin.WPF.Views.ModalWindows
     /// </summary>
     public partial class LoginWindow : Window
     {
+        private LoginWindowViewModel _viewModel = null!;
         private readonly NavigationService _navigationService;
         private readonly IMediator _mediator;
         private readonly IDialogService _dialogService;
+        private readonly INotificationService _notificationService;
 
-        public LoginWindow(NavigationService navigationService, IMediator mediator, IDialogService dialogService)
+        public LoginWindow(NavigationService navigationService, IMediator mediator, IDialogService dialogService, INotificationService notificationService)
         {
             InitializeComponent();
             _navigationService = navigationService;
@@ -27,7 +32,20 @@ namespace NeUrokAdmin.WPF.Views.ModalWindows
             LoginInp.Text = "admin";
             PassInp.Password = "123";
             _dialogService = dialogService;
+            _notificationService = notificationService;
 #endif
+        }
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            var upcomingBirthdays = await _mediator.Send(new GetUpcomingBirthdaysQuery());
+            _viewModel = new LoginWindowViewModel(upcomingBirthdays);
+            DataContext = _viewModel;
+
+            var msgs = upcomingBirthdays.TodayBirthdays.Select(it => $"{it.Key} - {it.Value}").ToList();
+            _notificationService.ShowToastNotification(
+                "Дни рождения сегодня",
+                string.Join('\n', msgs));
         }
 
         private void PassInp_PasswordChanged(object sender, RoutedEventArgs e)
