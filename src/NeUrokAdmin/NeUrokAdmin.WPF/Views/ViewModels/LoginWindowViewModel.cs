@@ -12,10 +12,14 @@ namespace NeUrokAdmin.WPF.Views.ViewModels
         [ObservableProperty]
         private ObservableCollection<ExpiringSubscriptionDTO> _expiringSubscriptions;
 
-        public LoginWindowViewModel(UpcomingBirthdaysDTO upcomingBirthdays, ObservableCollection<ExpiringSubscriptionDTO> expiringSubscriptions)
+        [ObservableProperty]
+        private ObservableCollection<ExpiringSubscriptionDTO> _notPaidSubscriptions;
+
+        public LoginWindowViewModel(UpcomingBirthdaysDTO upcomingBirthdays, ObservableCollection<ExpiringSubscriptionDTO> expiringSubscriptions, ObservableCollection<ExpiringSubscriptionDTO> notPaidSubscriptions)
         {
             _upcomingBirthdays = upcomingBirthdays;
             _expiringSubscriptions = expiringSubscriptions;
+            _notPaidSubscriptions = notPaidSubscriptions;
         }
     }
 }

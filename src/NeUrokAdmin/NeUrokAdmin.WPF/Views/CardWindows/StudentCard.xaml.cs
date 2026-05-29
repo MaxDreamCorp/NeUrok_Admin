@@ -149,43 +149,49 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
         {
             if (sender is DataGrid dataGrid && dataGrid.SelectedItem is StudentSubscriptionDTO studentSubscriptionDTO)
             {
-                if (ViewModel.Client == null)
-                {
-                    _dialogService.ShowWarning("Сначала выберите клиента");
-                    return;
-                }
-                var cardVM = new StudentSubscriptionCardViewModel(Enums.OperationType.Edit, ViewModel.Client.ChildFullname, studentSubscriptionDTO);
-                var card = _navigationService.GetWindow<StudentSubscriptionCard>();
-                card.ViewModel = cardVM;
-                card.StudentSubscriptionEdited += (s, ss) =>
-                {
-                    int index = ViewModel.Subscriptions.IndexOf(studentSubscriptionDTO);
-                    if (index >= 0)
-                        ViewModel.Subscriptions[index] = ss;
-                };
-                card.StudentSubscriptionFinished += (s, index) =>
-                {
-                    if (index < 1) return;
 
-                    var oldDto = ViewModel.Subscriptions.First(s => s.Id == index);
-
-                    int ind = ViewModel.Subscriptions.IndexOf(oldDto);
-                    ViewModel.Subscriptions[ind] = new StudentSubscriptionDTO(
-                        oldDto.Id,
-                        oldDto.StudentId,
-                        oldDto.ClassesType,
-                        oldDto.Cost,
-                        oldDto.ClassesAmount,
-                        oldDto.IsPaid,
-                        oldDto.Course,
-                        cardVM.SubscriptionStatusesDTO.First(st => st.Id == (int)SubscriptionStatusEnum.Finished),
-                        oldDto.StartDate,
-                        oldDto.FinishDate);
-                };
-                card.StudentSubscriptionCreated += Card_StudentSubscriptionCreated;
-                card.ShowDialog();
-                ViewModel.Subscriptions = new(ViewModel.Subscriptions.OrderBy(s => s.SubscriptionStatus.Id).ToList());
+                OpenSubscriptionToEdit(studentSubscriptionDTO);
             }
+        }
+
+        public void OpenSubscriptionToEdit(StudentSubscriptionDTO studentSubscriptionDTO)
+        {
+            if (ViewModel.Client == null)
+            {
+                _dialogService.ShowWarning("Сначала выберите клиента");
+                return;
+            }
+            var cardVM = new StudentSubscriptionCardViewModel(Enums.OperationType.Edit, ViewModel.Client.ChildFullname, studentSubscriptionDTO);
+            var card = _navigationService.GetWindow<StudentSubscriptionCard>();
+            card.ViewModel = cardVM;
+            card.StudentSubscriptionEdited += (s, ss) =>
+            {
+                int index = ViewModel.Subscriptions.IndexOf(studentSubscriptionDTO);
+                if (index >= 0)
+                    ViewModel.Subscriptions[index] = ss;
+            };
+            card.StudentSubscriptionFinished += (s, index) =>
+            {
+                if (index < 1) return;
+
+                var oldDto = ViewModel.Subscriptions.First(s => s.Id == index);
+
+                int ind = ViewModel.Subscriptions.IndexOf(oldDto);
+                ViewModel.Subscriptions[ind] = new StudentSubscriptionDTO(
+                    oldDto.Id,
+                    oldDto.StudentId,
+                    oldDto.ClassesType,
+                    oldDto.Cost,
+                    oldDto.ClassesAmount,
+                    oldDto.IsPaid,
+                    oldDto.Course,
+                    cardVM.SubscriptionStatusesDTO.First(st => st.Id == (int)SubscriptionStatusEnum.Finished),
+                    oldDto.StartDate,
+                    oldDto.FinishDate);
+            };
+            card.StudentSubscriptionCreated += Card_StudentSubscriptionCreated;
+            card.ShowDialog();
+            ViewModel.Subscriptions = new(ViewModel.Subscriptions.OrderBy(s => s.SubscriptionStatus.Id).ToList());
         }
 
         private async Task<bool> CreateStudent()

@@ -5,18 +5,18 @@ using NeUrokAdmin.Domain.Interfaces.Repositories;
 
 namespace NeUrokAdmin.Application.Features.StudentSubscriptionOperations.Handlers.Queries
 {
-    public class GetExpiringSubscriptionsQueryHandler : IRequestHandler<GetExpiringSubscriptionsQuery, List<ExpiringSubscriptionDTO>>
+    public class GetNotPaidSubscriptionsQueryHandler : IRequestHandler<GetNotPaidSubscriptionsQuery, List<ExpiringSubscriptionDTO>>
     {
         private readonly IStudentSubscriptionRepository _studentSubscriptionRepository;
 
-        public GetExpiringSubscriptionsQueryHandler(IStudentSubscriptionRepository studentSubscriptionRepository)
+        public GetNotPaidSubscriptionsQueryHandler(IStudentSubscriptionRepository studentSubscriptionRepository)
         {
             _studentSubscriptionRepository = studentSubscriptionRepository;
         }
 
-        public async Task<List<ExpiringSubscriptionDTO>> Handle(GetExpiringSubscriptionsQuery request, CancellationToken cancellationToken)
+        public async Task<List<ExpiringSubscriptionDTO>> Handle(GetNotPaidSubscriptionsQuery request, CancellationToken cancellationToken)
         {
-            var subs = await _studentSubscriptionRepository.GetExpiringAsync(cancellationToken);
+            var subs = await _studentSubscriptionRepository.GetNotPaidAsync(cancellationToken);
 
             return subs.Select(s => new ExpiringSubscriptionDTO(
                 s.Id,

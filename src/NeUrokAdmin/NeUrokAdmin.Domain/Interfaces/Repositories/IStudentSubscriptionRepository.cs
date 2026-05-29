@@ -14,5 +14,6 @@ namespace NeUrokAdmin.Domain.Interfaces.Repositories
         Task<StudentSubscription?> GetByStudentCourseAndDateAsync(int studentId, int courseId, DateOnly date, CancellationToken cancellationToken = default);
         Task<List<StudentSubscription>> GetByStudentIdAsync(int studentId, CancellationToken cancellationToken = default);
         Task<List<StudentSubscription>> GetExpiringAsync(CancellationToken cancellationToken = default);
+        Task<List<StudentSubscription>> GetNotPaidAsync(CancellationToken cancellationToken = default);
     }
 }

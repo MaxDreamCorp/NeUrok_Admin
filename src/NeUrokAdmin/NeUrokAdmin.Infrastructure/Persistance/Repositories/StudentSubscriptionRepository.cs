@@ -67,6 +67,16 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
                 : 1;
         }
 
+        public async Task<List<StudentSubscription>> GetNotPaidAsync(CancellationToken cancellationToken = default)
+        {
+            return await _context.StudentSubscriptions
+               .Include(ss => ss.Course)
+               .Include(ss => ss.Student)
+                   .ThenInclude(s => s.Client)
+               .Where(ss => ss.IsPaid == 0)
+               .ToListAsync(cancellationToken);
+        }
+
         public async Task RemoveAsync(StudentSubscription studentSubscription, CancellationToken cancellationToken = default)
         {
             _context.StudentSubscriptions.Remove(studentSubscription);
