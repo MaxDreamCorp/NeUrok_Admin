@@ -3,6 +3,7 @@ using MediatR;
 using NeUrokAdmin.Application.Features.CourseOperations.Queries;
 using NeUrokAdmin.Application.Features.StudentSubscriptionOperations.Queries;
 using NeUrokAdmin.Domain.DTOs;
+using NeUrokAdmin.Domain.Enums;
 using NeUrokAdmin.WPF.Interfaces;
 using NeUrokAdmin.WPF.Services;
 using NeUrokAdmin.WPF.Views.Selectors;
@@ -20,8 +21,11 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
         private readonly NavigationService _navigationService;
         private readonly IDialogService _dialogService;
 
+        private bool _isExtending;
+
         public event EventHandler<StudentSubscriptionDTO>? StudentSubscriptionCreated;
         public event EventHandler<StudentSubscriptionDTO>? StudentSubscriptionEdited;
+        public event EventHandler<int>? StudentSubscriptionFinished;
 
         public StudentSubscriptionCardViewModel ViewModel { get; set; } = null!;
 
@@ -38,6 +42,11 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
             DataContext = ViewModel;
             ViewModel.ClassesTypesDTO = await _mediator.Send(new GetAllClassesTypesQuery());
             ViewModel.SubscriptionStatusesDTO = await _mediator.Send(new GetAllSubscriptionStatusesQuery());
+
+            if (ViewModel.SubscriptionStatus != null &&
+                ViewModel.SubscriptionStatus.Id == (int)SubscriptionStatusEnum.Active &&
+                ViewModel.FinishDate <= DateTime.Now)
+                ExtendBtn.Visibility = Visibility.Visible;
         }
 
         private void BackBtn_Click(object sender, RoutedEventArgs e)
@@ -71,6 +80,8 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
         {
             if (!CheckFields())
                 return;
+            if (_isExtending && ViewModel.Id.HasValue)
+                StudentSubscriptionFinished?.Invoke(this, ViewModel.Id.Value);
 
             try
             {
@@ -127,5 +138,24 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
             return true;
         }
 
+        private void ExtendBtn_Click(object sender, RoutedEventArgs e)
+        {
+            SetFieldsForExtending();
+        }
+
+        private void SetFieldsForExtending()
+        {
+            if (ViewModel.FinishDate == null) return;
+
+            _isExtending = true;
+            ViewModel.OperationType = Enums.OperationType.Create;
+            ViewModel.HeaderText = "Продление абонемента";
+            ViewModel.StartDate = ViewModel.FinishDate.Value.AddDays(1);
+            ViewModel.IsPaid = false;
+            ViewModel.FinishDate = null;
+            ExtendBtn.Visibility = Visibility.Collapsed;
+            SelectCourseBtn.IsEnabled = false;
+            ClassesTypeCb.IsEnabled = false;
+        }
     }
 }

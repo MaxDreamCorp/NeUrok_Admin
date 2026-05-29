@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using MediatR;
 using NeUrokAdmin.Application.Features.Authorization.Commands;
 using NeUrokAdmin.Application.Features.ClientOperations.Queries;
+using NeUrokAdmin.Application.Features.StudentSubscriptionOperations.Queries;
 using NeUrokAdmin.Application.Interfaces;
 using NeUrokAdmin.WPF.Interfaces;
 using NeUrokAdmin.WPF.Services;
@@ -39,13 +40,22 @@ namespace NeUrokAdmin.WPF.Views.ModalWindows
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             var upcomingBirthdays = await _mediator.Send(new GetUpcomingBirthdaysQuery());
-            _viewModel = new LoginWindowViewModel(upcomingBirthdays);
+            var expiringSubscriptions = (await _mediator.Send(new GetExpiringSubscriptionsQuery()))
+                .OrderBy(it => it.FinishDate).ToList();
+            _viewModel = new LoginWindowViewModel(upcomingBirthdays, new(expiringSubscriptions));
             DataContext = _viewModel;
 
             var msgs = upcomingBirthdays.TodayBirthdays.Select(it => $"{it.Key} - {it.Value}").ToList();
-            _notificationService.ShowToastNotification(
-                "Дни рождения сегодня",
-                string.Join('\n', msgs));
+            if (msgs.Count > 0)
+                _notificationService.ShowToastNotification(
+                    "Дни рождения сегодня",
+                    string.Join('\n', msgs));
+
+            var subMsgs = expiringSubscriptions.Select(it => $"{it.ClientFullname} - {it.CourseName} ({it.FinishDate:dd.MM.yyyy})").ToList();
+            if (subMsgs.Count > 0)
+                _notificationService.ShowToastNotification(
+                    "Истекающие абонементы",
+                    string.Join('\n', subMsgs));
         }
 
         private void PassInp_PasswordChanged(object sender, RoutedEventArgs e)

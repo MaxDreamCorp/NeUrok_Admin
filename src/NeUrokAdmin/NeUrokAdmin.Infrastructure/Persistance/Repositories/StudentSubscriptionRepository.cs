@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NeUrokAdmin.Domain.Entities;
+using NeUrokAdmin.Domain.Enums;
 using NeUrokAdmin.Domain.Interfaces.Repositories;
 
 namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
@@ -45,6 +46,17 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
                 .Include(ss => ss.Course)
                 .Include(ss => ss.SubscriptlonStatus)
                 .Where(ss => ss.StudentId == studentId)
+                .ToListAsync(cancellationToken);
+        }
+
+        public async Task<List<StudentSubscription>> GetExpiringAsync(CancellationToken cancellationToken = default)
+        {
+            return await _context.StudentSubscriptions
+                .Include(ss => ss.Course)
+                .Include(ss => ss.Student)
+                    .ThenInclude(s => s.Client)
+                .Where(ss => ss.SubscriptlonStatusId != (int)SubscriptionStatusEnum.Finished &&
+                ss.SubscriptionFinishDate <= DateOnly.FromDateTime(DateTime.Now))
                 .ToListAsync(cancellationToken);
         }
 

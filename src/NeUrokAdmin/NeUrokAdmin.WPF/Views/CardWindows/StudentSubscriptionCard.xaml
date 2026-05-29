@@ -76,7 +76,8 @@
                 <TextBlock Text="Тип занятий:" 
               Grid.Row="2" 
               Style="{StaticResource CardTextBlock}"/>
-                <ComboBox SelectedItem="{Binding ClassesType, UpdateSourceTrigger=PropertyChanged}" 
+                <ComboBox x:Name="ClassesTypeCb"
+                          SelectedItem="{Binding ClassesType, UpdateSourceTrigger=PropertyChanged}" 
              ItemsSource="{Binding ClassesTypes, UpdateSourceTrigger=PropertyChanged}" 
              Style="{StaticResource ModernComboBox}"
              Grid.Row="2" 
@@ -178,11 +179,19 @@
                     Content="Удалить"
                     IsEnabled="{Binding IsDeletable, UpdateSourceTrigger=PropertyChanged}"
                     Click="DelBtn_Click"/>
-            <Button x:Name="AcceptBtn" 
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+                <Button x:Name="ExtendBtn" 
+                    Style="{StaticResource SecondaryBtn}" 
+                    Content="Продлить абонемент"
+                    Visibility="Collapsed"
+                    Margin="0 0 10 0"
+                    Click="ExtendBtn_Click"/>
+                <Button x:Name="AcceptBtn" 
                     Style="{StaticResource PrimaryBtn}" 
-                    HorizontalAlignment="Right"
                     Content="Подтвердить"
                     Click="AcceptBtn_Click"/>
+            </StackPanel>
         </DockPanel>
     </Grid>
 </Window>

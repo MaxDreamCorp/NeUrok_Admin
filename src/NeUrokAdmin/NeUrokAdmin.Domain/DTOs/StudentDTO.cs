@@ -7,9 +7,11 @@ namespace NeUrokAdmin.Domain.DTOs
         ClientDTO Client,
         List<StudentSubscriptionDTO> StudentSubscriptions)
     {
-        public int ActiveSubscriptionsCount { 
-            get => StudentSubscriptions.Count(ss => 
-            ss.SubscriptionStatus.Id == (int)SubscriptionStatusEnum.Active); 
+        public List<StudentSubscriptionDTO> ActiveSubscriptions => StudentSubscriptions.Where(ss => ss.SubscriptionStatus.Id == (int)SubscriptionStatusEnum.Active).ToList();
+        public int ActiveSubscriptionsCount
+        {
+            get => StudentSubscriptions.Count(ss =>
+            ss.SubscriptionStatus.Id == (int)SubscriptionStatusEnum.Active);
         }
 
         public int PaidCount

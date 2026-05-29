@@ -123,10 +123,25 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
             card.ViewModel = cardVM;
             card.StudentSubscriptionCreated += Card_StudentSubscriptionCreated;
             card.ShowDialog();
+            ViewModel.Subscriptions = new(ViewModel.Subscriptions.OrderBy(s => s.SubscriptionStatus.Id).ToList());
         }
 
         private void Card_StudentSubscriptionCreated(object? sender, StudentSubscriptionDTO e)
         {
+            if (e.Id != 0)
+            {
+                e = new StudentSubscriptionDTO(
+                    0,
+                    e.StudentId,
+                    e.ClassesType,
+                    e.Cost,
+                    e.ClassesAmount,
+                    e.IsPaid,
+                    e.Course,
+                    e.SubscriptionStatus,
+                    e.StartDate,
+                    e.FinishDate);
+            }
             ViewModel.Subscriptions.Add(e);
         }
 
@@ -148,7 +163,28 @@ namespace NeUrokAdmin.WPF.Views.CardWindows
                     if (index >= 0)
                         ViewModel.Subscriptions[index] = ss;
                 };
+                card.StudentSubscriptionFinished += (s, index) =>
+                {
+                    if (index < 1) return;
+
+                    var oldDto = ViewModel.Subscriptions.First(s => s.Id == index);
+
+                    int ind = ViewModel.Subscriptions.IndexOf(oldDto);
+                    ViewModel.Subscriptions[ind] = new StudentSubscriptionDTO(
+                        oldDto.Id,
+                        oldDto.StudentId,
+                        oldDto.ClassesType,
+                        oldDto.Cost,
+                        oldDto.ClassesAmount,
+                        oldDto.IsPaid,
+                        oldDto.Course,
+                        cardVM.SubscriptionStatusesDTO.First(st => st.Id == (int)SubscriptionStatusEnum.Finished),
+                        oldDto.StartDate,
+                        oldDto.FinishDate);
+                };
+                card.StudentSubscriptionCreated += Card_StudentSubscriptionCreated;
                 card.ShowDialog();
+                ViewModel.Subscriptions = new(ViewModel.Subscriptions.OrderBy(s => s.SubscriptionStatus.Id).ToList());
             }
         }
 

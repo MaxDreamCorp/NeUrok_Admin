@@ -16,7 +16,7 @@ namespace NeUrokAdmin.WPF.Services
                 Message = message,
                 Type = NotificationType.Notification,
                 TrimType = NotificationTextTrimType.AttachIfMoreRows,
-                RowsCount = 10,
+                RowsCount = 20,
                 LeftButtonContent = "Ок",
                 Icon = im
             };

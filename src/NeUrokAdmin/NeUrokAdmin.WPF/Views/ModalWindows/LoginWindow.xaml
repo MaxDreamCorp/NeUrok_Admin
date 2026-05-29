@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Loaded="Window_Loaded"
         Title="Вход"
-        MinWidth="1050"
+        MinWidth="1080"
         SizeToContent="WidthAndHeight">
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
@@ -149,5 +149,37 @@
                         Click="RegBtn_Click"/>
             </StackPanel>
         </StackPanel>
+        <Grid Grid.Column="2">
+            <StackPanel>
+                <TextBlock Text="Истекающие абонементы"
+         Style="{StaticResource HeaderText}"
+         TextAlignment="Center"
+         Margin="0,20,0,10"/>
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          MinWidth="515"
+                          MaxHeight="130">
+                    <DataGrid  
+                     ItemsSource="{Binding ExpiringSubscriptions}" 
+                     Style="{StaticResource MainDataGridStyle}"
+                     AutoGenerateColumns="False"
+                     CanUserAddRows="False" 
+                     IsReadOnly="True">
+                        <DataGrid.Resources>
+                            <Style TargetType="TextBlock" x:Key="WrapStyle">
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ФИО"
+                                        Binding="{Binding ClientFullname}"/>
+                            <DataGridTextColumn Header="Окончание" Binding="{Binding FinishDate, StringFormat=\{0:dd.MM.yyyy\}}" Width="Auto"/>
+                            <DataGridTextColumn Header="Курс" Binding="{Binding CourseName}" Width="Auto"/>
+                            <DataGridCheckBoxColumn Header="Оплачен" Binding="{Binding IsPaid}"/>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </ScrollViewer>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

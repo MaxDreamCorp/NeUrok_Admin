@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:NeUrokAdmin.WPF.Views.CardWindows"
+        xmlns:local="clr-namespace:NeUrokAdmin.WPF.Views.Converters"
         mc:Ignorable="d"
         MinWidth="480"
         SizeToContent="WidthAndHeight"
@@ -224,12 +224,32 @@
                        Margin="0,0,0,5" 
                        Foreground="#2C3E50"/>
 
-                                            <DataGrid ItemsSource="{Binding StudentSubscriptions}" 
-                              Style="{StaticResource MainDataGridStyle}"
-                              BorderThickness="1"
-                      AutoGenerateColumns="False" 
-                      CanUserAddRows="False"
-                      IsReadOnly="True">
+                                            <DataGrid ItemsSource="{Binding ActiveSubscriptions}" 
+                                                      Style="{StaticResource MainDataGridStyle}"
+                                                      BorderThickness="1"
+                                              AutoGenerateColumns="False" 
+                                              CanUserAddRows="False"
+                                              IsReadOnly="True">
+
+                                                <DataGrid.Resources>
+                                                    <local:DateExpiredConverter x:Key="DateExpiredConverter"/>
+                                                </DataGrid.Resources>
+
+                                                <DataGrid.RowStyle>
+                                                    <Style TargetType="DataGridRow">
+                                                        <Setter Property="Background" Value="White"/>
+                                                        <Style.Triggers>
+                                                            <MultiDataTrigger>
+                                                                <MultiDataTrigger.Conditions>
+                                                                    <Condition Binding="{Binding SubscriptionStatus.Id}" Value="1" />
+                                                                    <Condition Binding="{Binding FinishDate, Converter={StaticResource DateExpiredConverter}}" Value="True" />
+                                                                </MultiDataTrigger.Conditions>
+                                                                <Setter Property="Background" Value="IndianRed"/>
+                                                            </MultiDataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </DataGrid.RowStyle>
+                                                
                                                 <DataGrid.Columns>
                                                     <DataGridTextColumn Header="Начало" Binding="{Binding StartDate, StringFormat=\{0:dd.MM.yyyy\}}" Width="Auto"/>
                                                     <DataGridTextColumn Header="Окончание" Binding="{Binding FinishDate, StringFormat=\{0:dd.MM.yyyy\}}" Width="Auto"/>
