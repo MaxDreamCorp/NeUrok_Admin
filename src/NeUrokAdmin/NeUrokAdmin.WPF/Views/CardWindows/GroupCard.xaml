@@ -202,7 +202,7 @@
                                 <DataGridTextColumn Header="ID"
                     Binding="{Binding Id}"
                     Width="Auto"/>
-                                <DataGridTextColumn Header="ФИО студента" 
+                                <DataGridTextColumn Header="ФИО ученика" 
             Binding="{Binding Client.ChildFullname}" 
             Width="Auto"/>
                                 <DataGridTextColumn Header="Активных абонементов"
