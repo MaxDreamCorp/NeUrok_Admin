@@ -8,7 +8,7 @@
          MinWidth="480"
          SizeToContent="WidthAndHeight"
          Loaded="Window_Loaded"
-         Title="Группа">
+         Title="Посещение">
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
