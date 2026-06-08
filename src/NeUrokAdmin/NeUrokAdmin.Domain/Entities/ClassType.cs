@@ -8,5 +8,5 @@ public partial class ClassType
 
     public virtual ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();
 
-    public virtual ICollection<StudentSubscription> StudentSubscribtions { get; set; } = new List<StudentSubscription>();
+    public virtual ICollection<StudentSubscription> StudentSubscriptions { get; set; } = new List<StudentSubscription>();
 }

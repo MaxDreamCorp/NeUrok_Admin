@@ -72,7 +72,7 @@ namespace NeUrokAdmin.Application.Features.GroupOperation.Handlers.Commands
             group.Time = request.Time;
             await _groupRepository.UpdateAsync(group, cancellationToken);
 
-            var updatedStudents = await SyncStudentsAsync(group, request.Students, request.Dates.Max(), cancellationToken);
+            var updatedStudents = await SyncStudentsAsync(group, request.StudentsAndSubs, request.Dates.Max(), cancellationToken);
 
             await SyncGroupDatesAsync(group, request.Dates, updatedStudents, cancellationToken);
         }
@@ -108,7 +108,6 @@ namespace NeUrokAdmin.Application.Features.GroupOperation.Handlers.Commands
             {
                 var now = DateTime.Now;
 
-                // Фильтруем только те, которые в прошлом, чтобы зря не гонять запросы
                 var pastDatesToRemove = datesToRemove.Where(d => d.Datetime < now).Select(d => d.Datetime).ToList();
 
                 if (pastDatesToRemove.Any())
@@ -144,10 +143,11 @@ namespace NeUrokAdmin.Application.Features.GroupOperation.Handlers.Commands
             group.GroupDates = finalGroupDates;
         }
 
-        private async Task<List<Student>> SyncStudentsAsync(Group group, List<StudentDTO> incomingStudentsDto, DateTime maxDate, CancellationToken cancellationToken)
+        private async Task<List<Student>> SyncStudentsAsync(Group group, Dictionary<StudentDTO, StudentSubscriptionDTO> studentsAndSubs, DateTime maxDate, CancellationToken cancellationToken)
         {
-            var existingStudents = group.Students.ToList();
-            var incomingIds = incomingStudentsDto.Select(s => s.Id).ToList();
+            var existingStudents = group.GroupStudents.Select(gs => gs.Student).ToList();
+            var finishDict = new Dictionary<Student, StudentSubscription>();
+            var incomingIds = studentsAndSubs.Select(s => s.Key.Id).ToList();
 
             var studentsToRemove = existingStudents.Where(es => !incomingIds.Contains(es.Id)).ToList();
             if (studentsToRemove.Any())
@@ -157,7 +157,9 @@ namespace NeUrokAdmin.Application.Features.GroupOperation.Handlers.Commands
                 existingStudents.RemoveAll(s => studentsToRemove.Contains(s));
             }
 
-            var studentsToAddDto = incomingStudentsDto.Where(dto => !existingStudents.Any(es => es.Id == dto.Id)).ToList();
+            var studentsToAddDto = studentsAndSubs.Where(p =>
+                !existingStudents.Any(es => es.Id == p.Key.Id))
+                .Select(p => p.Key).ToList();
             foreach (var studentDto in studentsToAddDto)
             {
                 var student = await _studentRepository.GetByIdAsync(studentDto.Id, cancellationToken);
@@ -165,33 +167,35 @@ namespace NeUrokAdmin.Application.Features.GroupOperation.Handlers.Commands
 
                 existingStudents.Add(student);
 
-                var subscriptionDto = studentDto.StudentSubscriptions.FirstOrDefault(ss =>
-                    ss.Course.Id == group.CourseId &&
-                    (ss.ClassesType.Id == (int)ClassesTypeEnum.Group || ss.ClassesType.Id == (int)ClassesTypeEnum.Intensive) &&
-                    ss.SubscriptionStatus.Id == (int)SubscriptionStatusEnum.Active);
+                var subscriptionDto = studentsAndSubs[studentDto];
 
-                if (subscriptionDto != null)
-                {
-                    await _studentSubscriptionRepository.UpdateFinishDateAsync(subscriptionDto.Id, DateOnly.FromDateTime(maxDate));
-                    int clientStatus = group.GroupStatusId == (int)GroupStatusEnum.Active ? (int)ClientStatusEnum.Learning : (int)ClientStatusEnum.Enrolled;
-                    await _clientRepository.UpdateStatusAsync(student.ClientId, clientStatus);
-                }
+                await _studentSubscriptionRepository.UpdateFinishDateAsync(subscriptionDto.Id, DateOnly.FromDateTime(maxDate));
+                int clientStatus = group.GroupStatusId == (int)GroupStatusEnum.Active ? (int)ClientStatusEnum.Learning : (int)ClientStatusEnum.Enrolled;
+                await _clientRepository.UpdateStatusAsync(student.ClientId, clientStatus);
 
                 await CreateAttendanceForNewStudentAsync(group, student, cancellationToken);
             }
+            foreach (var s in existingStudents)
+            {
+                var sDto = studentsAndSubs.Keys.FirstOrDefault(st => st.Id == s.Id);
+                if (sDto == null) continue;
+                var subscription = await _studentSubscriptionRepository.GetByIdAsync(studentsAndSubs[sDto].Id, cancellationToken);
+                if (subscription == null) continue;
+                finishDict.Add(s, subscription);
 
-            await _groupRepository.SetStudentsAsync(group.Id, existingStudents, cancellationToken);
+            }
+            await _groupRepository.SetStudentsAsync(group.Id, finishDict, cancellationToken);
             return existingStudents;
         }
 
         private async Task CreateAttendanceForNewDateAsync(Group group, DateTime dateTime, CancellationToken cancellationToken)
         {
             int id = await _attendanceRepository.GetNextIdAsync(cancellationToken);
-            foreach (var student in group.Students)
+            foreach (var student in group.GroupStudents)
             {
                 var attendance = Attendance.Create(
                 id,
-                    student.ClientId,
+                    student.Student.ClientId,
                     dateTime,
                     group.CourseId,
                     (int)ClassesTypeEnum.Group,

@@ -9,9 +9,10 @@
         string WeekDays,
         TimeOnly Time,
         List<DateTime> Dates,
-        List<StudentDTO> Students)
+        Dictionary<StudentDTO, StudentSubscriptionDTO> StudentAndSubscription)
     {
-        public int StudentCount { get => Students.Count; }
+        public List<StudentDTO> Students { get => StudentAndSubscription.Keys.ToList(); }
+        public int StudentCount { get => StudentAndSubscription.Count; }
         public int ClassesCount { get => Dates.Count; }
     }
 }

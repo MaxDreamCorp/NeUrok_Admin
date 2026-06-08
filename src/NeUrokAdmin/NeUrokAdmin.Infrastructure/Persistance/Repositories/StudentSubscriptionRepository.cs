@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NeUrokAdmin.Domain.Entities;
+using NeUrokAdmin.Domain.Enums;
 using NeUrokAdmin.Domain.Interfaces.Repositories;
 
 namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
@@ -28,6 +29,16 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
                 .FirstOrDefaultAsync(ss => ss.Id == id);
         }
 
+        public async Task<StudentSubscription?> GetByStudentCourseAndDateAsync(int studentId, int courseId, DateOnly date, CancellationToken cancellationToken = default)
+        {
+            return await _context.StudentSubscriptions
+                .FirstOrDefaultAsync(ss =>
+                    ss.StudentId == studentId &&
+                    ss.CourseId == courseId &&
+                    (ss.SubscriptionStartDate <= date && date <= ss.SubscriptionFinishDate),
+                    cancellationToken);
+        }
+
         public async Task<List<StudentSubscription>> GetByStudentIdAsync(int studentId, CancellationToken cancellationToken = default)
         {
             return await _context.StudentSubscriptions
@@ -38,11 +49,32 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
                 .ToListAsync(cancellationToken);
         }
 
+        public async Task<List<StudentSubscription>> GetExpiringAsync(CancellationToken cancellationToken = default)
+        {
+            return await _context.StudentSubscriptions
+                .Include(ss => ss.Course)
+                .Include(ss => ss.Student)
+                    .ThenInclude(s => s.Client)
+                .Where(ss => ss.SubscriptlonStatusId != (int)SubscriptionStatusEnum.Finished &&
+                ss.SubscriptionFinishDate <= DateOnly.FromDateTime(DateTime.Now))
+                .ToListAsync(cancellationToken);
+        }
+
         public async Task<int> GetNextIdAsync(CancellationToken cancellationToken = default)
         {
             return await _context.StudentSubscriptions.AnyAsync(cancellationToken)
                 ? await _context.StudentSubscriptions.MaxAsync(ss => ss.Id, cancellationToken) + 1
                 : 1;
+        }
+
+        public async Task<List<StudentSubscription>> GetNotPaidAsync(CancellationToken cancellationToken = default)
+        {
+            return await _context.StudentSubscriptions
+               .Include(ss => ss.Course)
+               .Include(ss => ss.Student)
+                   .ThenInclude(s => s.Client)
+               .Where(ss => ss.IsPaid == 0)
+               .ToListAsync(cancellationToken);
         }
 
         public async Task RemoveAsync(StudentSubscription studentSubscription, CancellationToken cancellationToken = default)
@@ -76,6 +108,17 @@ namespace NeUrokAdmin.Infrastructure.Persistance.Repositories
                 throw new Exception("Данной записи не существует");
 
             existingStudentSubscription.SubscriptionFinishDate = finishDate;
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task UpdateStartDateAsync(int id, DateOnly startDate, CancellationToken cancellationToken = default)
+        {
+            var existingStudentSubscription = await _context.StudentSubscriptions.FindAsync(id, cancellationToken);
+            if (existingStudentSubscription == null)
+                throw new Exception("Данной записи не существует");
+
+            existingStudentSubscription.SubscriptionStartDate = startDate;
 
             await _context.SaveChangesAsync(cancellationToken);
         }

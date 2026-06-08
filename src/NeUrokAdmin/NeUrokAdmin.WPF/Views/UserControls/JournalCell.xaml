@@ -5,12 +5,25 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NeUrokAdmin.WPF.Views.UserControls"
              mc:Ignorable="d" >
-        <Button x:Name="MC" 
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </UserControl.Resources>
+    <Button x:Name="MC" 
                 Style="{StaticResource JournalCellButtonStyle}"
                 MouseDoubleClick="MC_MouseDoubleClick">
+        <Grid Width="40"
+              Height="40">
             <TextBlock Text="{Binding Attendance.Mark}"
                        Margin="3"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
                   FontWeight="DemiBold"
                   FontSize="20"/>
-        </Button>
+            <TextBlock Text="o"
+                       VerticalAlignment="Top"
+                       HorizontalAlignment="Right"
+                       FontSize="11" Margin="0,0,1,0"
+                       Visibility="{Binding Attendance.IsWorkingOff, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVis}}"/>
+        </Grid>
+    </Button>
 </UserControl>

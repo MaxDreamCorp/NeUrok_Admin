@@ -14,6 +14,7 @@ public partial class ApplicationDbContext : DbContext
     {
     }
 
+
     public virtual DbSet<Attendance> Attendances { get; set; }
 
     public virtual DbSet<AttendanceStatus> AttendanceStatuses { get; set; }
@@ -34,6 +35,8 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<GroupStatus> GroupStatuses { get; set; }
 
+    public virtual DbSet<GroupStudent> GroupStudents { get; set; }
+
     public virtual DbSet<Student> Students { get; set; }
 
     public virtual DbSet<StudentSubscription> StudentSubscriptions { get; set; }
@@ -44,11 +47,12 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
-            .UseCollation("utf8mb4_0900_ai_ci")
-            .HasCharSet("utf8mb4");
+          .UseCollation("utf8mb4_0900_ai_ci")
+          .HasCharSet("utf8mb4");
 
         modelBuilder.Entity<Attendance>(entity =>
         {
@@ -73,35 +77,29 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("id");
-            entity.Property(e => e.AttendanceStatusId).HasColumnName("attendance_status_id")
-                .HasColumnType("int")
-                .IsRequired(false);
+            entity.Property(e => e.AbsentCause)
+                .HasColumnType("text")
+                .HasColumnName("absent_cause");
+            entity.Property(e => e.AttendanceStatusId).HasColumnName("attendance_status_id");
             entity.Property(e => e.AttendanceTypeId).HasColumnName("attendance_type_id");
             entity.Property(e => e.ClassTypeId).HasColumnName("class_type_id");
-            entity.Property(e => e.AbsentCause)
-             .HasColumnType("text")
-             .HasColumnName("absent_cause")
-             .IsRequired(false);
             entity.Property(e => e.ClientId).HasColumnName("client_id");
             entity.Property(e => e.CourseId).HasColumnName("course_id");
             entity.Property(e => e.Datetime)
-              .HasColumnType("datetime")
-              .HasColumnName("datetime");
+                .HasColumnType("datetime")
+                .HasColumnName("datetime");
             entity.Property(e => e.GroupId).HasColumnName("group_id");
             entity.Property(e => e.IsCompleted).HasColumnName("is_completed");
-            entity.Property(e => e.Price)
-                .HasColumnType("decimal(10,2)")
-                .HasColumnName("price")
-                .IsRequired(false);
-            entity.Property(e => e.TeacherId).HasColumnName("teacher_id");
-            entity.Property(e => e.TeacherShare)
-                .HasColumnType("decimal(10,2)")
-                .HasColumnName("teacher_share")
-                .IsRequired(false);
             entity.Property(e => e.Notes)
                 .HasColumnType("text")
-                .HasColumnName("notes")
-                .IsRequired(false);
+                .HasColumnName("notes");
+            entity.Property(e => e.Price)
+                .HasPrecision(10, 2)
+                .HasColumnName("price");
+            entity.Property(e => e.TeacherId).HasColumnName("teacher_id");
+            entity.Property(e => e.TeacherShare)
+                .HasPrecision(10, 2)
+                .HasColumnName("teacher_share");
 
             entity.HasOne(d => d.AttendanceStatus).WithMany(p => p.Attendances)
                 .HasForeignKey(d => d.AttendanceStatusId)
@@ -306,26 +304,6 @@ public partial class ApplicationDbContext : DbContext
             entity.HasOne(d => d.Teacher).WithMany(p => p.Groups)
                 .HasForeignKey(d => d.TeacherId)
                 .HasConstraintName("FK_group_teacher");
-
-            entity.HasMany(d => d.Students).WithMany(p => p.Groups)
-                .UsingEntity<Dictionary<string, object>>(
-                    "GroupStudent",
-                    r => r.HasOne<Student>().WithMany()
-                        .HasForeignKey("StudentId")
-                        .HasConstraintName("FK_group_student_student"),
-                    l => l.HasOne<Group>().WithMany()
-                        .HasForeignKey("GroupId")
-                        .HasConstraintName("FK_group_student_group"),
-                    j =>
-                    {
-                        j.HasKey("GroupId", "StudentId")
-                            .HasName("PRIMARY")
-                            .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
-                        j.ToTable("group_students");
-                        j.HasIndex(new[] { "StudentId" }, "FK_group_student_student_idx");
-                        j.IndexerProperty<int>("GroupId").HasColumnName("group_id");
-                        j.IndexerProperty<int>("StudentId").HasColumnName("student_id");
-                    });
         });
 
         modelBuilder.Entity<GroupDate>(entity =>
@@ -363,6 +341,35 @@ public partial class ApplicationDbContext : DbContext
                 .HasColumnName("status");
         });
 
+        modelBuilder.Entity<GroupStudent>(entity =>
+        {
+            entity.HasKey(e => new { e.GroupId, e.StudentId })
+                .HasName("PRIMARY")
+                .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
+
+            entity.ToTable("group_students");
+
+            entity.HasIndex(e => e.StudentId, "FK_group_student_student_idx");
+
+            entity.HasIndex(e => e.ActiveSubscriptionId, "FK_group_student_student_subscription_idx");
+
+            entity.Property(e => e.GroupId).HasColumnName("group_id");
+            entity.Property(e => e.StudentId).HasColumnName("student_id");
+            entity.Property(e => e.ActiveSubscriptionId).HasColumnName("active_subscription_id");
+
+            entity.HasOne(d => d.ActiveSubscription).WithMany(p => p.GroupStudents)
+                .HasForeignKey(d => d.ActiveSubscriptionId)
+                .HasConstraintName("FK_group_student_student_subscription");
+
+            entity.HasOne(d => d.Group).WithMany(p => p.GroupStudents)
+                .HasForeignKey(d => d.GroupId)
+                .HasConstraintName("FK_group_student_group");
+
+            entity.HasOne(d => d.Student).WithMany(p => p.GroupStudents)
+                .HasForeignKey(d => d.StudentId)
+                .HasConstraintName("FK_group_student_student");
+        });
+
         modelBuilder.Entity<Student>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
@@ -387,33 +394,33 @@ public partial class ApplicationDbContext : DbContext
 
             entity.ToTable("student_subscriptions");
 
+            entity.HasIndex(e => e.ClassesTypeId, "FK_student_subscribtion_class_type_idx");
+
             entity.HasIndex(e => e.CourseId, "FK_student_subscription_course_idx");
 
             entity.HasIndex(e => e.StudentId, "FK_student_subscription_student_idx");
-
-            entity.HasIndex(e => e.ClassesTypeId, "FK_student_subscription_class_type_idx");
 
             entity.HasIndex(e => e.SubscriptlonStatusId, "FK_student_subscription_subscription_status_idx");
 
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("id");
+            entity.Property(e => e.ClassesAmount).HasColumnName("classes_amount");
+            entity.Property(e => e.ClassesTypeId).HasColumnName("classes_type_id");
+            entity.Property(e => e.Cost)
+                .HasPrecision(10, 2)
+                .HasColumnName("cost");
             entity.Property(e => e.CourseId).HasColumnName("course_id");
             entity.Property(e => e.IsPaid).HasColumnName("is_paid");
             entity.Property(e => e.StudentId).HasColumnName("student_id");
             entity.Property(e => e.SubscriptionFinishDate).HasColumnName("subscription_finish_date");
             entity.Property(e => e.SubscriptionStartDate).HasColumnName("subscription_start_date");
             entity.Property(e => e.SubscriptlonStatusId).HasColumnName("subscriptlon_status_id");
-            entity.Property(e => e.ClassesAmount).HasColumnName("classes_amount");
-            entity.Property(e => e.ClassesTypeId).HasColumnName("classes_type_id");
-            entity.Property(e => e.Cost)
-                .HasPrecision(10, 2)
-                .HasColumnName("cost");
 
-            entity.HasOne(d => d.ClassesType).WithMany(p => p.StudentSubscribtions)
+            entity.HasOne(d => d.ClassesType).WithMany(p => p.StudentSubscriptions)
                 .HasForeignKey(d => d.ClassesTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_subscribtion_class_type");
+                .HasConstraintName("FK_student_subscribtion_class_type");
 
             entity.HasOne(d => d.Course).WithMany(p => p.StudentSubscriptions)
                 .HasForeignKey(d => d.CourseId)
@@ -457,8 +464,8 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("fullname");
             entity.Property(e => e.IndividualLessonsShare)
-               .HasPrecision(10, 2)
-               .HasColumnName("individual_lessons_share");
+                .HasPrecision(10, 2)
+                .HasColumnName("individual_lessons_share");
             entity.Property(e => e.Notes)
                 .HasColumnType("text")
                 .HasColumnName("notes");
@@ -477,7 +484,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(100)
                 .HasColumnName("login");
             entity.Property(e => e.PasswordHash)
-                .HasMaxLength(255)
+                .HasMaxLength(256)
                 .HasColumnName("password_hash");
             entity.Property(e => e.PasswordSalt)
                 .HasMaxLength(32)

@@ -30,6 +30,8 @@ public partial class StudentSubscription
 
     public virtual SubscriptlonStatus SubscriptlonStatus { get; set; } = null!;
 
+    public virtual ICollection<GroupStudent> GroupStudents { get; set; } = new List<GroupStudent>();
+
     private StudentSubscription() { }
 
     public static StudentSubscription Create(int id,

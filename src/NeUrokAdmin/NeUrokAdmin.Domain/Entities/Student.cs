@@ -10,7 +10,7 @@ public partial class Student
 
     public virtual ICollection<StudentSubscription> StudentSubscriptions { get; set; } = new List<StudentSubscription>();
 
-    public virtual ICollection<Group> Groups { get; set; } = new List<Group>();
+    public virtual ICollection<GroupStudent> GroupStudents { get; set; } = new List<GroupStudent>();
 
     private Student() { }
 

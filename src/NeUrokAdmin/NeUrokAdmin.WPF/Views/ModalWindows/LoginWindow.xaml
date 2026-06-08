@@ -5,19 +5,118 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NeUrokAdmin.WPF.Views.ModalWindows"
         mc:Ignorable="d"
+        Loaded="Window_Loaded"
         Title="Вход"
-        MinWidth="350"
+        MinWidth="1080"
         SizeToContent="WidthAndHeight">
     <Grid Margin="10">
-        <StackPanel Margin="30 15">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel>
+            <TextBlock Text="Дни рождения скоро"
+                Style="{StaticResource HeaderText}"
+                TextAlignment="Center"
+                Margin="0,20,0,10"/>
+            <Border BorderBrush="{StaticResource DarkPinkBg}"
+                    BorderThickness="3"
+                    MinHeight="300"
+                    Margin="0 0 0 20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="Сегодня"
+                                 Style="{StaticResource HeaderText}"
+                                 TextAlignment="Center"
+                                 Margin="0,0,0,3" FontSize="18"/>
+                            <ScrollViewer BorderBrush="{StaticResource DarkPinkBg}"
+                                          BorderThickness="0 0 0 1" 
+                                          VerticalScrollBarVisibility="Auto">
+
+                            <ItemsControl ItemsSource="{Binding UpcomingBirthdays.TodayBirthdays}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock FontSize="12" Margin="5,3">
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="{}{0} - {1}">
+                                                        <Binding Path="Key" />
+                                                        <Binding Path="Value" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </StackPanel>
+                    <StackPanel Grid.Row="1">
+                        <TextBlock Text="Завтра"
+                                 Style="{StaticResource HeaderText}"
+                                 TextAlignment="Center"
+                                 Margin="0,0,0,3" FontSize="18"/>
+                            <ScrollViewer BorderBrush="{StaticResource DarkPinkBg}"
+                                          BorderThickness="0 0 0 1" 
+                                          VerticalScrollBarVisibility="Auto">
+
+                            <ItemsControl ItemsSource="{Binding UpcomingBirthdays.TomorrowBirthdays}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock FontSize="12" Margin="5,3">
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="{}{0} - {1}">
+                                                        <Binding Path="Key" />
+                                                        <Binding Path="Value" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </StackPanel>
+                        <StackPanel Grid.Row="2">
+                            <TextBlock Text="Послезавтра"
+                                 Style="{StaticResource HeaderText}"
+                                 TextAlignment="Center"
+                                 Margin="0,0,0,3" FontSize="18"/>
+                            <ScrollViewer BorderBrush="{StaticResource DarkPinkBg}"
+                                          BorderThickness="0 0 0 1" 
+                                          VerticalScrollBarVisibility="Auto">
+
+                            <ItemsControl ItemsSource="{Binding UpcomingBirthdays.PostTomorrowBirthdays}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock FontSize="12" Margin="5,3">
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="{}{0} - {1}">
+                                                        <Binding Path="Key" />
+                                                        <Binding Path="Value" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </StackPanel>
+                    </Grid>
+            </Border>
+        </StackPanel>
+        <StackPanel Grid.Column="1"
+                    Margin="30 15">
             <Image Source="/Resources/Icons/LogoIcon.png"
             Width="87"
             RenderOptions.BitmapScalingMode="HighQuality"/>
             <TextBlock Text="Добро пожаловать!"
-                FontFamily="Calibri"
-                FontWeight="Bold"
-                FontSize="26"
-                HorizontalAlignment="Center"
+                Style="{StaticResource HeaderText}"
+                TextAlignment="Center"
                 Margin="0,20,0,10"/>
             <StackPanel Margin="0,0,0,20">
                 <TextBox x:Name="LoginInp"
@@ -50,5 +149,75 @@
                         Click="RegBtn_Click"/>
             </StackPanel>
         </StackPanel>
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel>
+                <TextBlock Text="Истекающие абонементы"
+         Style="{StaticResource HeaderText}"
+         TextAlignment="Center"
+         Margin="0,20,0,10"/>
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          MinWidth="545"
+                          MaxHeight="130">
+                    <DataGrid  
+                     ItemsSource="{Binding ExpiringSubscriptions}" 
+                     Style="{StaticResource MainDataGridStyle}"
+                     AutoGenerateColumns="False"
+                     CanUserAddRows="False" 
+                     IsReadOnly="True"
+                        MouseDoubleClick="DataGrid_MouseDoubleClick">
+                        <DataGrid.Resources>
+                            <Style TargetType="TextBlock" x:Key="WrapStyle">
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ФИО"
+                                        Binding="{Binding ClientFullname}"/>
+                            <DataGridTextColumn Header="Начало" Binding="{Binding StartDate, StringFormat=\{0:dd.MM.yyyy\}}" Width="Auto"/>
+                            <DataGridTextColumn Header="Окончание" Binding="{Binding FinishDate, StringFormat=\{0:dd.MM.yyyy\}}" Width="Auto"/>
+                            <DataGridTextColumn Header="Курс" Binding="{Binding CourseName}" Width="Auto"/>
+                            <DataGridCheckBoxColumn Header="Оплачен" Binding="{Binding IsPaid}"/>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </ScrollViewer>
+            </StackPanel>
+            <StackPanel Grid.Row="1">
+                <TextBlock Text="Неоплаченные абонементы"
+         Style="{StaticResource HeaderText}"
+         TextAlignment="Center"
+         Margin="0,20,0,10"/>
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          MinWidth="515"
+                          MaxHeight="130">
+                    <DataGrid  
+                     ItemsSource="{Binding NotPaidSubscriptions}" 
+                     Style="{StaticResource MainDataGridStyle}"
+                     AutoGenerateColumns="False"
+                     CanUserAddRows="False" 
+                     IsReadOnly="True"
+                        MouseDoubleClick="DataGrid_MouseDoubleClick">
+                        <DataGrid.Resources>
+                            <Style TargetType="TextBlock" x:Key="WrapStyle">
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ФИО"
+                                        Binding="{Binding ClientFullname}"/>
+                            <DataGridTextColumn Header="Начало" Binding="{Binding StartDate, StringFormat=\{0:dd.MM.yyyy\}}" Width="Auto"/>
+                            <DataGridTextColumn Header="Окончание" Binding="{Binding FinishDate, StringFormat=\{0:dd.MM.yyyy\}}" Width="Auto"/>
+                            <DataGridTextColumn Header="Курс" Binding="{Binding CourseName}" Width="Auto"/>
+                            <DataGridCheckBoxColumn Header="Оплачен" Binding="{Binding IsPaid}"/>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </ScrollViewer>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

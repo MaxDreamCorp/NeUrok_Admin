@@ -11,6 +11,7 @@ namespace NeUrokAdmin.Domain.Interfaces.Repositories
         Task UpdateAsync(Attendance attendance, CancellationToken cancellationToken = default);
         Task<int> GetNextIdAsync(CancellationToken cancellationToken = default);
         Task<Attendance?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
+        Task<Attendance?> GetNextClientGroupAsync(int groupId, int clientId, DateOnly date, CancellationToken cancellationToken = default);
         Task<List<Attendance>> GetByGroupIdAsync(int groupId, CancellationToken cancellationToken = default);
         Task<List<Attendance>> GetByClientIdAsync(int clientId, CancellationToken cancellationToken = default);
         Task<List<Attendance>> GetByGroupAndClientIdAsync(int groupId, int clientId, CancellationToken cancellationToken = default);

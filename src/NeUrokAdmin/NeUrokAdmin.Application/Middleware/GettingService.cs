@@ -15,19 +15,11 @@ namespace NeUrokAdmin.Application.Middleware
             _studentSubscriptionRepository = studentSubscriptionRepository;
         }
 
-        public async Task<StudentDTO> GetStudentDTOFromStudentAsync(Student student, CancellationToken cancellationToken = default)
+        public StudentSubscriptionDTO GetStudentSubscriptionDTOFromStudentSubscription(StudentSubscription studentSubscription, CancellationToken cancellationToken = default)
         {
-            var client = await _clientRepository.GetByIdAsync(student.ClientId, cancellationToken);
-            if (client == null)
-                throw new Exception("У ученика отсутствует сущность клиента");
-
-            List<StudentSubscriptionDTO> subscriptionsDtos = new List<StudentSubscriptionDTO>();
-            var subscriptions = await _studentSubscriptionRepository.GetByStudentIdAsync(student.Id, cancellationToken);
-            foreach (var studentSubscription in subscriptions)
-            {
-                subscriptionsDtos.Add(new(
+            return new(
                     studentSubscription.Id,
-                    student.Id,
+                    studentSubscription.StudentId,
                     new(
                         studentSubscription.ClassesType.Id,
                         studentSubscription.ClassesType.Type),
@@ -41,8 +33,19 @@ namespace NeUrokAdmin.Application.Middleware
                         studentSubscription.SubscriptlonStatus.Id,
                         studentSubscription.SubscriptlonStatus.Status),
                     studentSubscription.SubscriptionStartDate,
-                    studentSubscription.SubscriptionFinishDate));
-            }
+                    studentSubscription.SubscriptionFinishDate);
+        }
+
+        public async Task<StudentDTO> GetStudentDTOFromStudentAsync(Student student, CancellationToken cancellationToken = default)
+        {
+            var client = await _clientRepository.GetByIdAsync(student.ClientId, cancellationToken);
+            if (client == null)
+                throw new Exception("У ученика отсутствует сущность клиента");
+
+            List<StudentSubscriptionDTO> subscriptionsDtos = new List<StudentSubscriptionDTO>();
+            var subscriptions = await _studentSubscriptionRepository.GetByStudentIdAsync(student.Id, cancellationToken);
+            foreach (var studentSubscription in subscriptions)
+                subscriptionsDtos.Add(GetStudentSubscriptionDTOFromStudentSubscription(studentSubscription));
 
             var clientDto = new ClientDTO(
             client.Id,
@@ -71,9 +74,19 @@ namespace NeUrokAdmin.Application.Middleware
 
         public async Task<GroupDTO> GetGroupDTOFromGroupAsync(Group group, CancellationToken cancellationToken = default)
         {
-            List<StudentDTO> students = new List<StudentDTO>();
-            foreach (var student in group.Students)
-                students.Add(await GetStudentDTOFromStudentAsync(student, cancellationToken));
+            var studentsAndSubscriptions = new Dictionary<StudentDTO, StudentSubscriptionDTO>();
+            foreach (var groupStudent in group.GroupStudents)
+            {
+                var student = await GetStudentDTOFromStudentAsync(groupStudent.Student, cancellationToken);
+                var subscription = await _studentSubscriptionRepository.GetByIdAsync(groupStudent.ActiveSubscriptionId, cancellationToken);
+                if (subscription == null) continue;
+                var sub = GetStudentSubscriptionDTOFromStudentSubscription(subscription);
+                var studentDTO = new StudentDTO(
+                    student.Id,
+                    student.Client,
+                    new() { sub });
+                studentsAndSubscriptions.Add(studentDTO, sub);
+            }
 
             return new GroupDTO(
              group.Id,
@@ -92,7 +105,7 @@ namespace NeUrokAdmin.Application.Middleware
              group.WeekDays,
              group.Time,
              group.GroupDates.Select(gd => gd.Datetime).ToList(),
-             students);
+             studentsAndSubscriptions);
         }
     }
 }

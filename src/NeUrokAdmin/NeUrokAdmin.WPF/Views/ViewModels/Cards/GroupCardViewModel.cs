@@ -87,6 +87,7 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
 
         public List<DateTime> SelectedDates { get; set; } = new();
 
+        public List<StudentSubscriptionDTO> SubscriptionDTOs { get; set; } = new();
 
         [ObservableProperty]
         private int? _id;
@@ -144,6 +145,7 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
                     $"Занятие {SelectedDates.IndexOf(d) + 1}: {d.ToShortDateString()}"));
                 _studentDTOs = groupDTO.Students;
                 Students = new(groupDTO.Students);
+                SubscriptionDTOs = groupDTO.StudentAndSubscription.Values.ToList();
             }
 
             OperationType = operationType;
@@ -166,9 +168,20 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
                 WeekDays: WeekDays,
                 Time: Time ?? throw new InvalidOperationException("Не выбрано время"),
                 Dates: SelectedDates,
-                Students: Students.ToList()
+                StudentAndSubscription: GetStudentAndSubscriptionDictionary()
     );
 
+        }
+
+        private Dictionary<StudentDTO, StudentSubscriptionDTO> GetStudentAndSubscriptionDictionary()
+        {
+            var dict = new Dictionary<StudentDTO, StudentSubscriptionDTO>();
+
+            foreach (var student in Students)
+                dict.Add(student,
+                    SubscriptionDTOs.Find(ss => ss.StudentId == student.Id) ?? throw new InvalidOperationException());
+
+            return dict;
         }
     }
 }

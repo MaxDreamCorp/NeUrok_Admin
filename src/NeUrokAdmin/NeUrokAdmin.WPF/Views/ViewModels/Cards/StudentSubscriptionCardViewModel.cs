@@ -25,13 +25,13 @@ namespace NeUrokAdmin.WPF.Views.ViewModels.Cards
                         IsFilter = false;
                         IsEditable = false;
                         IsDeletable = false;
-                        HeaderText = $"Абонемент ученика #\"{Id}\"";
+                        HeaderText = $"Абонемент ученика";
                         break;
                     case OperationType.Edit:
                         IsFilter = false;
                         IsEditable = true;
                         IsDeletable = true;
-                        HeaderText = $"Абонемент ученика #\"{Id}\"";
+                        HeaderText = $"Абонемент ученика";
                         break;
                     case OperationType.Filter:
                         IsFilter = true;

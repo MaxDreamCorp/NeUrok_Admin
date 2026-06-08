@@ -7,9 +7,13 @@ namespace NeUrokAdmin.Domain.Interfaces.Repositories
         Task AddAsync(StudentSubscription studentSubscription, CancellationToken cancellationToken = default);
         Task RemoveAsync(StudentSubscription studentSubscription, CancellationToken cancellationToken = default);
         Task UpdateAsync(StudentSubscription studentSubscription, CancellationToken cancellationToken = default);
+        Task UpdateStartDateAsync(int id, DateOnly startDate, CancellationToken cancellationToken = default);
         Task UpdateFinishDateAsync(int id, DateOnly finishDate, CancellationToken cancellationToken = default);
         Task<int> GetNextIdAsync(CancellationToken cancellationToken = default);
         Task<StudentSubscription?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
+        Task<StudentSubscription?> GetByStudentCourseAndDateAsync(int studentId, int courseId, DateOnly date, CancellationToken cancellationToken = default);
         Task<List<StudentSubscription>> GetByStudentIdAsync(int studentId, CancellationToken cancellationToken = default);
+        Task<List<StudentSubscription>> GetExpiringAsync(CancellationToken cancellationToken = default);
+        Task<List<StudentSubscription>> GetNotPaidAsync(CancellationToken cancellationToken = default);
     }
 }
